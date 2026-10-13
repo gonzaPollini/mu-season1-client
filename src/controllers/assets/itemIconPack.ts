@@ -18,8 +18,11 @@ function itemIconTint(lvl: number): number {
   return 15;
 }
 
+/** Ours: a build serves the icons as WebP (`tools/itemIconsWebp.ts`); the dev server has the PNGs. */
+const ICON_EXT = import.meta.env.DEV ? 'png' : 'webp';
+
 function packUrl(group: number, num: number, tint: number, variant: Variant): string {
-  return `/items/item_${group}_${num}_${tint}${variant}.png`;
+  return `/items/item_${group}_${num}_${tint}${variant}.${ICON_EXT}`;
 }
 
 /**
@@ -41,7 +44,7 @@ export function itemIconPackChain(item: Item): string[] {
     if (tint !== 0) candidates.push([0, '']);
   }
 
-  const urls: string[] = look ? [`/items/${look.icon}.png`] : [];
+  const urls: string[] = look ? [`/items/${look.icon}.${ICON_EXT}`] : [];
   for (const [t, v] of candidates) {
     if (hasItemIconFile(group, num, t, v)) urls.push(packUrl(group, num, t, v));
   }

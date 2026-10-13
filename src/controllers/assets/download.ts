@@ -1,6 +1,7 @@
 import { type Scene, Texture } from '../render/babylon/exports';
 import { resolveUrlToDataFolder } from './resolveUrlToDataFolder';
 import { fetchAssetBytes } from './compressedAssets';
+import { isWebp } from '../../core/imageBytes';
 
 // Moved to a Babylon-free module so the terrain worker can import them
 // without dragging this file's `Scene`/`Texture` imports along (todo C8).
@@ -65,9 +66,12 @@ export function createOZJTexture(
   const fName = filename.split('/').at(-1)?.split('.')[0];
   const tName = filename.split('/').slice(0, -1).join('_') + '-' + fName;
 
+  const image = ozjBuffer.slice(24);
+  const ext = isWebp(image) ? 'webp' : 'jpg';
+
   return new Promise<Texture>((resolve, reject) => {
     const texture = new Texture(
-      `data:${tName}.jpg`,
+      `data:${tName}.${ext}`,
       scene.getEngine()!,
       true,
       false,
@@ -77,7 +81,7 @@ export function createOZJTexture(
         reject(
           exception ?? new Error(message ?? `Could not decode ${filename}`)
         ),
-      ozjBuffer.slice(24),
+      image,
       true
     );
     texture.anisotropicFilteringLevel = 1;
@@ -111,15 +115,16 @@ export async function readOJZBufferAsJPEGBuffer(
   const fName = filename.split('/').at(-1)?.split('.')[0];
   const tName = filename.split('/').slice(0, -1).join('_') + '-' + fName;
 
+  const image = ozjBuffer.slice(24);
   const texture = new Texture(
-    `data:${tName}.jpg`,
+    `data:${tName}.${isWebp(image) ? 'webp' : 'jpg'}`,
     scene.getEngine()!,
     true,
     false,
     Texture.NEAREST_NEAREST,
     null,
     null,
-    ozjBuffer.slice(24),
+    image,
     true
   );
   texture.anisotropicFilteringLevel = 1;

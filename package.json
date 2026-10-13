@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "APP_ENV=dev vite --force",
-    "build": "APP_ENV=prod vite build && bun run copy-data && bun run compress-assets && bun run assets-index",
+    "build": "APP_ENV=prod vite build && bun run item-icons-webp && bun run copy-data && bun run textures-webp && bun run compress-assets && bun run assets-index",
     "copy-data": "bun run tools/copyData.ts && bun run tools/copyData.ts --src Data-v097d --out dist/Data-v097d",
     "compress-assets": "bun run tools/compressAssets.ts",
     "assets-index": "bun run tools/assetsIndex.ts",
@@ -33,7 +33,9 @@
     "test:server": "bun test ./marketplace/server/",
     "check": "bun tools/checks/index.ts",
     "check:lint": "eslint . -f json | bun tools/checks/lintRatchet.ts",
-    "check:commits": "bun tools/checks/commits.ts"
+    "check:commits": "bun tools/checks/commits.ts",
+    "item-icons-webp": "bun run tools/itemIconsWebp.ts",
+    "textures-webp": "bun run tools/texturesWebp.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9",
