@@ -91,6 +91,14 @@ class AssetDownloadStore {
     return group.kind === 'core' || this.chosen.has(group.id);
   }
 
+  /** Ours: tick exactly the groups `wanted` accepts (the auto download, `hud/auto_download`). */
+  chooseOnly(wanted: (group: AssetGroup) => boolean): void {
+    runInAction(() => {
+      this.chosen = new Set(this.groups.filter(wanted).map(g => g.id));
+    });
+    save(this.chosen);
+  }
+
   toggle(group: AssetGroup): void {
     if (group.kind === 'core') return;
     runInAction(() => {

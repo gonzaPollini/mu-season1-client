@@ -8,6 +8,11 @@ loading screen; a new look is a sibling implementation (`loading/<name>/`), neve
 - `Loading` (`index.ts`, `loadingState.ts`): observable `sceneLoading`, `loadingProgress`,
   `spritesLoading`, `isLoading` and their setters. The terrain sets the scene flag and progress,
   boot clears `spritesLoading` once the screen art is in.
+- `WarpFade` (`fade/index.tsx`, ours): the look of a warp to another map from inside the world
+  (`Loading.inWorldWarp`, set by boot): a still of the map being left (`Loading.warpSnapshot`, a
+  JPEG boot reads off the canvas on the warp's first frame) covers the load and dissolves into the
+  new map in 400 ms once `sceneLoading` clears (which also clears `inWorldWarp`). No black frame.
+  `App.tsx` hides `LoadingScreen` for it; `modules/warp/warpScopeHold.ts` does not hold such a warp.
 - `LoadingScreen` (`classic/index.tsx`): the React overlay shown while `Loading.isLoading`;
   `hidden` (read in render) is the app saying a page with its own progress is up (the preloader).
 - `setSceneHold(name, held)`, `sceneHeld()` (`sceneGate.ts`): named holds that keep the screen up

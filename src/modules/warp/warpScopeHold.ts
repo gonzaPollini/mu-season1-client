@@ -1,5 +1,6 @@
 import { EventBus } from '../../core/eventBus';
 import { setSceneHold } from '../../controllers/loading/sceneGate';
+import { Loading } from '../../controllers/loading';
 
 /**
  * After a warp OpenMU parks the hero until `ClientReadyAfterMapChange`, so
@@ -38,6 +39,9 @@ function releaseIn(ms: number): void {
 
 /** Called when the ready packet goes out. */
 export function holdForWarpScope(): void {
+  // Ours: a warp from inside the world dissolves into the new map as soon as it is in; whoever is
+  // there walks into scope on the open scene, like anyone arriving later.
+  if (Loading.inWorldWarp) return;
   held = true;
   setSceneHold(HOLD, true);
   releaseIn(WAIT_MS);

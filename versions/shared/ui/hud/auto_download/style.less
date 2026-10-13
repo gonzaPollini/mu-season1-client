@@ -1,0 +1,184 @@
+// Top centre, over the pages and the loading screen (z 100), click-through except its buttons.
+.auto-download {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  padding: 6px 10px 8px;
+  background: rgba(10, 8, 6, 0.85);
+  border: 1px solid #8a6d2f;
+  border-radius: 3px;
+  color: #e8dcc0;
+  font-size: 11px;
+  text-shadow: 1px 1px 0 #000;
+  z-index: 101;
+  pointer-events: none;
+  user-select: none;
+
+  button {
+    pointer-events: auto;
+    background: none;
+    border: none;
+    color: #c9b27a;
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+  }
+}
+
+.auto-download-title {
+  display: flex;
+  justify-content: space-between;
+  color: #ffd700;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.auto-download-close {
+  font-size: 14px;
+  line-height: 11px;
+}
+
+.auto-download-bar {
+  height: 6px;
+  background: #2a2318;
+  border: 1px solid #4a3d24;
+}
+
+.auto-download-fill {
+  height: 100%;
+  background: linear-gradient(#e6c35c, #a8822c);
+  transition: width 300ms linear;
+}
+
+.auto-download-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+// The first screen: covers the login and the character select until the download ends or is skipped.
+.auto-download-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8vw;
+  background-color: #000;
+  background-size: cover;
+  background-position: center;
+  z-index: 101;
+  color: #d8ccb0;
+  text-shadow: 1px 1px 0 #000;
+  user-select: none;
+}
+
+// A double gold frame with a diamond on the top and bottom edges.
+.auto-download-panel {
+  position: relative;
+  width: 440px;
+  padding: 26px 30px 22px;
+  background: linear-gradient(rgba(14, 16, 20, 0.96), rgba(8, 9, 12, 0.96));
+  border: 1px solid #b08a3e;
+  outline: 1px solid rgba(176, 138, 62, 0.35);
+  outline-offset: 5px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+  text-align: center;
+  font-family: Georgia, 'Times New Roman', serif;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: #b08a3e;
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  &::before {
+    top: -11px;
+  }
+
+  &::after {
+    bottom: -11px;
+  }
+}
+
+.auto-download-logo {
+  width: 300px;
+  max-width: 100%;
+  margin-bottom: 14px;
+}
+
+.auto-download-heading {
+  color: #e8d5a0;
+  font-size: 17px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+
+.auto-download-phase {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.auto-download-percent {
+  color: #f0c060;
+  font-size: 20px;
+}
+
+.auto-download-bar.is-big {
+  height: 10px;
+  border-color: #8a6d2f;
+}
+
+.auto-download-amounts {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  color: #a89a7a;
+}
+
+.auto-download-rule {
+  height: 1px;
+  margin: 18px 0 14px;
+  background: linear-gradient(90deg, transparent, #6a552a, transparent);
+}
+
+.auto-download-note {
+  font-size: 12px;
+  font-style: italic;
+  color: #b8aa88;
+  line-height: 1.4;
+
+  &.is-small {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #8a7e64;
+  }
+}
+
+.auto-download-skip {
+  margin-top: 14px;
+  padding: 7px 24px;
+  background: #1e1a12;
+  border: 1px solid #8a6d2f;
+  color: #f0c060;
+  font: inherit;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+
+  &:hover {
+    background: #2e2618;
+  }
+}

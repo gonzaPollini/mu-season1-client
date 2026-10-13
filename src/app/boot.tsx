@@ -43,6 +43,7 @@ import { Bag } from '../modules/inventory';
 import { initControllers } from '../controllers/controllers';
 import { resetForMapChange } from './lifecycle';
 import { prefetchWorldTerrain } from '../controllers/assets/prefetchWorld';
+import { ENUM_WORLD } from '../core/types';
 import { createWorld } from '../ecs/createWorld';
 import { EventBus } from '../core/eventBus';
 import { installLoginMusic } from '../controllers/sound/loginMusic';
@@ -357,17 +358,61 @@ window.addEventListener('resize', onResize);
 
 onResize();
 
+/**
+ * Ours: the still `WarpFade` shows over a warp to another map. Read in the frame's own task, right
+ * after it is drawn, while the WebGL back buffer still holds it.
+ */
+function captureWarpSnapshot(): void {
+  const canvas = engine.getRenderingCanvas();
+  if (!canvas) return;
+  engine.onEndFrameObservable.addOnce(() => {
+    canvas.toBlob(
+      blob => {
+        if (blob && Loading.inWorldWarp && Loading.sceneLoading) Loading.setWarpSnapshot(URL.createObjectURL(blob));
+      },
+      'image/jpeg',
+      0.85
+    );
+  });
+}
+
 EventBus.on('requestWarp', ({ map, pos }) => {
   // Every warp, the step from the login backdrop to the character one
   // included: that one is a full terrain swap plus the character line-up, and
   // skipping the screen for it meant watching both load on an open scene.
-  Loading.setSceneLoading(true);
+  // Ours: a warp within the map already up (`/move`, a stat warp) keeps its terrain, so no screen.
+  const inWorld = AppState.uiState === UIState.World && !!world.terrain;
+  if (!(inWorld && map === world.mapIndex)) {
+    // Ours: another map from inside the world fades to black (`loading/fade/`) instead of the art.
+    Loading.setInWorldWarp(inWorld);
+    Loading.setSceneLoading(true);
+    if (inWorld) captureWarpSnapshot();
+  }
 
   // The terrain files go out together, before the loader's first await; the
   // loader picks up the same promises (prefetchWorld.ts).
   if (map !== world.mapIndex) prefetchWorldTerrain(map);
 
   loadMapIntoScene(world, map, pos);
+});
+
+// Ours: once in the world, the towns' terrain files download in the background, so a `/move`
+// there finds them in memory (prefetchWorld.ts keeps them until that map loads).
+const WARM_MAPS = [
+  ENUM_WORLD.WD_0LORENCIA,
+  ENUM_WORLD.WD_2DEVIAS,
+  ENUM_WORLD.WD_3NORIA,
+  ENUM_WORLD.WD_51ELBELAND,
+  ENUM_WORLD.WD_1DUNGEON,
+  ENUM_WORLD.WD_4LOSTTOWER,
+  ENUM_WORLD.WD_7ATLANSE,
+  ENUM_WORLD.WD_8TARKAN,
+];
+let warmed = false;
+EventBus.on('warpCompleted', () => {
+  if (warmed || AppState.uiState !== UIState.World) return;
+  warmed = true;
+  setTimeout(() => WARM_MAPS.filter(m => m !== world.mapIndex).forEach(prefetchWorldTerrain), 3000);
 });
 
 preloadPregameSprites()
