@@ -67,3 +67,9 @@ Also the guild mark (emblem) codec. It has no packet handlers of its own; the ne
 - `social.test.ts`: the System messages switch is the saved `GameOptions.chatSystemMessages`.
 - `requestTimeout.test.ts`: a request left alone is declined after 20 s, an answered one is left
   alone, a new one restarts the clock, nothing expires on Classic.
+
+## Stat command notice (ours)
+`statCommandNotice.ts`: OpenMU answers `/addstr 100` (and `/add str 100`) without text. `sendChat`
+hands every line to `watchStatCommand`; when `Hero.points` drops within 15 s and then holds still for 400 ms (the
+server may answer one +1 per point), the system log says how many points went into which stat
+(`stats.added`).

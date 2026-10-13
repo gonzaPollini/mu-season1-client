@@ -17,6 +17,13 @@ const en = {
   'guild.onlyMasterCan': 'Only the guild master can do that.',
   'guild.allianceRequestSent': 'Alliance request sent to {name}.',
   'guild.hostilityRequestSent': 'Hostility request sent to {name}.',
+  /** `/addstr 100` and the like (ours, `statCommandNotice.ts`): OpenMU sends no text for it. */
+  'stats.added': '{amount} points added to {stat}.',
+  'stats.name.str': 'Strength',
+  'stats.name.agi': 'Agility',
+  'stats.name.vit': 'Vitality',
+  'stats.name.ene': 'Energy',
+  'stats.name.cmd': 'Command',
 };
 
 export default en;
