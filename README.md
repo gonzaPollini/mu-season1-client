@@ -252,3 +252,19 @@ Built on [afrokick/muonlinejs](https://github.com/afrokick/muonlinejs) (MIT), fo
 behaviour transcribed from [Munormae/MuOnlineClient](https://github.com/Munormae/MuOnlineClient).
 BMD parsing informed by [xulek/muonline-bmd-viewer](https://github.com/xulek/muonline-bmd-viewer).
 The server side is [OpenMU](https://github.com/MUnique/OpenMU).
+
+---
+
+## 📝 Últimos cambios
+
+### 2026-10-13
+
+**Commits incluidos:**
+- f47b3a56 Ship item icons and OZJ/OZT textures as WebP in builds
+- 122e5712 Smoother map changes and a first-run asset download screen
+- f1d98013 Add MU Helper buttons to the HUD and a notice for /addstr and friends
+- d4db83d9 Merge pull request #490 from Ignies/ronda_rendering_fixes
+
+**Archivos modificados:**
+  - `.json`: package.json
+  - `.ts`: download.ts, itemIconPack.ts, sprites.ts, effectParticles.ts, effectTexture.ts, monsterGlow.ts, effectLights.ts, terrainGrassCards.ts, terrainJpeg.ts, imageBytes.ts, itemIconsWebp.ts, texturesWebp.ts, skySprites.ts, signPlates.ts
