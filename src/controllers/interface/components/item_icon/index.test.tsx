@@ -18,13 +18,13 @@ describe('the item icon', () => {
     expect(renderToStaticMarkup(<ItemIcon item={BLADE} />)).not.toContain('<canvas');
   });
 
-  // Ours (Season1): a jewel rests small and grows to its full fit under the cursor, without turning.
-  it('draws a jewel smaller at rest and at its full size, still, under the cursor', () => {
+  // Ours (Season1): a jewel rests small and grows to its full fit under the cursor, where it turns.
+  it('draws a jewel smaller at rest and at its full size under the cursor, turning', () => {
     const BLESS = { group: 14, num: 13, lvl: 0 };
     const rest = renderToStaticMarkup(<ItemIcon item={BLESS} />);
     const hover = renderToStaticMarkup(<ItemIcon item={BLESS} spin />);
     const zoom = (html: string) => Number(/scale\(([0-9.]+)\)/.exec(html)?.[1]);
-    expect(hover).not.toContain('<canvas');
+    expect(hover).toContain('<canvas');
     expect(zoom(rest)).toBeLessThan(zoom(hover));
     expect(zoom(hover)).toBeCloseTo(3.97);
   });

@@ -1,17 +1,11 @@
 import { memo, useEffect, useRef, useState, type ReactNode } from 'react';
 import { observer } from 'mobx-react-lite';
 import type { Item } from '@/ecs/world';
-import {
-  itemIconKey,
-  itemIconPackChain,
-} from '@/controllers/assets/itemIconPack';
+import { itemIconKey, itemIconPackChain } from '@/controllers/assets/itemIconPack';
 import { ITEM_ICON_FIT } from '@/controllers/interface/item_icons/itemIconFit';
-import {
-  liveItemIcon,
-  liveItemIconKey,
-  spinLiveItemIcon,
-} from '@/controllers/interface/item_icons/liveItemIcon';
+import { liveItemIcon, liveItemIconKey, spinLiveItemIcon } from '@/controllers/interface/item_icons/liveItemIcon';
 import { isJewel, itemDef, itemLevelLook } from '@/controllers/item_rules';
+import { opaqueFit } from './opaqueFit';
 
 /**
  * `<img fetchpriority>` is not a React 18 prop (it arrives with React 19), so
@@ -34,9 +28,7 @@ const IMG_PRIORITY = { fetchpriority: 'high' } as const;
  */
 function fitTransform(item: Item, share = 1): string | undefined {
   const key = `${item.group}_${item.num}`;
-  const levelKey = itemLevelLook(item.group, item.num, item.lvl)
-    ? `${key}_${item.lvl}`
-    : key;
+  const levelKey = itemLevelLook(item.group, item.num, item.lvl) ? `${key}_${item.lvl}` : key;
   const fit = ITEM_ICON_FIT[levelKey];
   if (!fit) return undefined;
   const [zoom, dx, dy] = fit;
@@ -44,9 +36,9 @@ function fitTransform(item: Item, share = 1): string | undefined {
 }
 
 /**
- * Ours (Season1): a jewel fills its square at the full fit, which reads too big, and the turning
- * model under the cursor is drawn smaller, so hovering shrank it. A jewel now rests at this share of
- * the fit and grows back to the full fit under the cursor, without turning.
+ * Ours (Season1): a jewel at the full fit reads too big, and its turning model is framed smaller,
+ * so hovering shrank it. A jewel rests at `JEWEL_REST` of the fit and grows to the full fit under
+ * the cursor, where its model turns blown up to the square (`Spin` with `fill`, `opaqueFit.ts`).
  */
 const JEWEL_REST = 0.6;
 const JEWEL_GROW = { transition: 'transform 150ms ease-out' } as const;
@@ -57,35 +49,30 @@ function isJewelItem(item: Item): boolean {
 }
 
 /** The turning picture covers the item's squares, as the live still does. */
-const SPIN_STYLE = {
-  position: 'absolute',
-  inset: 0,
-  width: '100%',
-  height: '100%',
-  objectFit: 'contain',
-} as const;
+const SPIN_STYLE = { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' } as const;
 
 /**
  * The item under the cursor turning on a canvas (`Select` in RenderObjectScreen,
  * ZzzInventory.cpp:8856-8859); the still picture shows until the first turned one is drawn.
  */
-const Spin = observer(function Spin({
-  item,
-  still,
-}: {
-  item: Item;
-  still: ReactNode;
-}) {
+const Spin = observer(function Spin({ item, still, fill = false }: { item: Item; still: ReactNode; fill?: boolean }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [ready, setReady] = useState(false);
+  const [fit, setFit] = useState<string | null>(null);
   const look = liveItemIconKey(item);
   useEffect(() => {
     const target = canvas.current;
     if (!target) return undefined;
-    const stop = spinLiveItemIcon(item, target, () => setReady(true));
+    const stop = spinLiveItemIcon(item, target, () => {
+      // Ours: `fill` measures the first turned picture once and blows it up to the square.
+      const image = fill ? target.getContext('2d')?.getImageData(0, 0, target.width, target.height) : undefined;
+      if (image) setFit(opaqueFit(image.data, image.width, image.height));
+      setReady(true);
+    });
     return () => {
       stop?.();
       setReady(false);
+      setFit(null);
     };
     // The look is what the picture depends on; the item object may be rebuilt by a refresh.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,7 +80,7 @@ const Spin = observer(function Spin({
   return (
     <>
       {!ready && still}
-      <canvas ref={canvas} className="item-icon" style={SPIN_STYLE} />
+      <canvas ref={canvas} className="item-icon" style={fit ? { ...SPIN_STYLE, transform: fit } : SPIN_STYLE} />
     </>
   );
 });
@@ -110,13 +97,7 @@ const Spin = observer(function Spin({
  * subscribed the whole grid to all fourteen fields of every item.)
  */
 export const ItemIcon = memo(
-  observer(function ItemIcon({
-    item,
-    spin = false,
-  }: {
-    item: Item;
-    spin?: boolean;
-  }) {
+  observer(function ItemIcon({ item, spin = false }: { item: Item; spin?: boolean }) {
     const key = itemIconKey(item);
     /** Which URL of the pack chain is showing; past the end = no file at all. */
     const [fallbackStep, setFallbackStep] = useState(0);
@@ -125,15 +106,8 @@ export const ItemIcon = memo(
     }, [key]);
     const chain = itemIconPackChain(item);
     const jewel = isJewelItem(item);
-    const still = stillIcon(
-      item,
-      chain,
-      fallbackStep,
-      setFallbackStep,
-      jewel && !spin ? JEWEL_REST : 1,
-      jewel
-    );
-    return spin && !jewel ? <Spin item={item} still={still} /> : still;
+    const still = stillIcon(item, chain, fallbackStep, setFallbackStep, jewel && !spin ? JEWEL_REST : 1, jewel);
+    return spin ? <Spin item={item} still={still} fill={jewel} /> : still;
   })
 );
 
@@ -150,15 +124,7 @@ function stillIcon(
     // No pack file: the original draws every icon from the model, so draw this one.
     const live = liveItemIcon(item);
     if (live) {
-      return (
-        <img
-          src={live}
-          className="item-icon"
-          alt=""
-          draggable={false}
-          decoding="async"
-        />
-      );
+      return <img src={live} className="item-icon" alt="" draggable={false} decoding="async" />;
     }
     return (
       <div
@@ -172,11 +138,7 @@ function stillIcon(
     <img
       src={chain[fallbackStep]}
       className="item-icon"
-      style={
-        share === 1
-          ? { transform: fitTransform(item) }
-          : { transform: fitTransform(item, share), ...JEWEL_GROW }
-      }
+      style={grow ? { transform: fitTransform(item, share), ...JEWEL_GROW } : { transform: fitTransform(item) }}
       alt=""
       draggable={false}
       decoding="async"
