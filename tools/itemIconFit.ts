@@ -53,7 +53,7 @@ const MARGIN = 0.92;
  * Ours (Season1): jewel zooms picked by eye in game, over what the original's scales give. Creation is
  * the reference; Jewel of Chaos is a thin model the original draws at 0.002.
  */
-const ZOOM_OVERRIDE: Record<string, number> = { '12_15': 3.7, '14_13': 3.88, '14_14': 3.88, '14_16': 3.88, '14_22': 3 };
+const ZOOM_OVERRIDE: Record<string, number> = { '12_15': 3.7, '14_13': 3, '14_14': 3, '14_16': 3, '14_22': 3 };
 /** Under this the zoom is not worth an entry. */
 const MIN_ZOOM = 1.05;
 

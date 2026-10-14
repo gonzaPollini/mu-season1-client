@@ -26,7 +26,7 @@ describe('the item icon', () => {
     const zoom = (html: string) => Number(/scale\(([0-9.]+)\)/.exec(html)?.[1]);
     expect(rest).not.toContain('<canvas');
     expect(hover).toContain('<canvas');
-    expect(zoom(rest)).toBeCloseTo(3.88);
+    expect(zoom(rest)).toBeCloseTo(3);
     expect(zoom(hover)).toBeCloseTo(zoom(rest));
   });
 });
