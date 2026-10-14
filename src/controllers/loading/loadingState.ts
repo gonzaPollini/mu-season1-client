@@ -14,7 +14,7 @@ export const Loading = new (class {
   /** Ours: the load is a warp to another map from inside the world; `fade/` covers it, not `classic/`. */
   inWorldWarp = false;
 
-  /** Ours: a still of the map being left (blob URL), shown over the load instead of black (`fade/`). */
+  /** Ours: a still of the map being left (a JPEG data URL), shown over the load instead of black (`fade/`). */
   warpSnapshot: string | null = null;
 
   get isLoading(): boolean {
@@ -57,7 +57,6 @@ export const Loading = new (class {
   }
 
   setWarpSnapshot(url: string | null): void {
-    if (this.warpSnapshot && this.warpSnapshot !== url) URL.revokeObjectURL(this.warpSnapshot);
     runInAction(() => {
       this.warpSnapshot = url;
     });

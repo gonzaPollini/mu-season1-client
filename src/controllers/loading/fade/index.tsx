@@ -16,7 +16,7 @@ export const WarpFade = observer(() => {
   const snapshot = Loading.warpSnapshot;
   const covering = Loading.inWorldWarp && Loading.sceneLoading && !!snapshot;
 
-  // Once dissolved, the still is dropped (and its blob URL revoked).
+  // Once dissolved, the still is dropped.
   useEffect(() => {
     if (covering || !snapshot) return;
     const timer = setTimeout(() => Loading.setWarpSnapshot(null), DISSOLVE_MS);

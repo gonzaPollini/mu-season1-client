@@ -363,19 +363,19 @@ onResize();
 
 /**
  * Ours: the still `WarpFade` shows over a warp to another map. Read in the frame's own task, right
- * after it is drawn, while the WebGL back buffer still holds it.
+ * after it is drawn, while the WebGL back buffer still holds it, and encoded there and then: an
+ * async `toBlob` only lands once the main thread is free, which is after the new map has loaded.
  */
 function captureWarpSnapshot(): void {
   const canvas = engine.getRenderingCanvas();
   if (!canvas) return;
   engine.onEndFrameObservable.addOnce(() => {
-    canvas.toBlob(
-      blob => {
-        if (blob && Loading.inWorldWarp && Loading.sceneLoading) Loading.setWarpSnapshot(URL.createObjectURL(blob));
-      },
-      'image/jpeg',
-      0.85
-    );
+    if (!Loading.inWorldWarp || !Loading.sceneLoading) return;
+    try {
+      Loading.setWarpSnapshot(canvas.toDataURL('image/jpeg', 0.8));
+    } catch {
+      // No still: the load shows as it builds, as before.
+    }
   });
 }
 
