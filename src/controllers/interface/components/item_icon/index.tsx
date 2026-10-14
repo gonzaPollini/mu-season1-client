@@ -73,7 +73,12 @@ function fitZoom(item: Item): number {
   return ITEM_ICON_FIT[levelKey]?.[0] ?? 1;
 }
 
+/** Ours: the skill orbs (group 12), which keep their size turning too. */
+const ORB_NUMBERS: ReadonlySet<number> = new Set([7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 44, 45, 46, 47]);
+
+/** The items that turn at their resting size under the cursor: jewels and orbs. */
 function isJewelItem(item: Item): boolean {
+  if (item.group === 12 && ORB_NUMBERS.has(item.num)) return true;
   const def = itemDef(item.group, item.num);
   return !!def && isJewel(def);
 }

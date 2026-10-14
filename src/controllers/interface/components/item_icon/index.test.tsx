@@ -29,4 +29,11 @@ describe('the item icon', () => {
     expect(zoom(rest)).toBeCloseTo(3);
     expect(zoom(hover)).toBeCloseTo(zoom(rest));
   });
+
+  it('turns an orb at its resting size too', () => {
+    const ORB = { group: 12, num: 8, lvl: 0 };
+    const zoom = (html: string) => Number(/scale\(([0-9.]+)\)/.exec(html)?.[1]);
+    expect(zoom(renderToStaticMarkup(<ItemIcon item={ORB} />))).toBeCloseTo(4);
+    expect(renderToStaticMarkup(<ItemIcon item={ORB} spin />)).toContain('<canvas');
+  });
 });
