@@ -260,8 +260,7 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 ### 2026-10-14
 
 **Commits incluidos:**
-- 5f438b9a8 Keep jewels at full size, turning only under the cursor
-- 50079e0ac docs: auto-update README
+- (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.tsx`: index.test.tsx, index.tsx
+  - `.ts`: jewelUpgrade.test.ts, jewelUpgrade.ts
