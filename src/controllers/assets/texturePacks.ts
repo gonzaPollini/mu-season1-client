@@ -38,6 +38,7 @@ type PackManifest = {
 const ACTIVE_KEY = 'mu_texture_pack';
 /** The id that means "the textures baked into the models". */
 export const ORIGINAL_PACK = '';
+const DEFAULT_PACK = 'upscaled-512';
 
 const withTrailingSlash = (s: string) => (s.endsWith('/') ? s : `${s}/`);
 
@@ -58,7 +59,8 @@ export function packsBase(): string {
 
 class TexturePackStore {
   available: TexturePackInfo[] = [];
-  activeId: string = LocalStorage.load(ACTIVE_KEY) ?? ORIGINAL_PACK;
+  // Ours (Season1): the upscaled 512 pack unless the player chose otherwise.
+  activeId: string = LocalStorage.load(ACTIVE_KEY) ?? DEFAULT_PACK;
   /** False until the pack's own manifest has arrived. */
   loading = false;
 

@@ -3,7 +3,7 @@ import { defaultGameOption, optionsFrom } from './gameOptions';
 import { CAMERA_FOV_DEG, CAMERA_FOV_MAX_DEG, CAMERA_FOV_MIN_DEG } from '../camera/recipes';
 import { RENDER_DISTANCE_MAX } from '../render/renderDistance';
 import { RENDER_SCALE_STEP_MAX } from '../render/renderScale';
-import { FPS_LIMIT_MAX } from '../render/fpsLimit';
+import { FPS_LIMIT_MAX, FPS_LIMIT_STEPS } from '../render/fpsLimit';
 import {
   LOW_VITAL_DEFAULT_PERCENT,
   LOW_VITAL_MAX_PERCENT,
@@ -29,7 +29,8 @@ describe('settings limits match their owners', () => {
   });
 
   it('FPS limit', () => {
-    expect(defaultGameOption('fpsLimit')).toBe(0);
+    // Ours (Season1): 60 fps by default.
+    expect(FPS_LIMIT_STEPS[defaultGameOption('fpsLimit')]).toBe(60);
     expect(range('fpsLimit')).toEqual([0, FPS_LIMIT_MAX]);
   });
 

@@ -11,6 +11,7 @@ const { NullEngine } = await import('@babylonjs/core/Engines/nullEngine');
 const bjs = await import('../babylon/exports');
 const { syncRoomMask } = await import('./roomMask');
 const fidelity = await import('../../fidelity');
+const { setGameOption } = await import('../../settings');
 
 const ROOM = { minX: 0, minY: 0, maxX: 4, maxY: 4, floorY: 0, wallTop: 3, roofY: 4 } as RoomVolume;
 
@@ -26,6 +27,7 @@ afterAll(() => {
 // room began, then upscaled, put the wall's depth on the floor beside it and blacked it (depthRenderer.js:84).
 describe('the room mask depth map', () => {
   it('follows a window or render-scale resize on the next tick', () => {
+    setGameOption('renderScale', 0);
     syncRoomMask(scene, camera, {} as LightingTier, ROOM, false);
     const depthMap = () => scene.enableDepthRenderer(camera, false, true, bjs.Texture.NEAREST_SAMPLINGMODE, true).getDepthMap();
     expect([depthMap().getRenderWidth(), depthMap().getRenderHeight()]).toEqual([512, 256]);
