@@ -263,4 +263,6 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 - (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.ts`: itemIconFit.ts, itemIconFit.ts
+  - `.html`: index.html
+  - `.webmanifest`: manifest.webmanifest
+  - `.ts`: pageTitle.ts
