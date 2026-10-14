@@ -50,11 +50,10 @@ const SCALE_TO_ZOOM = 180;
 /** Leaves the item off the square's border when the cap binds. */
 const MARGIN = 0.92;
 /**
- * Ours (Season1): scales that stand in for the original's. Jewel of Chaos is a thin model the original
- * draws at 0.002, so it came out at less than half the height of the other jewels; this one gives it
- * the height of a Jewel of Creation.
+ * Ours (Season1): jewel zooms picked by eye in game, over what the original's scales give. Creation is
+ * the reference; Jewel of Chaos is a thin model the original draws at 0.002.
  */
-const SCALE_OVERRIDE: Record<string, number> = { '12_15': 0.00342 };
+const ZOOM_OVERRIDE: Record<string, number> = { '12_15': 3.7, '14_13': 3.88, '14_14': 3.88, '14_16': 3.88, '14_22': 3 };
 /** Under this the zoom is not worth an entry. */
 const MIN_ZOOM = 1.05;
 
@@ -127,7 +126,8 @@ for (const name of readdirSync(ITEMS_DIR)) {
 const fits = new Map<string, Box>();
 
 for (const [key, { file, group, num }] of candidates) {
-  const box = fitOf(group, num, file, SCALE_OVERRIDE[key]);
+  const box = fitOf(group, num, file);
+  if (box && ZOOM_OVERRIDE[key]) box.zoom = ZOOM_OVERRIDE[key];
   if (!box || box.zoom < MIN_ZOOM) continue;
   fits.set(key, box);
 }
