@@ -79,6 +79,13 @@ const WING_NUMBERS: ReadonlySet<number> = new Set([
 /** Ammunition never takes a jewel (`ITEM_BOLT` 4/7, `ITEM_ARROWS` 4/15). */
 const AMMO_NUMBERS: ReadonlySet<number> = new Set([7, 15]);
 
+/**
+ * Ours (Season1): the common rings and pendants (group 13), which the server's Season1 Bless / Soul
+ * level up like gear (mu-season1-server `JewelryUpgrade.cs`); Life adds their option. Same list there.
+ */
+const JEWELRY_NUMBERS: ReadonlySet<number> = new Set([8, 9, 12, 13, 21, 22, 23, 24, 25, 26, 27, 28]);
+const isJewelry = (item: Item) => item.group === 13 && JEWELRY_NUMBERS.has(item.num);
+
 /** Gear that accepts a jewel: weapons, armour, wings, Cape of Lord (13, 30). */
 function isJewelTarget(item: Item): boolean {
   if (item.group <= 11) return !(item.group === 4 && AMMO_NUMBERS.has(item.num));
@@ -99,7 +106,8 @@ export function jewelTargetError(jewel: Item, target: Item, targetSlot: number):
     return t('item.takeItemOffFirst');
   }
 
-  if (!isJewelTarget(target)) return t('item.jewelNotUpgradable');
+  const jewelry = isJewelry(target) && (jewel.num === JEWEL.bless || jewel.num === JEWEL.soul || jewel.num === JEWEL.life);
+  if (!jewelry && !isJewelTarget(target)) return t('item.jewelNotUpgradable');
 
   const level = target.lvl ?? 0;
 
