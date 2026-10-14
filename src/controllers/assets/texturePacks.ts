@@ -39,6 +39,16 @@ const ACTIVE_KEY = 'mu_texture_pack';
 /** The id that means "the textures baked into the models". */
 export const ORIGINAL_PACK = '';
 const DEFAULT_PACK = 'upscaled-512';
+const DEFAULT_PACK_KEY = 'mu_season1_pack';
+
+/** Ours (Season1): the upscaled 512 pack, set once over any older choice; the player's later choice stays. */
+function initialPack(): string {
+  if (LocalStorage.load(DEFAULT_PACK_KEY) !== '1') {
+    LocalStorage.save(ACTIVE_KEY, DEFAULT_PACK);
+    LocalStorage.save(DEFAULT_PACK_KEY, '1');
+  }
+  return LocalStorage.load(ACTIVE_KEY) ?? DEFAULT_PACK;
+}
 
 const withTrailingSlash = (s: string) => (s.endsWith('/') ? s : `${s}/`);
 
@@ -59,8 +69,7 @@ export function packsBase(): string {
 
 class TexturePackStore {
   available: TexturePackInfo[] = [];
-  // Ours (Season1): the upscaled 512 pack unless the player chose otherwise.
-  activeId: string = LocalStorage.load(ACTIVE_KEY) ?? DEFAULT_PACK;
+  activeId: string = initialPack();
   /** False until the pack's own manifest has arrived. */
   loading = false;
 

@@ -478,7 +478,12 @@ export type GameOptions = {
   fidelityOverrides: FidelityOverrides;
   /** Ours: the Low quality preset was the last one applied, so leaving it restores what it turned off. */
   lowPresetApplied: boolean;
+  /** Ours (Season1): the graphics defaults below were applied once over an older save (`season1Graphics`). */
+  season1Graphics: number;
 };
+
+/** Ours (Season1): bump to apply the graphics defaults once more over every save. */
+export const SEASON1_GRAPHICS_VERSION = 1;
 
 export const TONE_MAPPER_MAX = 3;
 
@@ -632,11 +637,12 @@ const DEFAULTS: GameOptions = {
   dropSoundZen: false,
   effectLevel: 4,
   itemEffects: 2,
-  ambientParticles: true,
+  // Ours (Season1): off by default for frame rate (with weather, animated water and grass below).
+  ambientParticles: false,
   clouds: true,
-  weatherEffects: true,
-  animatedWater: true,
-  grassDensity: 5,
+  weatherEffects: false,
+  animatedWater: false,
+  grassDensity: 0,
   advancedEffects: true,
   renderDistance: 0,
   propBatching: true,
@@ -694,6 +700,7 @@ const DEFAULTS: GameOptions = {
   fidelity: FIDELITY_DEFAULT,
   fidelityOverrides: {},
   lowPresetApplied: false,
+  season1Graphics: SEASON1_GRAPHICS_VERSION,
 };
 
 /**
@@ -751,6 +758,19 @@ export function migrate(stored: Record<string, unknown>): boolean {
   return true;
 }
 
+const SEASON1_GRAPHICS = [
+  'lightingQuality', 'materialQuality', 'msaa', 'renderScale', 'fpsLimit', 'itemEffects', 'effectLevel', 'dynamicLights',
+  'grassDensity', 'weatherEffects', 'ambientParticles', 'animatedWater',
+] as const;
+
+/** Puts the Season1 graphics defaults over a save made before them, once; true when it did. */
+export function season1Graphics(stored: Record<string, unknown>): boolean {
+  if (stored.season1Graphics === SEASON1_GRAPHICS_VERSION) return false;
+  for (const key of SEASON1_GRAPHICS) stored[key] = DEFAULTS[key];
+  stored.season1Graphics = SEASON1_GRAPHICS_VERSION;
+  return true;
+}
+
 /** A migrated stored blob over the defaults, numbers clamped to `RANGES`. */
 export function optionsFrom(parsed: Record<string, unknown>): GameOptions {
   const loaded = {
@@ -781,7 +801,7 @@ function load(): GameOptions {
 
   try {
     const parsed = JSON.parse(stored) as Record<string, unknown>;
-    const migrated = migrate(parsed);
+    const migrated = [migrate(parsed), season1Graphics(parsed)].some(Boolean);
     const loaded = optionsFrom(parsed);
 
     if (migrated) LocalStorage.save(OPTIONS_KEY, JSON.stringify(loaded));

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { defaultGameOption, optionsFrom } from './gameOptions';
+import { defaultGameOption, optionsFrom, season1Graphics } from './gameOptions';
 import { CAMERA_FOV_DEG, CAMERA_FOV_MAX_DEG, CAMERA_FOV_MIN_DEG } from '../camera/recipes';
 import { RENDER_DISTANCE_MAX } from '../render/renderDistance';
 import { RENDER_SCALE_STEP_MAX } from '../render/renderScale';
@@ -39,5 +39,19 @@ describe('settings limits match their owners', () => {
       expect(defaultGameOption(key)).toBe(LOW_VITAL_DEFAULT_PERCENT);
       expect(range(key)).toEqual([LOW_VITAL_MIN_PERCENT, LOW_VITAL_MAX_PERCENT]);
     }
+  });
+});
+
+describe('the Season1 graphics defaults (ours)', () => {
+  it('go once over an older save and leave a later choice alone', () => {
+    const old: Record<string, unknown> = { msaa: 2, renderScale: 0, fpsLimit: 0, lightingQuality: 1, effectLevel: 0, itemEffects: 1, volume: 3 };
+    expect(season1Graphics(old)).toBe(true);
+    const loaded = optionsFrom(old);
+    expect([loaded.msaa, loaded.renderScale, loaded.fpsLimit, loaded.lightingQuality]).toEqual([0, 3, 3, 0]);
+    expect([loaded.effectLevel, loaded.itemEffects, loaded.volume]).toEqual([4, 2, 3]);
+
+    const later = { ...old, msaa: 2 };
+    expect(season1Graphics(later)).toBe(false);
+    expect(optionsFrom(later).msaa).toBe(2);
   });
 });

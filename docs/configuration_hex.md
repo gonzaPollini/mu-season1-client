@@ -16,12 +16,12 @@ Format version: **1**
 | 0 | 1 | Format version. Anything else means a different table. |
 | 1 | 1 | Number of flag bytes that follow (currently 9). |
 | 2 | 9 | The on/off settings, one bit each, first in bit 0 of the first byte. |
-| 11 | 1 | Number of value bytes that follow (currently 56). |
-| 12 | 56 | The numeric settings, one byte each, each stored as value + 128. |
-| 68 | 2 | Language, two ASCII letters (`65 73` is `es`). |
-| 70 | 2 | Texture pack digest, `0000` when the original textures are in use. |
+| 11 | 1 | Number of value bytes that follow (currently 57). |
+| 12 | 57 | The numeric settings, one byte each, each stored as value + 128. |
+| 69 | 2 | Language, two ASCII letters (`65 73` is `es`). |
+| 71 | 2 | Texture pack digest, `0000` when the original textures are in use. |
 
-Total: **72 bytes**, 144 hex characters.
+Total: **73 bytes**, 146 hex characters.
 
 ## On/off settings
 
@@ -147,17 +147,18 @@ Each is one byte; subtract 128 to get the value. Index 0 is the first byte after
 | 42 | `renderDistance` |
 | 43 | `renderScale` |
 | 44 | `renderingStyle` |
-| 45 | `shadeSteps` |
-| 46 | `sharpness` |
-| 47 | `stepsVolume` |
-| 48 | `styleStrength` |
-| 49 | `sunShafts` |
-| 50 | `toneMapper` |
-| 51 | `uiScale` |
-| 52 | `uiVolume` |
-| 53 | `upscale` |
-| 54 | `vignette` |
-| 55 | `volume` |
+| 45 | `season1Graphics` |
+| 46 | `shadeSteps` |
+| 47 | `sharpness` |
+| 48 | `stepsVolume` |
+| 49 | `styleStrength` |
+| 50 | `sunShafts` |
+| 51 | `toneMapper` |
+| 52 | `uiScale` |
+| 53 | `uiVolume` |
+| 54 | `upscale` |
+| 55 | `vignette` |
+| 56 | `volume` |
 
 ## Worked example
 

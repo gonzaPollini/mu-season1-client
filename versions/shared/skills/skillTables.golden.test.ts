@@ -5,6 +5,7 @@ import { Scene } from '@babylonjs/core/scene';
 import { Vector3 } from '@babylonjs/core/Maths/math.vector';
 import type { Entity } from '@/ecs/world';
 import { ENUM_WORLD } from '@/core/types';
+import { setGameOption } from '@/controllers/settings';
 import { stepClock, clearTimers } from '@/controllers/fx/core';
 import { LightSource } from '@/controllers/lighting/lightSource';
 import { SKILL_LIGHTS, lightAreaSkill, lightTargetedSkill } from '@/controllers/lighting/skills';
@@ -50,6 +51,9 @@ describe('skill tables golden', () => {
   const realRandom = Math.random;
 
   beforeAll(() => {
+    // Ours: recorded on the Enhanced tier; Season1 defaults to Classic, so pin it.
+    setGameOption('lightingQuality', 1);
+    setGameOption('materialQuality', 1);
     engine = new NullEngine();
     scene = new Scene(engine);
     vi.spyOn(LightSource, 'attach').mockImplementation(((_s: Scene, recipe: unknown, anchor: { travel?: { onArrive?: () => void } }) => {
