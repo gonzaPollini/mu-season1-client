@@ -5,7 +5,7 @@ import { itemIconKey, itemIconPackChain } from '@/controllers/assets/itemIconPac
 import { ITEM_ICON_FIT } from '@/controllers/interface/item_icons/itemIconFit';
 import { liveItemIcon, liveItemIconKey, spinLiveItemIcon } from '@/controllers/interface/item_icons/liveItemIcon';
 import { isJewel, itemDef, itemLevelLook } from '@/controllers/item_rules';
-import { opaqueFit } from './opaqueFit';
+import { opaqueBox, opaqueFit } from './opaqueFit';
 
 /**
  * `<img fetchpriority>` is not a React 18 prop (it arrives with React 19), so
@@ -37,9 +37,41 @@ function fitTransform(item: Item): string | undefined {
 
 /**
  * Ours (Season1): a jewel's turning model is framed smaller than its fitted still, so hovering
- * shrank it. Under the cursor it now turns blown up to the square (`Spin` with `fill`,
- * `opaqueFit.ts`): the same size as at rest, only turning.
+ * shrank it. Under the cursor it now turns at the height its still icon has, which is also its size
+ * when picked up (`Spin` with `fill`, `stillHeight`, `opaqueFit.ts`).
  */
+
+/** Ours: how tall a pack picture shows in its square once zoomed by its fit, as a share of the square. */
+const stillHeights = new Map<string, Promise<number | null>>();
+function stillHeight(url: string, zoom: number): Promise<number | null> {
+  const key = `${url}|${zoom}`;
+  let height = stillHeights.get(key);
+  if (!height) {
+    height = new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const context = canvas.getContext('2d');
+        context?.drawImage(img, 0, 0);
+        const data = context?.getImageData(0, 0, canvas.width, canvas.height);
+        const box = data && opaqueBox(data.data, data.width, data.height);
+        resolve(box ? (box.h * img.naturalHeight * zoom) / Math.max(img.naturalWidth, img.naturalHeight) : null);
+      };
+      img.onerror = () => resolve(null);
+      img.src = url;
+    });
+    stillHeights.set(key, height);
+  }
+  return height;
+}
+
+function fitZoom(item: Item): number {
+  const key = `${item.group}_${item.num}`;
+  const levelKey = itemLevelLook(item.group, item.num, item.lvl) ? `${key}_${item.lvl}` : key;
+  return ITEM_ICON_FIT[levelKey]?.[0] ?? 1;
+}
 
 function isJewelItem(item: Item): boolean {
   const def = itemDef(item.group, item.num);
@@ -53,7 +85,7 @@ const SPIN_STYLE = { position: 'absolute', inset: 0, width: '100%', height: '100
  * The item under the cursor turning on a canvas (`Select` in RenderObjectScreen,
  * ZzzInventory.cpp:8856-8859); the still picture shows until the first turned one is drawn.
  */
-const Spin = observer(function Spin({ item, still, fill = false }: { item: Item; still: ReactNode; fill?: boolean }) {
+const Spin = observer(function Spin({ item, still, fill }: { item: Item; still: ReactNode; fill?: string }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [ready, setReady] = useState(false);
   const [fit, setFit] = useState<string | null>(null);
@@ -62,9 +94,13 @@ const Spin = observer(function Spin({ item, still, fill = false }: { item: Item;
     const target = canvas.current;
     if (!target) return undefined;
     const stop = spinLiveItemIcon(item, target, () => {
-      // Ours: `fill` measures the first turned picture once and blows it up to the square.
+      // Ours: `fill` (the still's pack picture) brings the first turned picture to the still's height.
       const image = fill ? target.getContext('2d')?.getImageData(0, 0, target.width, target.height) : undefined;
-      if (image) setFit(opaqueFit(image.data, image.width, image.height));
+      if (image && fill) {
+        void stillHeight(fill, fitZoom(item)).then(height => {
+          if (height) setFit(opaqueFit(image.data, image.width, image.height, height));
+        });
+      }
       setReady(true);
     });
     return () => {
@@ -105,7 +141,7 @@ export const ItemIcon = memo(
     const chain = itemIconPackChain(item);
     const jewel = isJewelItem(item);
     const still = stillIcon(item, chain, fallbackStep, setFallbackStep);
-    return spin ? <Spin item={item} still={still} fill={jewel} /> : still;
+    return spin ? <Spin item={item} still={still} fill={jewel && fallbackStep < chain.length ? chain[fallbackStep] : undefined} /> : still;
   })
 );
 
