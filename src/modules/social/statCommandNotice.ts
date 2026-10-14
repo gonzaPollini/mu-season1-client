@@ -4,13 +4,15 @@ import { Hero } from '../hero';
 import { addNotification } from '../chat/notify';
 
 /**
- * Ours: OpenMU answers `/addstr 100` (and `/add str 100`) without a line of text, so the client
+ * Ours: OpenMU answers `/addstr 100` (and `/add str 100`, `/fuerza 100`) without a line of text, so the client
  * says it: once the hero's free points drop after such a command, how many went into which stat.
  */
 
 type Stat = 'str' | 'agi' | 'vit' | 'ene' | 'cmd';
 
-const COMMAND = /^\/add\s*(str|agi|vit|ene|cmd)\s+\d+/i;
+const COMMAND = /^\/(?:add\s*(str|agi|vit|ene|cmd)|(fuerza|agilidad|vitalidad|energia|comando))\s+\d+/i;
+/** The server's Spanish aliases (mu-season1-server `StatChatCommands.cs`). */
+const ALIAS: Record<string, Stat> = { fuerza: 'str', agilidad: 'agi', vitalidad: 'vit', energia: 'ene', comando: 'cmd' };
 /** The server's answer is a warp for more than one point: give it time. */
 const WAIT_MS = 15000;
 
@@ -41,5 +43,6 @@ function report(): void {
 export function watchStatCommand(text: string): void {
   const match = COMMAND.exec(text.trim());
   if (!match) return;
-  pending = { stat: match[1].toLowerCase() as Stat, before: Hero.points, until: performance.now() + WAIT_MS };
+  const stat = match[1] ? (match[1].toLowerCase() as Stat) : ALIAS[match[2].toLowerCase()];
+  pending = { stat, before: Hero.points, until: performance.now() + WAIT_MS };
 }
