@@ -54,9 +54,9 @@ const MARGIN = 0.92;
  * the reference; Jewel of Chaos is a thin model the original draws at 0.002.
  */
 const ZOOM_OVERRIDE: Record<string, number> = {
-  '12_15': 3.7, '14_13': 3, '14_14': 3, '14_16': 3, '14_22': 3,
+  '12_15': 3.5, '14_13': 3, '14_14': 3, '14_16': 3, '14_22': 3,
   // The skill orbs, drawn at 0.002 by the original like Chaos.
-  ...Object.fromEntries([7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 44, 45, 46, 47].map(n => [`12_${n}`, 4])),
+  ...Object.fromEntries([7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 44, 45, 46, 47].map(n => [`12_${n}`, 3.7])),
 };
 /** Under this the zoom is not worth an entry. */
 const MIN_ZOOM = 1.05;
