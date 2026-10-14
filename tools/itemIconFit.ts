@@ -49,6 +49,12 @@ const SQUARE = 20;
 const SCALE_TO_ZOOM = 180;
 /** Leaves the item off the square's border when the cap binds. */
 const MARGIN = 0.92;
+/**
+ * Ours (Season1): scales that stand in for the original's. Jewel of Chaos is a thin model the original
+ * draws at 0.002, so it came out at less than half the height of the other jewels; this one gives it
+ * the height of a Jewel of Bless.
+ */
+const SCALE_OVERRIDE: Record<string, number> = { '12_15': 0.0046 };
 /** Under this the zoom is not worth an entry. */
 const MIN_ZOOM = 1.05;
 
@@ -121,7 +127,7 @@ for (const name of readdirSync(ITEMS_DIR)) {
 const fits = new Map<string, Box>();
 
 for (const [key, { file, group, num }] of candidates) {
-  const box = fitOf(group, num, file);
+  const box = fitOf(group, num, file, SCALE_OVERRIDE[key]);
   if (!box || box.zoom < MIN_ZOOM) continue;
   fits.set(key, box);
 }
