@@ -68,7 +68,7 @@ for (const layer of CAMERA_LAYERS) {
  */
 const SEASON1_LEVEL = DISTANCE_BY_LEVEL.indexOf(1400);
 /** Ours (Season1): tilted this much off the original's frame (positive = toward the horizon). */
-const SEASON1_PITCH_DEG = 5;
+const SEASON1_PITCH_DEG = 10;
 let CAMERA_LOCKED = true;
 
 /** Test seam: the ported camera's own tests drive it unlocked. */
