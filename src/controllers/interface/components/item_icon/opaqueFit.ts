@@ -7,7 +7,7 @@ export function opaqueFit(
   pixels: Uint8ClampedArray,
   width: number,
   height: number,
-  margin = 0.9
+  margin = 0.95
 ): string | null {
   let minX = width;
   let minY = height;

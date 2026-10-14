@@ -16,7 +16,7 @@ const picture = (
 describe('opaqueFit (ours)', () => {
   it('blows a small centred model up to the box, less the turning margin', () => {
     expect(opaqueFit(picture(100, 100, [40, 40, 59, 59]), 100, 100)).toBe(
-      'scale(4.5) translate(0%, 0%)'
+      'scale(4.75) translate(0%, 0%)'
     );
   });
 

@@ -118,11 +118,11 @@ export function liveItemSpinSource(scene: Scene): LiveItemSpinSource {
     let image: ImageData | null = null;
     return iconShots(scene).spin(job, pixels => {
       // The spin hands the same buffer every frame: one ImageData over it.
-      if (!image) {
-        image = new ImageData(pixels, width, height);
-        ready();
-      }
+      const first = !image;
+      image ??= new ImageData(pixels, width, height);
       context.putImageData(image, 0, 0);
+      // Ours: after the first picture is on the canvas, so `ready` can measure it (item_icon `Spin`).
+      if (first) ready();
     });
   };
 }
