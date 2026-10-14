@@ -60,8 +60,21 @@ for (const layer of CAMERA_LAYERS) {
   for (const world of layer.worlds) byWorld.set(world, layer);
 }
 
+/**
+ * Ours (Season1): the camera sits one step out from the original's 1200, never closer on a map the
+ * original pins nearer, and the player cannot zoom, turn or tilt it (`CAMERA_LOCKED`; the camera's
+ * readme.md, `setCameraLocked` for tests).
+ */
+const SEASON1_LEVEL = DISTANCE_BY_LEVEL.indexOf(1300);
+let CAMERA_LOCKED = true;
+
+/** Test seam: the ported camera's own tests drive it unlocked. */
+export function setCameraLocked(locked: boolean): void {
+  CAMERA_LOCKED = locked;
+}
+
 /** `g_shCameraLevel`, 0..4. */
-let level = DEFAULT_CAMERA_LEVEL;
+let level = SEASON1_LEVEL;
 
 /** `CameraAngle[2]`, degrees. */
 let headingDeg = DEFAULT_HEADING_DEG;
@@ -73,10 +86,10 @@ let headingDeg = DEFAULT_HEADING_DEG;
 let pitchOffsetDeg = 0;
 
 /** `CameraDistance`, original units, eased toward the level's target. */
-let distance = DISTANCE_BY_LEVEL[DEFAULT_CAMERA_LEVEL];
+let distance = DISTANCE_BY_LEVEL[SEASON1_LEVEL];
 
 /** The level the current map opened on, which a reset goes back to. */
-let openingLevel = DEFAULT_CAMERA_LEVEL;
+let openingLevel = SEASON1_LEVEL;
 
 /** `cameraKeepsView`: the view is zoomed, turned or tilted off the map's opening frame. */
 export const cameraView = observable({ moved: false });
@@ -155,7 +168,7 @@ let classic: {
 function openingLevelFor(world: ENUM_WORLD): number {
   const pinned = byWorld.get(world)?.distance;
 
-  if (pinned === undefined) return DEFAULT_CAMERA_LEVEL;
+  if (pinned === undefined) return SEASON1_LEVEL;
 
   let best = DEFAULT_CAMERA_LEVEL;
 
@@ -167,7 +180,7 @@ function openingLevelFor(world: ENUM_WORLD): number {
     if (closer) best = i;
   }
 
-  return best;
+  return Math.max(best, SEASON1_LEVEL);
 }
 
 /**
@@ -186,7 +199,7 @@ export function isFirstPerson(): boolean {
  * it in third person too. The World-state half of the gate is the caller's.
  */
 function canMouseLook(): boolean {
-  if (!GameOptions.wsadMovement) return false;
+  if (CAMERA_LOCKED || !GameOptions.wsadMovement) return false;
 
   return GameOptions.thirdPersonMouseLook
     ? GameOptions.cameraControl
@@ -239,7 +252,7 @@ export function installCameraControl(
   window.addEventListener(
     'wheel',
     ev => {
-      if (!ev.ctrlKey || ev.target !== canvas) return;
+      if (CAMERA_LOCKED || !ev.ctrlKey || ev.target !== canvas) return;
       if (!GameOptions.cameraControl || !isActive()) return;
 
       if (ev.deltaY < 0) level--;
@@ -259,7 +272,7 @@ export function installCameraControl(
 
   if (canvas) {
     canvas.addEventListener('pointerdown', ev => {
-      if (ev.button !== 1 || !ev.ctrlKey) return;
+      if (CAMERA_LOCKED || ev.button !== 1 || !ev.ctrlKey) return;
       if (!GameOptions.cameraControl || !isActive()) return;
 
       dragPointer = ev.pointerId;
@@ -398,8 +411,8 @@ export function updateGameCamera(
   // :305-311), dt-scaled.
   const step = ROTATE_STEP_DEG * REFERENCE_FPS * dt;
 
-  if (pressedKeys.has('Insert')) headingDeg += step;
-  if (pressedKeys.has('Delete')) headingDeg -= step;
+  if (!CAMERA_LOCKED && pressedKeys.has('Insert')) headingDeg += step;
+  if (!CAMERA_LOCKED && pressedKeys.has('Delete')) headingDeg -= step;
   headingDeg = ((headingDeg % 360) + 360) % 360 - 360;
   syncMoved();
 

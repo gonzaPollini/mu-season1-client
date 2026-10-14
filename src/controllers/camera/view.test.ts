@@ -8,7 +8,9 @@ import { DEFAULT_HEADING_DEG, ROTATE_STEP_DEG } from './recipes';
 // The wheel listener goes on `window`; no canvas, so no drag or pointer lock.
 vi.stubGlobal('window', { addEventListener: () => {} });
 
-const { cameraView, installCameraControl, resetCamera, updateGameCamera } = await import('.');
+const { cameraView, installCameraControl, resetCamera, setCameraLocked, updateGameCamera } = await import('.');
+// The ported camera is driven unlocked here; the Season1 lock has its own case at the end.
+setCameraLocked(false);
 
 const RAD = Math.PI / 180;
 const camera = {
@@ -61,5 +63,22 @@ describe('the camera view across a warp', () => {
     EventBus.emit('warpCompleted', { map: ENUM_WORLD.WD_2DEVIAS });
     frame();
     expect(camera.alpha).toBeCloseTo(DEFAULT_HEADING_DEG * RAD);
+  });
+});
+
+// Ours (Season1): one step out from the original's 1200, and the player cannot move it.
+describe('the Season1 camera', () => {
+  afterEach(() => {
+    setCameraLocked(false);
+    resetCamera();
+    frame();
+  });
+
+  it('opens at 1300 and ignores Insert / Delete while locked', () => {
+    setCameraLocked(true);
+    resetCamera();
+    for (let i = 0; i < 100; i++) frame(['Insert']);
+    expect(camera.alpha).toBeCloseTo(DEFAULT_HEADING_DEG * RAD);
+    expect(cameraView.moved).toBe(false);
   });
 });

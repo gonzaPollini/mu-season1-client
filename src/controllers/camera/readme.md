@@ -67,3 +67,8 @@ name plates, effect anchors and picking still work. Only meshes it hid are shown
 ## Tests
 - `view.test.ts`: a warp keeps the turn on Enhanced and resets it on Classic and onto a pinned
   map; the reset goes back to the opening frame.
+
+## Season1 (ours)
+The camera opens one step out from the original (1300 instead of 1200), never closer on a map the
+original pins nearer, and is locked: no Ctrl+wheel zoom, no Insert/Delete or drag turn, no tilt, no
+mouse look (`SEASON1_LEVEL`, `CAMERA_LOCKED` in `index.ts`; `setCameraLocked` is the test seam).
