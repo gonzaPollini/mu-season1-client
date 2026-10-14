@@ -1,5 +1,6 @@
 import './style.less';
 import { useEffect, useState } from 'react';
+import { runInAction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import {
   assetDownload,
@@ -42,7 +43,7 @@ function currentGroup(): AssetGroup | undefined {
   let bytes = 0;
   for (const group of assetDownload.groups) {
     if (!assetDownload.isChosen(group)) continue;
-    bytes += group.bytes;
+    bytes += group.bundle?.bytes ?? group.bytes;
     if (assetDownload.received < bytes) return group;
   }
   return undefined;
@@ -89,13 +90,21 @@ export const AutoDownload = observer(() => {
     })();
   }, [entered]);
 
+  const screenUp = entered && phase === 'essential' && !skipped && assetDownload.running;
+  // While the screen is up the game is paused (boot's render loop), so the download is not starved.
+  useEffect(() => {
+    runInAction(() => {
+      assetDownload.blocking = screenUp;
+    });
+  }, [screenUp]);
+
   if (!entered || hidden || !(assetDownload.running || showDone)) return null;
 
   const percent = Math.floor(assetDownload.progress * 100);
   const wire = wireAmounts();
   const amount = `${percent}% · ${mb(wire.got)} / ${mb(wire.total)} MB`;
 
-  if (phase === 'essential' && !skipped && assetDownload.running) {
+  if (screenUp) {
     const left = Math.max(0, wire.total - wire.got);
     return (
       <div className="auto-download-screen" style={{ backgroundImage: `url(${BACKDROP_ART})` }}>

@@ -240,3 +240,11 @@ version and misses or misnames many types. `monsterDisplayName()` in
 Quest (200 x 744 B), Dialog (200 x 1024 B), QuestProgress (41 B records), QuestWords (`{int index;
 short len}` + text) and NPCDialogue (88 B records). `QuestAttributeFile` is 38 bytes of header,
 16 class acts of 24 bytes at 38, then 16 requests of 20 bytes at 424 (padding at 422).
+
+## Bundles (ours)
+`tools/assetBundles.ts` packs every pre-download group into one file (`dist/bundles/*.bin`) and
+writes it into the index as `bundle`. `startDownload` fetches a group's bundle when it has one
+(`fetchBundle`: streamed with progress and stored whole, plus a `./__mu-bundle/<group>` marker with
+the build id and each file's key, offset and length). The cache worker (`public/sw.js`) answers a
+file it does not hold on its own by slicing it out of the bundle. A group whose bundle fails falls
+back to its files. The essentials went from 13 000 requests to 8.

@@ -62,7 +62,7 @@ import { fpsLimitForStep, framePacer } from '../controllers/render/fpsLimit';
 import { csmCacheStats } from '@/controllers/render/shadows';
 import { refreshServerList } from '../modules/servers/serverList';
 import { checkDirectLogin } from '../modules/servers/directLogin';
-import { ensureCacheWorker } from '../controllers/assets/assetDownload';
+import { assetDownload, ensureCacheWorker } from '../controllers/assets/assetDownload';
 import { startBuildCheck } from './buildCheck';
 import { sceneCovered } from '../controllers/render/sceneCover';
 import { installBackgroundTick, noteDrawnFrame } from './backgroundTick';
@@ -341,6 +341,9 @@ engine.runRenderLoop(() => {
   noteDrawnFrame(now);
   // The FPS limit: a skipped animation frame runs nothing; the next drawn one gets the whole dt.
   if (!framePacer.due(now, fpsLimitForStep(GameOptions.fpsLimit))) return;
+  // Ours: under the first-run download screen nothing is drawn or stepped, so the download has the
+  // main thread to itself; the scene catches up, from the cache, once the screen goes.
+  if (assetDownload.blocking) return;
   runFrame(now, true);
 });
 

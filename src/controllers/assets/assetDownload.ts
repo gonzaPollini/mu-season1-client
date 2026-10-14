@@ -26,6 +26,8 @@ export type AssetGroup = {
   transfer: number;
   /** `[directory, [[fileName, bytes], ...]]` - flattened by `urlsOf`. */
   dirs: [string, [string, number][]][];
+  /** Ours: the whole group as one file (`tools/assetBundles.ts`), unpacked by `fetchBundle`. */
+  bundle?: { url: string; bytes: number };
 };
 
 type AssetsIndex = {
@@ -70,6 +72,8 @@ class AssetDownloadStore {
   cached: Set<string> = new Set();
   error: string | null = null;
   done = false;
+  /** Ours: the first-run download screen covers everything (`hud/auto_download`); boot pauses the game. */
+  blocking = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -250,16 +254,29 @@ export async function startDownload(extraUrls: string[] = []): Promise<void> {
     await ensureCacheWorker();
     const cache = await caches.open('mu-assets-v1');
 
+    // Ours: a group with a bundle comes down as one file; the rest file by file. A bundle holds the
+    // keys this deployment reads (sidecars or not), so it is only used when the shapes agree.
+    const bundled: AssetGroup[] = [];
     const wanted: { url: string; bytes: number }[] = [];
     for (const group of index.groups) {
       if (!assetDownload.isChosen(group)) continue;
-      for (const file of urlsOf(group)) wanted.push(file);
+      if (group.bundle && sidecars === index.sidecars) bundled.push(group);
+      else for (const file of urlsOf(group)) wanted.push(file);
     }
     for (const url of extraUrls) wanted.push({ url, bytes: 0 });
 
     runInAction(() => {
-      assetDownload.expected = wanted.reduce((n, f) => n + f.bytes, 0) || 1;
+      assetDownload.expected =
+        wanted.reduce((n, f) => n + f.bytes, 0) + bundled.reduce((n, g) => n + g.bundle!.bytes, 0) || 1;
     });
+
+    for (const group of bundled) {
+      if (cancelled) break;
+      if (!(await fetchBundle(group, cache))) {
+        // The bundle did not come: this group falls back to its files.
+        for (const file of urlsOf(group)) wanted.push(file);
+      }
+    }
 
     let next = 0;
     const worker = async () => {
@@ -317,5 +334,81 @@ export async function startDownload(extraUrls: string[] = []): Promise<void> {
     runInAction(() => {
       assetDownload.running = false;
     });
+  }
+}
+
+// ------------------------------------------------------------ bundles (ours)
+
+const BUNDLE_MARKER = './__mu-bundle/';
+
+function addReceived(bytes: number): void {
+  runInAction(() => {
+    assetDownload.received += bytes;
+    assetDownload.progress = Math.min(1, assetDownload.received / assetDownload.expected);
+  });
+}
+
+/**
+ * One group's bundle (`tools/assetBundles.ts`), streamed with progress and stored whole: one cache
+ * entry for the bundle (keyed by its URL) and a marker (`./__mu-bundle/<group>`, JSON: the build,
+ * the bundle key and each file's key, offset and length). The cache worker answers a file it does
+ * not hold on its own by slicing it out of the bundle (`public/sw.js`), so the thousands of
+ * per-file writes are gone. A marker from another build is a miss; the worker drops both on a new
+ * build. False when the bundle could not be used; the caller then fetches the group file by file.
+ */
+async function fetchBundle(group: AssetGroup, cache: Cache): Promise<boolean> {
+  const { url, bytes: size } = group.bundle!;
+  const build = typeof BUILD_ID === 'string' ? BUILD_ID : 'dev';
+  const marker = BUNDLE_MARKER + group.id;
+
+  const stored = await cache.match(marker);
+  if (stored && ((await stored.json().catch(() => null)) as { build?: string } | null)?.build === build) {
+    addReceived(size);
+    return true;
+  }
+
+  let got = 0;
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok || !res.body) return false;
+
+    const data = new Uint8Array(size);
+    const reader = res.body.getReader();
+    for (;;) {
+      if (cancelled) {
+        await reader.cancel();
+        addReceived(-got);
+        return true;
+      }
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (got + value.length > size) throw new Error(`${url} is larger than the index says`);
+      data.set(value, got);
+      got += value.length;
+      addReceived(value.length);
+    }
+    if (got !== size) throw new Error(`${url} ended at ${got} of ${size} bytes`);
+
+    const view = new DataView(data.buffer);
+    if (String.fromCharCode(...data.subarray(0, 4)) !== 'MUB1') throw new Error(`${url} is not a bundle`);
+    const headerLength = view.getUint32(4, true);
+    const header = JSON.parse(new TextDecoder().decode(data.subarray(8, 8 + headerLength))) as [string, number][];
+
+    let at = 8 + headerLength;
+    const files = header.map(([key, length]) => {
+      const entry = [key, at, length] as const;
+      at += length;
+      return entry;
+    });
+
+    await cache.put(url, new Response(data, { headers: { 'Content-Type': 'application/octet-stream' } }));
+    await cache.put(marker, new Response(JSON.stringify({ build, bundle: url, files })));
+    const worker = await ensureCacheWorker();
+    if (worker) await ask(worker, { type: 'mu-bundles-changed' });
+    return true;
+  } catch (e) {
+    console.warn('[assetDownload] bundle failed, falling back to files:', (e as Error).message);
+    addReceived(-got);
+    return false;
   }
 }

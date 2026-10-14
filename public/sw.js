@@ -72,6 +72,50 @@ async function dropOtherBuilds() {
   await meta.put(BUILD_KEY, new Response(BUILD));
 }
 
+// ---- bundles (ours): files the page stored as one bundle (assetDownload.ts `fetchBundle`) ----
+
+const BUNDLE_MARKERS = '/__mu-bundle/';
+const TYPES = {
+  webp: 'image/webp', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg',
+  ogg: 'audio/ogg', mp3: 'audio/mpeg', wav: 'audio/wav', json: 'application/json',
+};
+const typeOf = path => TYPES[path.split('.').pop().toLowerCase()] || 'application/octet-stream';
+
+/** path -> [bundle key, offset, length], from every marker; rebuilt when the page stores a new one. */
+let bundleFiles = null;
+/** bundle key -> its Blob (disk-backed: a slice reads only its own bytes). */
+const bundleBlobs = new Map();
+
+const pathOf = key => new URL(key, self.location.origin).pathname;
+
+async function loadBundleIndex(cache) {
+  const map = new Map();
+  for (const request of await cache.keys()) {
+    if (!new URL(request.url).pathname.startsWith(BUNDLE_MARKERS)) continue;
+    const marker = await (await cache.match(request)).json().catch(() => null);
+    if (!marker || marker.build !== BUILD) continue;
+    for (const [key, offset, length] of marker.files) map.set(pathOf(key), [marker.bundle, offset, length]);
+  }
+  return map;
+}
+
+async function fromBundle(cache, path) {
+  bundleFiles ??= await loadBundleIndex(cache);
+  const hit = bundleFiles.get(path);
+  if (!hit) return null;
+  const [bundle, offset, length] = hit;
+  let blob = bundleBlobs.get(bundle);
+  if (!blob) {
+    const stored = await cache.match(bundle);
+    if (!stored) return null;
+    blob = await stored.blob();
+    bundleBlobs.set(bundle, blob);
+  }
+  return new Response(blob.slice(offset, offset + length), {
+    headers: { 'Content-Type': typeOf(path), 'Content-Length': String(length) },
+  });
+}
+
 function isAsset(url) {
   return url.origin === self.location.origin && ASSET_PREFIXES.some(p => url.pathname.startsWith(p));
 }
@@ -134,7 +178,7 @@ self.addEventListener('fetch', event => {
       const cache = await caches.open(CACHE);
       // Ranged requests never match a stored full response, so look the plain
       // URL up by hand rather than passing `request`.
-      const cached = await cache.match(url.pathname + url.search);
+      const cached = (await cache.match(url.pathname + url.search)) || (await fromBundle(cache, url.pathname));
 
       if (cached) {
         const range = request.headers.get('range');
@@ -164,13 +208,24 @@ self.addEventListener('message', event => {
     event.waitUntil(
       (async () => {
         const cache = await caches.open(CACHE);
-        const have = await Promise.all(data.urls.map(u => cache.match(u).then(Boolean)));
+        bundleFiles = await loadBundleIndex(cache);
+        const have = await Promise.all(
+          data.urls.map(u => cache.match(u).then(hit => Boolean(hit) || bundleFiles.has(pathOf(u))))
+        );
         reply({ have });
       })()
     );
   }
 
+  if (data.type === 'mu-bundles-changed') {
+    bundleFiles = null;
+    bundleBlobs.clear();
+    reply({ ok: true });
+  }
+
   if (data.type === 'mu-cache-clear') {
+    bundleFiles = null;
+    bundleBlobs.clear();
     event.waitUntil(caches.delete(CACHE).then(ok => reply({ ok })));
   }
 });
