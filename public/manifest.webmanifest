@@ -1,6 +1,6 @@
 {
-  "name": "OpenMUCB",
-  "short_name": "OpenMUCB",
+  "name": "ARGONMUONLINE",
+  "short_name": "ARGONMUONLINE",
   "description": "MU Online, played in the browser.",
   "start_url": "./",
   "scope": "./",
