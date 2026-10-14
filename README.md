@@ -263,5 +263,5 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 - (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.tsx`: index.test.tsx, index.tsx
-  - `.ts`: itemIconFit.ts, itemIconFit.ts
+  - `.ts`: itemIconPack.test.ts, itemIconPack.ts, commonJewelry.ts, index.ts, jewelUpgrade.ts
+  - `.tsx`: index.tsx
