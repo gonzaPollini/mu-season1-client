@@ -66,7 +66,7 @@ describe('the camera view across a warp', () => {
   });
 });
 
-// Ours (Season1): two steps out from the original's 1200, a little more overhead, and fixed.
+// Ours (Season1): two steps out from the original's 1200, tilted a little toward the horizon, and fixed.
 describe('the Season1 camera', () => {
   afterEach(() => {
     setCameraLocked(false);

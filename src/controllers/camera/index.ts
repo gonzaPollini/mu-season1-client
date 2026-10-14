@@ -61,14 +61,14 @@ for (const layer of CAMERA_LAYERS) {
 }
 
 /**
- * Ours (Season1): the camera sits two steps out from the original's 1200, tilted a little further
- * down (`SEASON1_PITCH_DEG`), never closer on a map the
+ * Ours (Season1): the camera sits two steps out from the original's 1200, tilted a little toward
+ * the horizon (`SEASON1_PITCH_DEG`), never closer on a map the
  * original pins nearer, and the player cannot zoom, turn or tilt it (`CAMERA_LOCKED`; the camera's
  * readme.md, `setCameraLocked` for tests).
  */
 const SEASON1_LEVEL = DISTANCE_BY_LEVEL.indexOf(1400);
-/** Ours (Season1): tilted this much further down than the original's frame (negative = more overhead). */
-const SEASON1_PITCH_DEG = -5;
+/** Ours (Season1): tilted this much off the original's frame (positive = toward the horizon). */
+const SEASON1_PITCH_DEG = 5;
 let CAMERA_LOCKED = true;
 
 /** Test seam: the ported camera's own tests drive it unlocked. */
