@@ -260,10 +260,7 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 ### 2026-10-14
 
 **Commits incluidos:**
-- f6833bad7 Ship the music as Ogg Opus at 48 kbps
-- 2dfc0f875 Ship the cloak and robe bitmaps in the build
+- 48281e5dd Leaving the Low preset restores what it turned off, even after a tweak
 
 **Archivos modificados:**
-  - `.json`: package.json
-  - `.ts`: musicOpus.ts
-  - `.md`: readme.md
+  - `.ts`: gameOptions.ts, presets.test.ts, presets.ts
