@@ -1,6 +1,6 @@
 import type { Item } from '../../ecs/world';
 import { hasItemIconFile, type Variant } from './itemIconFiles';
-import { itemLevelLook } from '@/controllers/item_rules';
+import { isCommonJewelry, itemLevelLook } from '@/controllers/item_rules';
 
 /**
  * The pre-rendered item icon pack (`public/items/item_<group>_<num>_<tint>[_e|_a].png`),
@@ -36,6 +36,12 @@ export function itemIconPackChain(item: Item): string[] {
   const look = itemLevelLook(group, num, item.lvl);
   const tint = itemIconTint(item.lvl ?? 0);
   const variant: Variant = item.isExcellent ? '_e' : item.isAncient ? '_a' : '';
+
+  // Ours (Season1): a ring or pendant past the original's +4 has no picture at its tint; the +0 one
+  // reads bright, so it is drawn from the model instead (empty chain), at its real tint.
+  if (tint !== 0 && isCommonJewelry(group, num) && !hasItemIconFile(group, num, tint, variant) && !hasItemIconFile(group, num, tint, '')) {
+    return look ? [`/items/${look.icon}.${ICON_EXT}`] : [];
+  }
 
   const candidates: [number, Variant][] = [[tint, variant]];
   if (tint !== 0) candidates.push([0, variant]);

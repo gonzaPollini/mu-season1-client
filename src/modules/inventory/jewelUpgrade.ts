@@ -1,6 +1,7 @@
 import type { Item } from '../../ecs/world';
 import { InventoryConstants } from '@/core/inventoryConstants';
 import { t } from '../../i18n';
+import { isCommonJewelry } from '@/controllers/item_rules/commonJewelry';
 
 /**
  * Item upgrading with jewels: pick a jewel, click it onto an item
@@ -79,12 +80,8 @@ const WING_NUMBERS: ReadonlySet<number> = new Set([
 /** Ammunition never takes a jewel (`ITEM_BOLT` 4/7, `ITEM_ARROWS` 4/15). */
 const AMMO_NUMBERS: ReadonlySet<number> = new Set([7, 15]);
 
-/**
- * Ours (Season1): the common rings and pendants (group 13), which the server's Season1 Bless / Soul
- * level up like gear (mu-season1-server `JewelryUpgrade.cs`); Life adds their option. Same list there.
- */
-const JEWELRY_NUMBERS: ReadonlySet<number> = new Set([8, 9, 12, 13, 21, 22, 23, 24, 25, 26, 27, 28]);
-const isJewelry = (item: Item) => item.group === 13 && JEWELRY_NUMBERS.has(item.num);
+/** Ours (Season1): the common rings and pendants, which the Season1 server levels up like gear. */
+const isJewelry = (item: Item) => isCommonJewelry(item.group, item.num);
 
 /** Gear that accepts a jewel: weapons, armour, wings, Cape of Lord (13, 30). */
 function isJewelTarget(item: Item): boolean {

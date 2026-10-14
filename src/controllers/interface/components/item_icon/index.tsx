@@ -4,7 +4,7 @@ import type { Item } from '@/ecs/world';
 import { itemIconKey, itemIconPackChain } from '@/controllers/assets/itemIconPack';
 import { ITEM_ICON_FIT } from '@/controllers/interface/item_icons/itemIconFit';
 import { liveItemIcon, liveItemIconKey, spinLiveItemIcon } from '@/controllers/interface/item_icons/liveItemIcon';
-import { isJewel, itemDef, itemLevelLook } from '@/controllers/item_rules';
+import { isCommonJewelry, isJewel, itemDef, itemLevelLook } from '@/controllers/item_rules';
 import { opaqueBox, opaqueFit } from './opaqueFit';
 
 /**
@@ -76,9 +76,10 @@ function fitZoom(item: Item): number {
 /** Ours: the skill orbs (group 12), which keep their size turning too. */
 const ORB_NUMBERS: ReadonlySet<number> = new Set([7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 44, 45, 46, 47]);
 
-/** The items that turn at their resting size under the cursor: jewels and orbs. */
+/** The items that turn at their resting size under the cursor: jewels, orbs, rings and pendants. */
 function isJewelItem(item: Item): boolean {
   if (item.group === 12 && ORB_NUMBERS.has(item.num)) return true;
+  if (isCommonJewelry(item.group, item.num)) return true;
   const def = itemDef(item.group, item.num);
   return !!def && isJewel(def);
 }
