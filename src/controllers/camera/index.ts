@@ -61,11 +61,14 @@ for (const layer of CAMERA_LAYERS) {
 }
 
 /**
- * Ours (Season1): the camera sits one step out from the original's 1200, never closer on a map the
+ * Ours (Season1): the camera sits two steps out from the original's 1200, tilted a little further
+ * down (`SEASON1_PITCH_DEG`), never closer on a map the
  * original pins nearer, and the player cannot zoom, turn or tilt it (`CAMERA_LOCKED`; the camera's
  * readme.md, `setCameraLocked` for tests).
  */
-const SEASON1_LEVEL = DISTANCE_BY_LEVEL.indexOf(1300);
+const SEASON1_LEVEL = DISTANCE_BY_LEVEL.indexOf(1400);
+/** Ours (Season1): tilted this much further down than the original's frame (negative = more overhead). */
+const SEASON1_PITCH_DEG = -5;
 let CAMERA_LOCKED = true;
 
 /** Test seam: the ported camera's own tests drive it unlocked. */
@@ -83,7 +86,7 @@ let headingDeg = DEFAULT_HEADING_DEG;
  * Drag pitch, degrees added to the ported frame's tilt. Zero is the
  * original's fixed pitch; positive looks toward the horizon.
  */
-let pitchOffsetDeg = 0;
+let pitchOffsetDeg = SEASON1_PITCH_DEG;
 
 /** `CameraDistance`, original units, eased toward the level's target. */
 let distance = DISTANCE_BY_LEVEL[SEASON1_LEVEL];
@@ -98,7 +101,7 @@ export const cameraView = observable({ moved: false });
 export function resetCamera(): void {
   level = openingLevel;
   headingDeg = DEFAULT_HEADING_DEG;
-  pitchOffsetDeg = 0;
+  pitchOffsetDeg = SEASON1_PITCH_DEG;
 }
 
 function syncMoved(): void {
@@ -106,7 +109,7 @@ function syncMoved(): void {
   const moved =
     GameOptions.cameraControl &&
     isOn('cameraKeepsView') &&
-    (level !== openingLevel || Math.abs(pitchOffsetDeg) > 0.5 || turn > 0.5);
+    (level !== openingLevel || Math.abs(pitchOffsetDeg - SEASON1_PITCH_DEG) > 0.5 || turn > 0.5);
   if (moved !== cameraView.moved) runInAction(() => (cameraView.moved = moved));
 }
 

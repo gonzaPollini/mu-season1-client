@@ -66,7 +66,7 @@ describe('the camera view across a warp', () => {
   });
 });
 
-// Ours (Season1): one step out from the original's 1200, and the player cannot move it.
+// Ours (Season1): two steps out from the original's 1200, a little more overhead, and fixed.
 describe('the Season1 camera', () => {
   afterEach(() => {
     setCameraLocked(false);
@@ -74,7 +74,7 @@ describe('the Season1 camera', () => {
     frame();
   });
 
-  it('opens at 1300 and ignores Insert / Delete while locked', () => {
+  it('opens at its Season1 frame and ignores Insert / Delete while locked', () => {
     setCameraLocked(true);
     resetCamera();
     for (let i = 0; i < 100; i++) frame(['Insert']);
