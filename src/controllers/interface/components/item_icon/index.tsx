@@ -1,10 +1,17 @@
 import { memo, useEffect, useRef, useState, type ReactNode } from 'react';
 import { observer } from 'mobx-react-lite';
 import type { Item } from '@/ecs/world';
-import { itemIconKey, itemIconPackChain } from '@/controllers/assets/itemIconPack';
+import {
+  itemIconKey,
+  itemIconPackChain,
+} from '@/controllers/assets/itemIconPack';
 import { ITEM_ICON_FIT } from '@/controllers/interface/item_icons/itemIconFit';
-import { liveItemIcon, liveItemIconKey, spinLiveItemIcon } from '@/controllers/interface/item_icons/liveItemIcon';
-import { itemLevelLook } from '@/controllers/item_rules';
+import {
+  liveItemIcon,
+  liveItemIconKey,
+  spinLiveItemIcon,
+} from '@/controllers/interface/item_icons/liveItemIcon';
+import { isJewel, itemDef, itemLevelLook } from '@/controllers/item_rules';
 
 /**
  * `<img fetchpriority>` is not a React 18 prop (it arrives with React 19), so
@@ -25,23 +32,50 @@ const IMG_PRIORITY = { fetchpriority: 'high' } as const;
  * The zoom never overflows: it is capped by the canvas, and the canvas is
  * what `max-width/height: 100%` has already fitted into the box.
  */
-function fitTransform(item: Item): string | undefined {
+function fitTransform(item: Item, share = 1): string | undefined {
   const key = `${item.group}_${item.num}`;
-  const levelKey = itemLevelLook(item.group, item.num, item.lvl) ? `${key}_${item.lvl}` : key;
+  const levelKey = itemLevelLook(item.group, item.num, item.lvl)
+    ? `${key}_${item.lvl}`
+    : key;
   const fit = ITEM_ICON_FIT[levelKey];
   if (!fit) return undefined;
   const [zoom, dx, dy] = fit;
-  return `scale(${zoom}) translate(${dx * 100}%, ${dy * 100}%)`;
+  return `scale(${Math.round(zoom * share * 1000) / 1000}) translate(${dx * 100}%, ${dy * 100}%)`;
+}
+
+/**
+ * Ours (Season1): a jewel fills its square at the full fit, which reads too big, and the turning
+ * model under the cursor is drawn smaller, so hovering shrank it. A jewel now rests at this share of
+ * the fit and grows back to the full fit under the cursor, without turning.
+ */
+const JEWEL_REST = 0.6;
+const JEWEL_GROW = { transition: 'transform 150ms ease-out' } as const;
+
+function isJewelItem(item: Item): boolean {
+  const def = itemDef(item.group, item.num);
+  return !!def && isJewel(def);
 }
 
 /** The turning picture covers the item's squares, as the live still does. */
-const SPIN_STYLE = { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain' } as const;
+const SPIN_STYLE = {
+  position: 'absolute',
+  inset: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'contain',
+} as const;
 
 /**
  * The item under the cursor turning on a canvas (`Select` in RenderObjectScreen,
  * ZzzInventory.cpp:8856-8859); the still picture shows until the first turned one is drawn.
  */
-const Spin = observer(function Spin({ item, still }: { item: Item; still: ReactNode }) {
+const Spin = observer(function Spin({
+  item,
+  still,
+}: {
+  item: Item;
+  still: ReactNode;
+}) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [ready, setReady] = useState(false);
   const look = liveItemIconKey(item);
@@ -76,7 +110,13 @@ const Spin = observer(function Spin({ item, still }: { item: Item; still: ReactN
  * subscribed the whole grid to all fourteen fields of every item.)
  */
 export const ItemIcon = memo(
-  observer(function ItemIcon({ item, spin = false }: { item: Item; spin?: boolean }) {
+  observer(function ItemIcon({
+    item,
+    spin = false,
+  }: {
+    item: Item;
+    spin?: boolean;
+  }) {
     const key = itemIconKey(item);
     /** Which URL of the pack chain is showing; past the end = no file at all. */
     const [fallbackStep, setFallbackStep] = useState(0);
@@ -84,8 +124,16 @@ export const ItemIcon = memo(
       setFallbackStep(0);
     }, [key]);
     const chain = itemIconPackChain(item);
-    const still = stillIcon(item, chain, fallbackStep, setFallbackStep);
-    return spin ? <Spin item={item} still={still} /> : still;
+    const jewel = isJewelItem(item);
+    const still = stillIcon(
+      item,
+      chain,
+      fallbackStep,
+      setFallbackStep,
+      jewel && !spin ? JEWEL_REST : 1,
+      jewel
+    );
+    return spin && !jewel ? <Spin item={item} still={still} /> : still;
   })
 );
 
@@ -94,13 +142,23 @@ function stillIcon(
   item: Item,
   chain: readonly string[],
   fallbackStep: number,
-  setFallbackStep: (next: (step: number) => number) => void
+  setFallbackStep: (next: (step: number) => number) => void,
+  share = 1,
+  grow = false
 ): ReactNode {
   if (fallbackStep >= chain.length) {
     // No pack file: the original draws every icon from the model, so draw this one.
     const live = liveItemIcon(item);
     if (live) {
-      return <img src={live} className="item-icon" alt="" draggable={false} decoding="async" />;
+      return (
+        <img
+          src={live}
+          className="item-icon"
+          alt=""
+          draggable={false}
+          decoding="async"
+        />
+      );
     }
     return (
       <div
@@ -114,7 +172,11 @@ function stillIcon(
     <img
       src={chain[fallbackStep]}
       className="item-icon"
-      style={{ transform: fitTransform(item) }}
+      style={
+        share === 1
+          ? { transform: fitTransform(item) }
+          : { transform: fitTransform(item, share), ...JEWEL_GROW }
+      }
       alt=""
       draggable={false}
       decoding="async"
