@@ -263,4 +263,7 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 - (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.ts`: text.golden.test.ts, bg.ts, de.ts, fr.ts, it.ts, ja.ts, ko.ts, pl.ts, pt.ts, ro.ts, ru.ts, th.ts, vi.ts, zh.ts, bg.ts, de.ts, fr.ts, it.ts, ja.ts, ko.ts, pl.ts, pt.ts, ro.ts, ru.ts, th.ts, vi.ts, zh.ts, bg.ts, de.ts, fr.ts, it.ts, ja.ts, ko.ts, pl.ts, pt.ts, ro.ts, ru.ts, th.ts, vi.ts, zh.ts
+  - `.tsx`: progressBar.tsx, index.tsx, loadingRunner.tsx
+  - `.less`: style.less, style.less, style.less
+  - `.ts`: creep.test.ts, creep.ts, useCreep.ts
+  - `.md`: readme.md
