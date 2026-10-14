@@ -47,7 +47,7 @@ describe('text golden', () => {
       pt: 'db452380a958445e',
       ro: '4a39586c2b2bde98',
       ru: '447965e9eb081903',
-      es: 'd8c5ea1afd04332d',
+      es: 'b9f85b337bfc600b',
       th: 'f1d1fcc2a11f4cbd',
       vi: '1915dff43bdfeb68',
     });
