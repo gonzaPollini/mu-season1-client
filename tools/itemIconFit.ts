@@ -52,9 +52,9 @@ const MARGIN = 0.92;
 /**
  * Ours (Season1): scales that stand in for the original's. Jewel of Chaos is a thin model the original
  * draws at 0.002, so it came out at less than half the height of the other jewels; this one gives it
- * the height of a Jewel of Bless.
+ * the height of a Jewel of Creation.
  */
-const SCALE_OVERRIDE: Record<string, number> = { '12_15': 0.0046 };
+const SCALE_OVERRIDE: Record<string, number> = { '12_15': 0.00342 };
 /** Under this the zoom is not worth an entry. */
 const MIN_ZOOM = 1.05;
 
