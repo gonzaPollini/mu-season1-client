@@ -16,6 +16,9 @@ and how to run it.
   file at the url the client's own resolvers read it from, so a file is counted once, and offers
   only the map groups of the version's `data.worlds` (`assetsIndex.test.ts`); a world folder counts
   in any case (`Data/world55` is World55), so a lower-case one is never core.
+- Ours, also in `bun run build`: `itemIconsWebp.ts` and `texturesWebp.ts` (icons and OZJ/OZT as
+  WebP under the same names), `musicOpus.ts` (music as Ogg Opus at 48 kbps, needs `ffmpeg`; skipped
+  without it) and, last, `assetBundles.ts` (one `.bin` per pre-download group).
 - `instrumentModels.ts`, `instrumentSamples.ts`: the band system's instruments.
 
 ## Content generators (write files under `versions/` or `src/`)

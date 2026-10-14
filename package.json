@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "APP_ENV=dev vite --force",
-    "build": "APP_ENV=prod vite build && bun run item-icons-webp && bun run copy-data && bun run textures-webp && bun run compress-assets && bun run assets-index && bun run asset-bundles",
+    "build": "APP_ENV=prod vite build && bun run item-icons-webp && bun run copy-data && bun run textures-webp && bun run music-opus && bun run compress-assets && bun run assets-index && bun run asset-bundles",
     "copy-data": "bun run tools/copyData.ts && bun run tools/copyData.ts --src Data-v097d --out dist/Data-v097d",
     "compress-assets": "bun run tools/compressAssets.ts",
     "assets-index": "bun run tools/assetsIndex.ts",
@@ -36,6 +36,7 @@
     "check:commits": "bun tools/checks/commits.ts",
     "item-icons-webp": "bun run tools/itemIconsWebp.ts",
     "textures-webp": "bun run tools/texturesWebp.ts",
+    "music-opus": "bun run tools/musicOpus.ts",
     "asset-bundles": "bun run tools/assetBundles.ts"
   },
   "devDependencies": {
