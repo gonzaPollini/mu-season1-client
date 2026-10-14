@@ -73,6 +73,19 @@ function fitZoom(item: Item): number {
   return ITEM_ICON_FIT[levelKey]?.[0] ?? 1;
 }
 
+/**
+ * Ours (Season1): rings and pendants sit in a 28 equipment slot but a 20 bag square, so they read 1.4
+ * times bigger when worn; in the bag and when picked up they are blown up to that size.
+ */
+const JEWELRY_GROW = {
+  position: 'absolute',
+  inset: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transform: `scale(${28 / 20})`,
+} as const;
+
 /** Ours: the skill orbs (group 12), which keep their size turning too. */
 const ORB_NUMBERS: ReadonlySet<number> = new Set([7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 44, 45, 46, 47]);
 
@@ -137,7 +150,8 @@ const Spin = observer(function Spin({ item, still, fill }: { item: Item; still: 
  * subscribed the whole grid to all fourteen fields of every item.)
  */
 export const ItemIcon = memo(
-  observer(function ItemIcon({ item, spin = false }: { item: Item; spin?: boolean }) {
+  // Ours: `inSlot` - drawn in its equipment slot, already the size rings and pendants are shown at.
+  observer(function ItemIcon({ item, spin = false, inSlot = false }: { item: Item; spin?: boolean; inSlot?: boolean }) {
     const key = itemIconKey(item);
     /** Which URL of the pack chain is showing; past the end = no file at all. */
     const [fallbackStep, setFallbackStep] = useState(0);
@@ -147,7 +161,8 @@ export const ItemIcon = memo(
     const chain = itemIconPackChain(item);
     const jewel = isJewelItem(item);
     const still = stillIcon(item, chain, fallbackStep, setFallbackStep);
-    return spin ? <Spin item={item} still={still} fill={jewel && fallbackStep < chain.length ? chain[fallbackStep] : undefined} /> : still;
+    const icon = spin ? <Spin item={item} still={still} fill={jewel && fallbackStep < chain.length ? chain[fallbackStep] : undefined} /> : still;
+    return !inSlot && isCommonJewelry(item.group, item.num) ? <div style={JEWELRY_GROW}>{icon}</div> : icon;
   })
 );
 

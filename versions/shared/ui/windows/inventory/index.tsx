@@ -249,7 +249,7 @@ const EquipmentSlot = observer(
         />
         {!!item && (
           <span className="equipment-slot-item">
-            <ItemIcon item={item} spin={spin} />
+            <ItemIcon item={item} spin={spin} inSlot />
           </span>
         )}
       </div>

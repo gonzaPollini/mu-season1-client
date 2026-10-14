@@ -36,4 +36,12 @@ describe('the item icon', () => {
     expect(zoom(renderToStaticMarkup(<ItemIcon item={ORB} />))).toBeCloseTo(3.7);
     expect(renderToStaticMarkup(<ItemIcon item={ORB} spin />)).toContain('<canvas');
   });
+
+  // Ours (Season1): rings and pendants show at their equipment-slot size (28 of a 20 square) everywhere.
+  it('draws a ring 1.4 times bigger in the bag and when picked, as big as in its 28 slot', () => {
+    const RING = { group: 13, num: 21, lvl: 0 };
+    expect(renderToStaticMarkup(<ItemIcon item={RING} />)).toContain('scale(1.4)');
+    expect(renderToStaticMarkup(<ItemIcon item={RING} inSlot />)).not.toContain('scale(1.4)');
+    expect(renderToStaticMarkup(<ItemIcon item={{ group: 0, num: 5, lvl: 0 }} />)).not.toContain('scale(1.4)');
+  });
 });
