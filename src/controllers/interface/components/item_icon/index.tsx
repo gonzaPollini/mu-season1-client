@@ -26,22 +26,20 @@ const IMG_PRIORITY = { fetchpriority: 'high' } as const;
  * The zoom never overflows: it is capped by the canvas, and the canvas is
  * what `max-width/height: 100%` has already fitted into the box.
  */
-function fitTransform(item: Item, share = 1): string | undefined {
+function fitTransform(item: Item): string | undefined {
   const key = `${item.group}_${item.num}`;
   const levelKey = itemLevelLook(item.group, item.num, item.lvl) ? `${key}_${item.lvl}` : key;
   const fit = ITEM_ICON_FIT[levelKey];
   if (!fit) return undefined;
   const [zoom, dx, dy] = fit;
-  return `scale(${Math.round(zoom * share * 1000) / 1000}) translate(${dx * 100}%, ${dy * 100}%)`;
+  return `scale(${zoom}) translate(${dx * 100}%, ${dy * 100}%)`;
 }
 
 /**
- * Ours (Season1): a jewel at the full fit reads too big, and its turning model is framed smaller,
- * so hovering shrank it. A jewel rests at `JEWEL_REST` of the fit and grows to the full fit under
- * the cursor, where its model turns blown up to the square (`Spin` with `fill`, `opaqueFit.ts`).
+ * Ours (Season1): a jewel's turning model is framed smaller than its fitted still, so hovering
+ * shrank it. Under the cursor it now turns blown up to the square (`Spin` with `fill`,
+ * `opaqueFit.ts`): the same size as at rest, only turning.
  */
-const JEWEL_REST = 0.6;
-const JEWEL_GROW = { transition: 'transform 150ms ease-out' } as const;
 
 function isJewelItem(item: Item): boolean {
   const def = itemDef(item.group, item.num);
@@ -106,7 +104,7 @@ export const ItemIcon = memo(
     }, [key]);
     const chain = itemIconPackChain(item);
     const jewel = isJewelItem(item);
-    const still = stillIcon(item, chain, fallbackStep, setFallbackStep, jewel && !spin ? JEWEL_REST : 1, jewel);
+    const still = stillIcon(item, chain, fallbackStep, setFallbackStep);
     return spin ? <Spin item={item} still={still} fill={jewel} /> : still;
   })
 );
@@ -116,9 +114,7 @@ function stillIcon(
   item: Item,
   chain: readonly string[],
   fallbackStep: number,
-  setFallbackStep: (next: (step: number) => number) => void,
-  share = 1,
-  grow = false
+  setFallbackStep: (next: (step: number) => number) => void
 ): ReactNode {
   if (fallbackStep >= chain.length) {
     // No pack file: the original draws every icon from the model, so draw this one.
@@ -138,7 +134,7 @@ function stillIcon(
     <img
       src={chain[fallbackStep]}
       className="item-icon"
-      style={grow ? { transform: fitTransform(item, share), ...JEWEL_GROW } : { transform: fitTransform(item) }}
+      style={{ transform: fitTransform(item) }}
       alt=""
       draggable={false}
       decoding="async"
