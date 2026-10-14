@@ -42,42 +42,36 @@ export const LoadingRunner = ({
       aria-valuenow={Math.round(at * 100)}
     >
       <div className="ws-loader-track">
-        <div
-          className="ws-loader-fill"
-          style={{ transform: `scaleX(${shown})`, transition }}
-        />
+        <div className="ws-loader-fill" style={{ transform: `scaleX(${shown})`, transition }} />
       </div>
       <LightningBar runner={runner} />
-      <div
-        className="ws-runner-track"
-        style={{ transform: `translateX(${shown * 100}%)`, transition }}
-      >
-        <div ref={runner} className="ws-runner">
-          <span className="ws-runner-dust">
-            <i />
-            <i />
-          </span>
-          <span className="ws-runner-rig">
-            <img
-              className="ws-runner-part ws-runner-left"
-              src={PART('left_leg')}
-              alt=""
-              draggable={false}
-            />
-            <img
-              className="ws-runner-part ws-runner-right"
-              src={PART('right_leg')}
-              alt=""
-              draggable={false}
-            />
-            <img
-              className="ws-runner-part ws-runner-body"
-              src={PART('body')}
-              alt=""
-              draggable={false}
-            />
-          </span>
-        </div>
+      <div className="ws-runner-track" style={{ transform: `translateX(${shown * 100}%)`, transition }}>
+      <div ref={runner} className="ws-runner">
+        <span className="ws-runner-dust">
+          <i />
+          <i />
+        </span>
+        <span className="ws-runner-rig">
+          <img
+            className="ws-runner-part ws-runner-left"
+            src={PART('left_leg')}
+            alt=""
+            draggable={false}
+          />
+          <img
+            className="ws-runner-part ws-runner-right"
+            src={PART('right_leg')}
+            alt=""
+            draggable={false}
+          />
+          <img
+            className="ws-runner-part ws-runner-body"
+            src={PART('body')}
+            alt=""
+            draggable={false}
+          />
+        </span>
+      </div>
       </div>
       <p className="ws-loader-label ws-mono">{label}</p>
     </div>

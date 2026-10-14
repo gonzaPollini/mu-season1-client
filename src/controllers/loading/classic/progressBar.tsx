@@ -28,38 +28,21 @@ export function MuProgressBar({
   return (
     <div className="loading-bar-wrap" style={{ position: 'relative' }}>
       <div className="loading-bar-glow" style={{ width, height }}>
-        <div
-          className="loading-bar-glow-fill"
-          style={{ transform: `scaleX(${shown})`, transition }}
-        />
+        <div className="loading-bar-glow-fill" style={{ transform: `scaleX(${shown})`, transition }} />
       </div>
 
       <div className="loading-bar" style={{ width, height }}>
         <MuSpriteFrame
           file="Progress_Back.OZJ"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundSize: '100% 100%',
-          }}
+          style={{ position: 'absolute', inset: 0, backgroundSize: '100% 100%' }}
         />
 
-        <div
-          className="loading-bar-fill"
-          style={{ transform: `translateX(-${hidden})`, transition }}
-        >
+        <div className="loading-bar-fill" style={{ transform: `translateX(-${hidden})`, transition }}>
           <MuSpriteFrame
             file="Progress.OZJ"
             width={width}
             height={height}
-            style={{
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              backgroundSize: '100% 100%',
-              transform: `translateX(${hidden})`,
-              transition,
-            }}
+            style={{ position: 'absolute', left: 0, top: 0, backgroundSize: '100% 100%', transform: `translateX(${hidden})`, transition }}
           />
           <div className="loading-bar-shimmer" />
         </div>

@@ -19,8 +19,7 @@ import { useCreep } from '@/controllers/loading/useCreep';
  * maps, music) follows in the background. Map groups by their index id (`map:<world folder>`).
  */
 const ESSENTIAL_MAPS = new Set(['map:1', 'map:3', 'map:4', 'map:52', 'map:74']);
-const isEssential = (g: AssetGroup) =>
-  g.kind !== 'map' ? g.kind !== 'audio' : ESSENTIAL_MAPS.has(g.id);
+const isEssential = (g: AssetGroup) => g.kind !== 'map' ? g.kind !== 'audio' : ESSENTIAL_MAPS.has(g.id);
 
 /** The build this browser last finished a full download for: a new build checks its files again. */
 const DONE_KEY = 'mu_auto_download_build';
@@ -54,19 +53,12 @@ function currentGroup(): AssetGroup | undefined {
 /** Ours: a fill that keeps moving while big bundles are written to the cache (`useCreep`). */
 function CreepFill({ progress }: { progress: number }) {
   const { shown, transition } = useCreep(progress);
-  return (
-    <div
-      className="auto-download-fill"
-      style={{ transform: `scaleX(${shown})`, transition }}
-    />
-  );
+  return <div className="auto-download-fill" style={{ transform: `scaleX(${shown})`, transition }} />;
 }
 
 function phaseText(group: AssetGroup | undefined): string {
   if (!group) return t('autoDownload.phase.core');
-  return group.kind === 'map'
-    ? t('autoDownload.phase.map', { name: group.name })
-    : t(`autoDownload.phase.${group.kind}`);
+  return group.kind === 'map' ? t('autoDownload.phase.map', { name: group.name }) : t(`autoDownload.phase.${group.kind}`);
 }
 
 /**
@@ -85,8 +77,7 @@ export const AutoDownload = observer(() => {
   const [phase, setPhase] = useState<'essential' | 'rest'>('essential');
 
   useEffect(() => {
-    if (!entered || started || localStorage.getItem(DONE_KEY) === buildId())
-      return;
+    if (!entered || started || localStorage.getItem(DONE_KEY) === buildId()) return;
     started = true;
     void (async () => {
       // A dev server has no index: nothing to download.
@@ -106,8 +97,7 @@ export const AutoDownload = observer(() => {
     })();
   }, [entered]);
 
-  const screenUp =
-    entered && phase === 'essential' && !skipped && assetDownload.running;
+  const screenUp = entered && phase === 'essential' && !skipped && assetDownload.running;
   // While the screen is up the game is paused (boot's render loop), so the download is not starved.
   useEffect(() => {
     runInAction(() => {
@@ -124,20 +114,10 @@ export const AutoDownload = observer(() => {
   if (screenUp) {
     const left = Math.max(0, wire.total - wire.got);
     return (
-      <div
-        className="auto-download-screen"
-        style={{ backgroundImage: `url(${BACKDROP_ART})` }}
-      >
+      <div className="auto-download-screen" style={{ backgroundImage: `url(${BACKDROP_ART})` }}>
         <div className="auto-download-panel">
-          <img
-            className="auto-download-logo"
-            src={LOGO_ART}
-            alt="OpenMU Babylon"
-            draggable={false}
-          />
-          <div className="auto-download-heading">
-            {t('autoDownload.screenTitle')}
-          </div>
+          <img className="auto-download-logo" src={LOGO_ART} alt="OpenMU Babylon" draggable={false} />
+          <div className="auto-download-heading">{t('autoDownload.screenTitle')}</div>
           <div className="auto-download-phase">
             <span>{phaseText(currentGroup())}</span>
             <span className="auto-download-percent">{percent}%</span>
@@ -146,27 +126,15 @@ export const AutoDownload = observer(() => {
             <CreepFill progress={assetDownload.progress} />
           </div>
           <div className="auto-download-amounts">
-            <span>
-              {t('autoDownload.received', {
-                got: mb(wire.got),
-                total: mb(wire.total),
-              })}
-            </span>
+            <span>{t('autoDownload.received', { got: mb(wire.got), total: mb(wire.total) })}</span>
             <span>{t('autoDownload.left', { left: mb(left) })}</span>
           </div>
           <div className="auto-download-rule" />
-          <div className="auto-download-note">
-            {t('autoDownload.screenText')}
-          </div>
-          <button
-            className="auto-download-skip"
-            onClick={() => setSkipped(true)}
-          >
+          <div className="auto-download-note">{t('autoDownload.screenText')}</div>
+          <button className="auto-download-skip" onClick={() => setSkipped(true)}>
             {t('autoDownload.skip')}
           </button>
-          <div className="auto-download-note is-small">
-            {t('autoDownload.skipNote')}
-          </div>
+          <div className="auto-download-note is-small">{t('autoDownload.skipNote')}</div>
         </div>
       </div>
     );
@@ -176,11 +144,7 @@ export const AutoDownload = observer(() => {
     <div className="auto-download">
       <div className="auto-download-title">
         {showDone ? t('autoDownload.done') : t('autoDownload.title')}
-        <button
-          className="auto-download-close"
-          onClick={() => setHidden(true)}
-          title={t('autoDownload.hide')}
-        >
+        <button className="auto-download-close" onClick={() => setHidden(true)} title={t('autoDownload.hide')}>
           ×
         </button>
       </div>
