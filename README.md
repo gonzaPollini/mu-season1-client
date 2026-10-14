@@ -260,7 +260,7 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 ### 2026-10-14
 
 **Commits incluidos:**
-- 48281e5dd Leaving the Low preset restores what it turned off, even after a tweak
+- (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.ts`: gameOptions.ts, presets.test.ts, presets.ts
+  - `.ts`: text.golden.test.ts, bg.ts, de.ts, fr.ts, it.ts, ja.ts, ko.ts, pl.ts, pt.ts, ro.ts, ru.ts, th.ts, vi.ts, zh.ts, bg.ts, de.ts, fr.ts, it.ts, ja.ts, ko.ts, pl.ts, pt.ts, ro.ts, ru.ts, th.ts, vi.ts, zh.ts, bg.ts, de.ts, fr.ts, it.ts, ja.ts, ko.ts, pl.ts, pt.ts, ro.ts, ru.ts, th.ts, vi.ts, zh.ts
