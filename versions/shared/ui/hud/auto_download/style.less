@@ -41,6 +41,7 @@
 }
 
 .auto-download-bar {
+  overflow: hidden;
   height: 6px;
   background: #2a2318;
   border: 1px solid #4a3d24;
@@ -49,7 +50,10 @@
 .auto-download-fill {
   height: 100%;
   background: linear-gradient(#e6c35c, #a8822c);
-  transition: width 300ms linear;
+  // Ours: scaled from the left by index.tsx, a compositor transition that keeps moving.
+  width: 100%;
+  transform-origin: left center;
+  will-change: transform;
 }
 
 .auto-download-info {

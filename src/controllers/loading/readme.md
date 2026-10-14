@@ -19,6 +19,10 @@ loading screen; a new look is a sibling implementation (`loading/<name>/`), neve
   for content staged after the map lands.
 - `isStaged(entity)` (`sceneGate.ts`): true when an entity's model, its body and equipment parts
   and its appearance pass are done (or the model failed to load).
+- `creepTarget`, `creepTransition`, `CREEP_CAP` (`creep.ts`, ours): where a load bar heads and the
+  CSS transition that carries it there, so a bar never stands still: transforms run on the
+  compositor while a map load holds the main thread. Used by `classic/progressBar.tsx`, the
+  preloader's runner and the first-run download screen.
 - `pregameLoad` (`pregameLoad.ts`): MobX state for the pre-game load: `characters` (0..1, how far
   the character screen scenery is cached) and `worldsOpen` (the worlds card is open).
 
@@ -52,4 +56,4 @@ loading screen; a new look is a sibling implementation (`loading/<name>/`), neve
 - change what counts as a loaded entity: `isStaged` in `sceneGate.ts`.
 
 ## Tests
-None in this folder.
+- `creep.test.ts`: the creeping bar only moves forward and stops short of the cap.

@@ -1,5 +1,6 @@
 import './style.less';
 import { MuSpriteFrame } from '../../interface/components/mu_sprite';
+import { useCreep } from '../useCreep';
 
 /**
  * The loading screen's progress bar.
@@ -19,27 +20,46 @@ export function MuProgressBar({
   width: number;
   height: number;
 }) {
-  const ratio = Math.max(0, Math.min(1, progress));
-  const percent = `${ratio * 100}%`;
+  // Ours: moved by transforms, which the compositor animates while a map load holds the main
+  // thread, and always creeping ahead of the last report (`../creep.ts`).
+  const { shown, transition } = useCreep(progress);
+  const hidden = `${(1 - shown) * 100}%`;
 
   return (
     <div className="loading-bar-wrap" style={{ position: 'relative' }}>
       <div className="loading-bar-glow" style={{ width, height }}>
-        <div className="loading-bar-glow-fill" style={{ width: percent }} />
+        <div
+          className="loading-bar-glow-fill"
+          style={{ transform: `scaleX(${shown})`, transition }}
+        />
       </div>
 
       <div className="loading-bar" style={{ width, height }}>
         <MuSpriteFrame
           file="Progress_Back.OZJ"
-          style={{ position: 'absolute', inset: 0, backgroundSize: '100% 100%' }}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundSize: '100% 100%',
+          }}
         />
 
-        <div className="loading-bar-fill" style={{ width: percent }}>
+        <div
+          className="loading-bar-fill"
+          style={{ transform: `translateX(-${hidden})`, transition }}
+        >
           <MuSpriteFrame
             file="Progress.OZJ"
             width={width}
             height={height}
-            style={{ position: 'absolute', left: 0, top: 0, backgroundSize: '100% 100%' }}
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              backgroundSize: '100% 100%',
+              transform: `translateX(${hidden})`,
+              transition,
+            }}
           />
           <div className="loading-bar-shimmer" />
         </div>
