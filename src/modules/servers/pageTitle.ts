@@ -12,7 +12,7 @@ import { ServerConfig } from './serverConfig';
  */
 
 /** Also the installed app's name, in `public/manifest.webmanifest`. */
-const CLIENT_NAME = 'ARGONMUONLINE';
+const CLIENT_NAME = 'MU WEB ONLINE';
 
 /** A published name is capped at 60 chars; a typed one is not. */
 const MAX_SERVER_NAME = 60;

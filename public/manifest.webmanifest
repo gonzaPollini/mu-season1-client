@@ -1,6 +1,6 @@
 {
-  "name": "ARGONMUONLINE",
-  "short_name": "ARGONMUONLINE",
+  "name": "MU WEB ONLINE",
+  "short_name": "MU WEB ONLINE",
   "description": "MU Online, played in the browser.",
   "start_url": "./",
   "scope": "./",
