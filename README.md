@@ -263,7 +263,4 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 - (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.tsx`: progressBar.tsx, index.tsx, loadingRunner.tsx
-  - `.less`: style.less, style.less, style.less
-  - `.ts`: creep.test.ts, creep.ts, useCreep.ts
-  - `.md`: readme.md
+  - `.tsx`: index.test.tsx, index.tsx
