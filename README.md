@@ -257,14 +257,13 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 
 ## 📝 Últimos cambios
 
-### 2026-10-13
+### 2026-10-14
 
 **Commits incluidos:**
-- f47b3a56 Ship item icons and OZJ/OZT textures as WebP in builds
-- 122e5712 Smoother map changes and a first-run asset download screen
-- f1d98013 Add MU Helper buttons to the HUD and a notice for /addstr and friends
-- d4db83d9 Merge pull request #490 from Ignies/ronda_rendering_fixes
+- f6833bad7 Ship the music as Ogg Opus at 48 kbps
+- 2dfc0f875 Ship the cloak and robe bitmaps in the build
 
 **Archivos modificados:**
   - `.json`: package.json
-  - `.ts`: download.ts, itemIconPack.ts, sprites.ts, effectParticles.ts, effectTexture.ts, monsterGlow.ts, effectLights.ts, terrainGrassCards.ts, terrainJpeg.ts, imageBytes.ts, itemIconsWebp.ts, texturesWebp.ts, skySprites.ts, signPlates.ts
+  - `.ts`: musicOpus.ts
+  - `.md`: readme.md
