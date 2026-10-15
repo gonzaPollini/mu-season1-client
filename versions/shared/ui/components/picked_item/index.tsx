@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef } from 'react';
 import { Bag } from '@/modules/inventory';
 import { ItemsDatabase } from '@versions/shared/items/itemsDatabase';
 import { ItemIcon } from '@/controllers/interface/components/item_icon';
+import { stackCount } from '@/controllers/item_rules';
 import { MuWindows } from '@/controllers/interface';
 import { SQUARE } from '../item_grid';
 
@@ -83,6 +84,7 @@ export const PickedItemCursor = observer(() => {
       style={{ left: 0, top: 0, width, height }}
     >
       <ItemIcon item={item} />
+      {stackCount(item) > 1 && <span className="mu-grid-stack">{stackCount(item)}</span>}
     </div>
   );
 });

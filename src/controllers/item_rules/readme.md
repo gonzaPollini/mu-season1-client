@@ -130,5 +130,6 @@ the table would import itself.
 ## packedJewels.ts
 - `isPackedJewel(group, num)` and `packedJewelCount(level)`: the packed jewels (group 12, 30-31 and 136-143,
   `_enum.h:1855`) and the loose jewels they hold, `(level + 1) * 10` (`CalcCompiledCount`, CComGem.cpp:250).
-  The inventory shows that count on the square (InventoryCtrl.cpp:1024) and the icon is drawn from the model,
+  `stackCount(item)` is the number every item grid draws on a square (potion pieces or a pack's jewels,
+  InventoryCtrl.cpp:1024); the pack icon is drawn from the model,
   since the pack's picture carried the count baked in.

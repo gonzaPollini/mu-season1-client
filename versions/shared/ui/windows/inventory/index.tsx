@@ -25,8 +25,7 @@ import {
   goldColor,
   equipDestination,
   isEquipable,
-  isPackedJewel,
-  packedJewelCount,
+  stackCount,
 } from '@/controllers/item_rules';
 import {
   ITEM_HOTKEY_CODES,
@@ -173,12 +172,6 @@ function isConsumable(item: Item): boolean {
   return (n >= 0 && n <= 10) || (n >= 35 && n <= 40);
 }
 
-/** `GetStackCount` (InventoryCtrl.cpp:1015-1026): a potion stack's pieces, a packed jewel's loose jewels. */
-function stackCount(item: Item): number {
-  if (isPackedJewel(item.group, item.num)) return packedJewelCount(item.lvl ?? 0);
-  if (item.group !== POTION_GROUP) return 0;
-  return item.durability ?? 0;
-}
 
 const EquipmentSlot = observer(
   ({

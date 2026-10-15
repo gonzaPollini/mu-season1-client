@@ -9,3 +9,12 @@ export function isPackedJewel(group: number, num: number): boolean {
 export function packedJewelCount(level: number): number {
   return (level + 1) * 10;
 }
+
+/**
+ * `GetStackCount` (InventoryCtrl.cpp:1015-1026): the number drawn on a square, a potion stack's pieces or a
+ * packed jewel's loose jewels; 0 or 1 draws none. Every item grid shows it, as the original's one control did.
+ */
+export function stackCount(item: { group: number; num: number; lvl?: number; durability?: number }): number {
+  if (isPackedJewel(item.group, item.num)) return packedJewelCount(item.lvl ?? 0);
+  return item.group === 14 ? (item.durability ?? 0) : 0;
+}
