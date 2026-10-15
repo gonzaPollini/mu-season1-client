@@ -29,9 +29,19 @@ export function opaqueBox(pixels: Uint8ClampedArray, width: number, height: numb
  * `targetHeight` (a share of its box), centred: a hovered jewel turns at the height its still icon
  * has, which is the size it has when picked up too.
  */
-export function opaqueFit(pixels: Uint8ClampedArray, width: number, height: number, targetHeight: number): string | null {
+export function opaqueFit(
+  pixels: Uint8ClampedArray,
+  width: number,
+  height: number,
+  targetHeight: number,
+  // Where the opaque part's centre lands, off the box's centre in shares of it; the centre by default.
+  centre: { x: number; y: number } = { x: 0, y: 0 }
+): string | null {
   const box = opaqueBox(pixels, width, height);
   if (!box) return null;
   const r = (n: number) => Math.round(n * 1000) / 1000;
-  return `scale(${r(targetHeight / box.h)}) translate(${r((0.5 - box.cx) * 100)}%, ${r((0.5 - box.cy) * 100)}%)`;
+  const scale = targetHeight / box.h;
+  const tx = centre.x / scale + 0.5 - box.cx;
+  const ty = centre.y / scale + 0.5 - box.cy;
+  return `scale(${r(scale)}) translate(${r(tx * 100)}%, ${r(ty * 100)}%)`;
 }

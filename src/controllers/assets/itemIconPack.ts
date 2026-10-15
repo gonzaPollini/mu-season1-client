@@ -25,6 +25,9 @@ function packUrl(group: number, num: number, tint: number, variant: Variant): st
   return `/items/item_${group}_${num}_${tint}${variant}.${ICON_EXT}`;
 }
 
+/** Ours: Small/normal/Large Healing Potion (14/1-3) and Mana Potion (14/4-6). */
+const MODEL_DRAWN_POTIONS: ReadonlySet<number> = new Set([1, 2, 3, 4, 5, 6]);
+
 /**
  * The files to try for this item, best first, restricted to the ones that
  * exist: the exact tint and variant, then the tint dropped, then the
@@ -43,6 +46,10 @@ export function itemIconPackChain(item: Item): string[] {
     return look ? [`/items/${look.icon}.${ICON_EXT}`] : [];
   }
 
+  // Ours (Season1): healing and mana potions are drawn from the model, which frames them as when
+  // they turn under the cursor: one size at rest, hovered and picked up.
+  if (group === 14 && MODEL_DRAWN_POTIONS.has(num)) return [];
+
   const candidates: [number, Variant][] = [[tint, variant]];
   if (tint !== 0) candidates.push([0, variant]);
   if (variant !== '') {
@@ -55,6 +62,16 @@ export function itemIconPackChain(item: Item): string[] {
     if (hasItemIconFile(group, num, t, v)) urls.push(packUrl(group, num, t, v));
   }
   return urls;
+}
+
+/**
+ * Ours (Season1): a ring or pendant drawn from its model (+5 and up) is framed like its +0 pack
+ * picture, so it keeps that one's size and place; this is the picture to copy, or null.
+ */
+export function jewelryFrameUrl(item: Item): string | null {
+  const { group, num } = item;
+  if (!isCommonJewelry(group, num) || itemIconPackChain(item).length) return null;
+  return hasItemIconFile(group, num, 0, '') ? packUrl(group, num, 0, '') : null;
 }
 
 /** The first file of the chain: what the icon will show, or `null` for none. */

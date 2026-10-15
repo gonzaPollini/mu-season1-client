@@ -55,9 +55,16 @@ const MARGIN = 0.92;
  */
 const ZOOM_OVERRIDE: Record<string, number> = {
   '12_15': 3.5, '14_13': 3, '14_14': 3, '14_16': 3, '14_22': 3,
+  // Ring of Fire's picture is drawn bigger than the other rings: its band brought to Ring of Poison's width.
+  '13_21': 2.17,
   // The skill orbs, drawn at 0.002 by the original like Chaos.
-  ...Object.fromEntries([7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 44, 45, 46, 47].map(n => [`12_${n}`, 3.7])),
+  ...Object.fromEntries([7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 44, 45, 46, 47].map(n => [`12_${n}`, 3])),
 };
+/**
+ * Ours (Season1): vertical offsets picked by eye. Ring of Ice's taller stone pushed its band below
+ * Ring of Poison's; this lines the two bands up.
+ */
+const DY_OVERRIDE: Record<string, number> = { '13_8': -0.036 };
 /** Under this the zoom is not worth an entry. */
 const MIN_ZOOM = 1.05;
 
@@ -132,6 +139,7 @@ const fits = new Map<string, Box>();
 for (const [key, { file, group, num }] of candidates) {
   const box = fitOf(group, num, file);
   if (box && ZOOM_OVERRIDE[key]) box.zoom = ZOOM_OVERRIDE[key];
+  if (box && DY_OVERRIDE[key] !== undefined) box.dy = DY_OVERRIDE[key];
   if (!box || box.zoom < MIN_ZOOM) continue;
   fits.set(key, box);
 }
