@@ -94,6 +94,8 @@ export default {
   'item.createFruit': 'Служи за създаване на Плод при Chaos Goblin',
   'item.addGuardian': 'Добавя опцията Guardian на предмет +4 или по-висок',
   'item.chaosCombination': 'Използва се за комбинации при Chaos Goblin',
+  'item.jewelBundle': '{count} {name} комбинирани',
+  'item.jewelBundleHint': 'Може да се използва след разглобяване',
   'item.restoresHp': 'Възстановява HP ({count})',
   'item.restoresMp': 'Възстановява мана ({count})',
   'item.curesPoison': 'Лекува отрова и лед ({count})',

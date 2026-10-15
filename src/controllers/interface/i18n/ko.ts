@@ -94,6 +94,8 @@ export default {
   'item.createFruit': '카오스 고블린에서 열매를 만들 때 사용합니다',
   'item.addGuardian': '+4 이상 아이템에 가디언 옵션을 부여합니다',
   'item.chaosCombination': '카오스 고블린의 조합에 사용합니다',
+  'item.jewelBundle': '{name} {count}개가 합쳐진 상태',
+  'item.jewelBundleHint': '분해 후 사용 가능',
   'item.restoresHp': '생명력 회복 ({count})',
   'item.restoresMp': '마나 회복 ({count})',
   'item.curesPoison': '독과 빙결 해제 ({count})',

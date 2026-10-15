@@ -51,10 +51,12 @@ const SCALE_TO_ZOOM = 180;
 const MARGIN = 0.92;
 /**
  * Ours (Season1): jewel and orb zooms picked by eye in game, over what the original's scales give. Creation is
- * the reference; Jewel of Chaos is a thin model the original draws at 0.002.
+ * the reference; Jewel of Chaos (a thin model the original draws at 0.002) matches it.
  */
 const ZOOM_OVERRIDE: Record<string, number> = {
-  '12_15': 3.5, '14_13': 3, '14_14': 3, '14_16': 3, '14_22': 3,
+  '12_15': 3, '14_13': 3, '14_14': 3, '14_16': 3, '14_22': 3,
+  // The packed jewels draw at their loose jewel's size; the tooltip tells 10, 20 or 30.
+  '12_30': 3, '12_31': 3, '12_136': 3, '12_137': 3, '12_138': 3.97, '12_139': 2.98, '12_140': 3.86, '12_141': 3, '12_142': 3.94, '12_143': 3.35,
   // Ring of Fire's picture is drawn bigger than the other rings: its band brought to Ring of Poison's width.
   '13_21': 2.17,
   // The skill orbs, drawn at 0.002 by the original like Chaos.

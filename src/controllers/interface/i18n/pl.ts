@@ -91,6 +91,8 @@ export default {
   'item.createFruit': 'Służy do tworzenia owocu u Chaos Goblina',
   'item.addGuardian': 'Dodaje opcję Guardian do przedmiotu +4 lub wyższego',
   'item.chaosCombination': 'Służy do kombinacji u Chaos Goblina',
+  'item.jewelBundle': '{count} {name} jest połączone',
+  'item.jewelBundleHint': 'Można używać po demontażu',
   'item.restoresHp': 'Przywraca HP ({count})',
   'item.restoresMp': 'Przywraca MP ({count})',
   'item.curesPoison': 'Leczy zatrucie i zamrożenie ({count})',

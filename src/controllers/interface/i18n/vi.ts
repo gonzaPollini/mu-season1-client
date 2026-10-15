@@ -91,6 +91,8 @@ export default {
   'item.createFruit': 'Dùng để tạo Trái cây tại Chaos Goblin',
   'item.addGuardian': 'Thêm tùy chọn Guardian cho vật phẩm từ +4 trở lên',
   'item.chaosCombination': 'Dùng để ghép đồ tại Chaos Goblin',
+  'item.jewelBundle': '{count} {name} được ghép lại',
+  'item.jewelBundleHint': 'Dùng được sau khi tháo rời',
   'item.restoresHp': 'Hồi HP ({count})',
   'item.restoresMp': 'Hồi MP ({count})',
   'item.curesPoison': 'Giải độc và băng giá ({count})',

@@ -24,3 +24,4 @@ export type { OptionSpecial } from './itemSpecials';
 export { isOptionWing, wingOptionKind, wingOptions } from './wingOptions';
 export type { WingOption, WingOptionKind } from './wingOptions';
 export { isCommonJewelry } from './commonJewelry';
+export { isPackedJewel, packedJewelCount } from './packedJewels';

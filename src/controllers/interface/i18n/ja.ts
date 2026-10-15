@@ -94,6 +94,8 @@ export default {
   'item.createFruit': 'カオスゴブリンで果実を作るのに使います',
   'item.addGuardian': '+4 以上のアイテムにガーディアンオプションを付与します',
   'item.chaosCombination': 'カオスゴブリンの合成に使います',
+  'item.jewelBundle': '{count}の{name}が合わせられた状態',
+  'item.jewelBundleHint': '解体の後、使用可能',
   'item.restoresHp': 'HP を回復（{count}）',
   'item.restoresMp': 'MP を回復（{count}）',
   'item.curesPoison': '毒と氷結を治療（{count}）',

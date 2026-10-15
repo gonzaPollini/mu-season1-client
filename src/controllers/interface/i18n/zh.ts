@@ -94,6 +94,8 @@ export default {
   'item.createFruit': '用于在混沌哥布林处制作生命之果',
   'item.addGuardian': '为 +4 以上的物品添加守护属性',
   'item.chaosCombination': '用于混沌哥布林处的合成',
+  'item.jewelBundle': '已合成 {count} 个{name}',
+  'item.jewelBundleHint': '拆解后可使用',
   'item.restoresHp': '恢复生命（{count}）',
   'item.restoresMp': '恢复魔力（{count}）',
   'item.curesPoison': '解除中毒与冰冻（{count}）',

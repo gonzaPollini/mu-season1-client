@@ -126,3 +126,9 @@ the table would import itself.
 - `questItemLink.test.ts`: the Blood Castle weapon on the back (tests `controllers/actors/weaponAttachment.ts`).
 - `weaponAttack.test.ts`: attack clip choice per weapon (tests `controllers/actors/weaponClass.ts`).
 - `versions/shared/items/items.golden.test.ts` covers the item table these rules read.
+
+## packedJewels.ts
+- `isPackedJewel(group, num)` and `packedJewelCount(level)`: the packed jewels (group 12, 30-31 and 136-143,
+  `_enum.h:1855`) and the loose jewels they hold, `(level + 1) * 10` (`CalcCompiledCount`, CComGem.cpp:250).
+  The inventory shows that count on the square (InventoryCtrl.cpp:1024) and the icon is drawn from the model,
+  since the pack's picture carried the count baked in.

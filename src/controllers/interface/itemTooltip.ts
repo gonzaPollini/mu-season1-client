@@ -374,7 +374,28 @@ function helperLines(out: Lines, def: ItemDef) {
   }
 }
 
-function jewelLines(out: Lines, def: ItemDef) {
+/** Wing slots of the jewel bundles (`COMGEM::Check_Jewel_Com`) and the loose jewel each holds. */
+const JEWEL_BUNDLE_CONTENT: Readonly<Record<number, readonly [number, number]>> = {
+  30: [ItemGroup.Potion, 13],
+  31: [ItemGroup.Potion, 14],
+  136: [ItemGroup.Potion, 16],
+  137: [ItemGroup.Potion, 22],
+  138: [ItemGroup.Potion, 31],
+  139: [ItemGroup.Potion, 41],
+  140: [ItemGroup.Potion, 42],
+  141: [ItemGroup.Wing, 15],
+  142: [ItemGroup.Potion, 43],
+  143: [ItemGroup.Potion, 44],
+};
+
+function jewelLines(out: Lines, def: ItemDef, level: number) {
+  // A bundle holds (level + 1) * 10 loose jewels (ZzzInventory.cpp:3863-3873, `CalcCompiledCount`).
+  const bundle = def.group === ItemGroup.Wing ? JEWEL_BUNDLE_CONTENT[def.index] : undefined;
+  if (bundle) {
+    const name = itemBaseName(bundle[0], bundle[1]);
+    out.add(t('item.jewelBundle', { count: (level + 1) * 10, name }));
+    out.add(t('item.jewelBundleHint'));
+  }
   if (def.group === ItemGroup.Potion) {
     switch (def.index) {
       case 13:
@@ -594,7 +615,7 @@ function equipmentLines(
 
   wingLines(out, def, level);
   helperLines(out, def);
-  jewelLines(out, def);
+  jewelLines(out, def, level);
   consumableLines(out, def, item);
 
   // The Fenrir materials count toward their mix: Splinter of Armor and Bless of Guardian

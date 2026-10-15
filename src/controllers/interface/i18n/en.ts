@@ -94,6 +94,8 @@ const en = {
   'item.createFruit': 'Used to create a Fruit at the Chaos Goblin',
   'item.addGuardian': 'Adds the Guardian option to a +4 or higher item',
   'item.chaosCombination': 'Used for combinations at the Chaos Goblin',
+  'item.jewelBundle': '{count} {name} is combined',
+  'item.jewelBundleHint': 'Can be used after dismantling',
   'item.restoresHp': 'Restores HP ({count})',
   'item.restoresMp': 'Restores MP ({count})',
   'item.curesPoison': 'Cures poison and ice ({count})',

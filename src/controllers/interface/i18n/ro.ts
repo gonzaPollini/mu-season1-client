@@ -94,6 +94,8 @@ export default {
   'item.createFruit': 'Se folosește la crearea unui Fruct la Chaos Goblin',
   'item.addGuardian': 'Adaugă opțiunea Guardian unui obiect +4 sau mai mare',
   'item.chaosCombination': 'Se folosește la combinațiile de la Chaos Goblin',
+  'item.jewelBundle': '{count} {name} combinate',
+  'item.jewelBundleHint': 'Poate fi folosit după demontare',
   'item.restoresHp': 'Reface HP ({count})',
   'item.restoresMp': 'Reface mana ({count})',
   'item.curesPoison': 'Vindecă otrava și gheața ({count})',

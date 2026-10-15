@@ -94,6 +94,8 @@ export default {
   'item.createFruit': 'ใช้สร้างผลไม้ที่เคออสก็อบลิน',
   'item.addGuardian': 'เพิ่มออปชัน Guardian ให้ไอเทม +4 ขึ้นไป',
   'item.chaosCombination': 'ใช้ในการผสมที่เคออสก็อบลิน',
+  'item.jewelBundle': '{name} {count} ชิ้นถูกรวมไว้',
+  'item.jewelBundleHint': 'ใช้ได้หลังจากแยกชิ้นส่วน',
   'item.restoresHp': 'ฟื้นฟู HP ({count})',
   'item.restoresMp': 'ฟื้นฟูมานา ({count})',
   'item.curesPoison': 'รักษาพิษและน้ำแข็ง ({count})',

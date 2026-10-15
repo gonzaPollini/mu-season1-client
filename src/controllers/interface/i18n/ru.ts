@@ -94,6 +94,8 @@ export default {
   'item.createFruit': 'Нужен для создания Фрукта у Chaos Goblin',
   'item.addGuardian': 'Добавляет опцию Guardian предмету +4 и выше',
   'item.chaosCombination': 'Используется в совмещениях у Chaos Goblin',
+  'item.jewelBundle': '{count} {name} комбинированный',
+  'item.jewelBundleHint': 'Можно использовать после демонтажа',
   'item.restoresHp': 'Восстанавливает HP ({count})',
   'item.restoresMp': 'Восстанавливает ману ({count})',
   'item.curesPoison': 'Лечит яд и лёд ({count})',

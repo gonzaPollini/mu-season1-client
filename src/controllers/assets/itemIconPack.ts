@@ -1,6 +1,6 @@
 import type { Item } from '../../ecs/world';
 import { hasItemIconFile, type Variant } from './itemIconFiles';
-import { isCommonJewelry, itemLevelLook } from '@/controllers/item_rules';
+import { isCommonJewelry, isPackedJewel, itemLevelLook } from '@/controllers/item_rules';
 
 /**
  * The pre-rendered item icon pack (`public/items/item_<group>_<num>_<tint>[_e|_a].png`),
@@ -49,6 +49,8 @@ export function itemIconPackChain(item: Item): string[] {
   // Ours (Season1): healing and mana potions are drawn from the model, which frames them as when
   // they turn under the cursor: one size at rest, hovered and picked up.
   if (group === 14 && MODEL_DRAWN_POTIONS.has(num)) return [];
+  // The packed jewels too: the pack's picture carries the count, which the inventory now draws (InventoryCtrl.cpp:1024).
+  if (isPackedJewel(group, num)) return [];
 
   const candidates: [number, Variant][] = [[tint, variant]];
   if (tint !== 0) candidates.push([0, variant]);
