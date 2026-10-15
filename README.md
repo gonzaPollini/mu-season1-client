@@ -263,4 +263,7 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 - (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.md`: README.md
+  - `.ts`: index.ts, packedJewels.test.ts, packedJewels.ts
+  - `.md`: readme.md
+  - `.tsx`: index.tsx, index.tsx, index.tsx, index.tsx
+  - `.less`: style.less
