@@ -260,11 +260,7 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 ### 2026-10-15
 
 **Commits incluidos:**
-- c4b13ef8c Bundle and unbundle jewels with a right click
-- a3862dadf Show packed jewels like the original
-- 055c22f29 Fix the type errors the arrow flights left
+- (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.ts`: text.golden.test.ts, bg.ts, de.ts, en.ts, es.ts, fr.ts, it.ts, ja.ts, ko.ts, pl.ts, pt.ts, ro.ts, ru.ts, th.ts, vi.ts, zh.ts, jewelMix.test.ts, jewelMix.ts, economy.ts, bg.ts, de.ts, en.ts, es.ts, fr.ts, it.ts, ja.ts, ko.ts, pl.ts, pt.ts, ro.ts, ru.ts, th.ts, vi.ts, zh.ts
-  - `.md`: readme.md
-  - `.tsx`: index.tsx, index.tsx
+  - `.md`: README.md
