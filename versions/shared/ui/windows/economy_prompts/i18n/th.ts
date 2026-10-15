@@ -26,4 +26,8 @@ export default {
   'prompt.pin': 'รหัส PIN',
   'prompt.password': 'รหัสผ่าน',
   'prompt.wantsToTrade': '{name} ต้องการแลกเปลี่ยนกับคุณ',
+  'prompt.bundle': 'รวมเป็นชุด',
+  'prompt.bundleAsk': 'ต้องการรวม {name} {count} ชิ้นเป็นชุดหรือไม่?',
+  'prompt.unbundle': 'แยกชุด',
+  'prompt.unbundleAsk': 'ต้องการแยกชุด {name} {count} ชิ้นหรือไม่?',
 } satisfies Partial<Record<keyof typeof en, string>>;

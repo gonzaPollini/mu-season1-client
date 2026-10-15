@@ -9,7 +9,8 @@ vi.hoisted(() => {
 
 // Skills first: they keep the app import cycle in order (versions/shared/skills/readme.md).
 await import('@versions/shared/skills/skillVisuals');
-const { JewelMix, packedJewels, singleCount } = await import('./jewelMix');
+const { JewelMix, bundleSizeFor, hasRoomFor, looseCount, packedJewels, singleCount } = await import('./jewelMix');
+const { Economy } = await import('@/modules/economy/economy');
 const { Hero } = await import('@/modules/hero');
 const { Session } = await import('@/modules/session');
 const { Social } = await import('@/modules/social/social');
@@ -126,5 +127,109 @@ describe('Close', () => {
     JewelMix.exit();
     expect(JewelMix.box).toBeNull();
     expect(sent).toEqual([[0xc1, 3, CLOSE_NPC]]);
+  });
+});
+
+// The right click on a jewel in the bag (Season1 improvement, not in the original).
+describe('bundling from the bag', () => {
+  const SOUL: Item = { group: 14, num: 14 };
+  const souls = (n: number) => Object.fromEntries(Array.from({ length: n }, (_, i) => [12 + i, SOUL]));
+
+  beforeEach(() => runInAction(() => (Economy.prompt = null)));
+
+  it('takes the biggest of 10, 20 and 30 the loose count allows', () => {
+    expect([0, 9, 10, 19, 20, 25, 29, 30, 40].map(bundleSizeFor)).toEqual([0, 0, 10, 10, 20, 20, 20, 30, 30]);
+  });
+
+  it('counts only loose level 0 jewels of that kind', () => {
+    bag({ ...souls(3), 30: { ...SOUL, lvl: 1 }, 31: BLESS, 32: { group: 12, num: 31 } });
+    expect(looseCount(Hero.items, 1)).toBe(3);
+  });
+
+  it('says it cannot bundle under 10 and asks nothing', () => {
+    bag(souls(9));
+    expect(JewelMix.askBundle(12)).toBe(true);
+    expect(errors).toHaveBeenCalledWith(t('jewelMix.cannotBundle'));
+    expect(Economy.prompt).toBeNull();
+  });
+
+  it('asks to bundle 20 with 25 jewels', () => {
+    bag(souls(25));
+    expect(JewelMix.askBundle(12)).toBe(true);
+    expect(Economy.prompt).toEqual({ kind: 'jewel-bundle', jewel: 1, size: 20 });
+    expect(errors).not.toHaveBeenCalled();
+  });
+
+  it('ignores what is not a loose jewel', () => {
+    bag({ 12: { ...SOUL, lvl: 1 }, 13: { group: 12, num: 31 }, 14: { group: 0, num: 1 } });
+    expect([12, 13, 14, 15].map(slot => JewelMix.askBundle(slot))).toEqual([false, false, false, false]);
+    expect(errors).not.toHaveBeenCalled();
+  });
+
+  it('sends Mix with the size and no close, without Lahap open', () => {
+    bag(souls(30));
+    JewelMix.bundle(1, 20);
+    expect(sent).toEqual([[0xc1, 7, 0xbc, 0, 1, 1, 0]]);
+    expect(JewelMix.box).toBeNull();
+  });
+
+  it('refuses at the confirm when the bag no longer has them', () => {
+    bag(souls(15));
+    JewelMix.bundle(1, 20);
+    expect(sent).toEqual([]);
+    expect(errors).toHaveBeenCalledWith(t('jewelMix.cannotBundle'));
+  });
+});
+
+describe('unbundling from the bag', () => {
+  const SOUL: Item = { group: 14, num: 14 };
+  const fill = (from: number, n: number) => Object.fromEntries(Array.from({ length: n }, (_, i) => [from + i, SOUL]));
+
+  beforeEach(() => runInAction(() => (Economy.prompt = null)));
+
+  it('counts the free squares, the bundle still in place', () => {
+    bag({ 12: PACKED_SOUL_20, ...fill(13, 63) });
+    expect(hasRoomFor(Hero.items, 1)).toBe(false);
+    bag({ 12: PACKED_SOUL_20, ...fill(14, 52) });
+    expect(hasRoomFor(Hero.items, 11)).toBe(true);
+    expect(hasRoomFor(Hero.items, 12)).toBe(false);
+  });
+
+  it('says there is no room in red and asks nothing', () => {
+    bag({ 12: PACKED_SOUL_20, ...fill(13, 51) });
+    expect(JewelMix.askUnbundle(12)).toBe(true);
+    expect(errors).toHaveBeenCalledWith(t('jewelMix.noRoom'));
+    expect(Economy.prompt).toBeNull();
+  });
+
+  it('asks to unbundle the size of the level', () => {
+    bag({ 12: PACKED_SOUL_20, 13: { group: 12, num: 31 }, 14: { group: 12, num: 31, lvl: 2 } });
+    expect([12, 13, 14].map(slot => JewelMix.askUnbundle(slot))).toEqual([true, true, true]);
+    expect(Economy.prompt).toEqual({ kind: 'jewel-unbundle', jewel: 1, size: 30, slot: 14 });
+    JewelMix.askUnbundle(13);
+    expect(Economy.prompt).toEqual({ kind: 'jewel-unbundle', jewel: 1, size: 10, slot: 13 });
+    expect(errors).not.toHaveBeenCalled();
+  });
+
+  it('ignores what is not a packed jewel', () => {
+    bag({ 12: SOUL, 13: { group: 0, num: 1 } });
+    expect([12, 13, 14].map(slot => JewelMix.askUnbundle(slot))).toEqual([false, false, false]);
+  });
+
+  it('sends Unmix with the jewel, level and slot, no close', () => {
+    bag({ 20: PACKED_SOUL_20 });
+    JewelMix.unbundle(20, 1);
+    expect(sent).toEqual([[0xc1, 7, 0xbc, 1, 1, 1, 20]]);
+    expect(JewelMix.box).toBeNull();
+  });
+
+  it('refuses at the confirm when the bundle moved or the room is gone', () => {
+    bag({ 20: PACKED_SOUL_20 });
+    JewelMix.unbundle(21, 1);
+    expect(errors).toHaveBeenCalledWith(t('jewelMix.cannotDismantle'));
+    bag({ 12: PACKED_SOUL_20, ...fill(13, 51) });
+    JewelMix.unbundle(12, 1);
+    expect(errors).toHaveBeenCalledWith(t('jewelMix.noRoom'));
+    expect(sent).toEqual([]);
   });
 });

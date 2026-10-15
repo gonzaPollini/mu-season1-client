@@ -26,4 +26,8 @@ export default {
   'prompt.pin': 'PIN',
   'prompt.password': 'パスワード',
   'prompt.wantsToTrade': '{name} が取引を申し込んでいます。',
+  'prompt.bundle': 'まとめる',
+  'prompt.bundleAsk': '{name}を{count}個まとめますか？',
+  'prompt.unbundle': 'ばらす',
+  'prompt.unbundleAsk': '{name}{count}個のまとめをばらしますか？',
 } satisfies Partial<Record<keyof typeof en, string>>;

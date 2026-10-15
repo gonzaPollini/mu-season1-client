@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { Merchant } from '@/modules/npc_shop';
 import { Bag } from '@/modules/inventory';
 import { Hero } from '@/modules/hero';
+import { JewelMix } from '@/modules/chaos_mix/jewelMix';
 import { Ecs } from '@/ecs/current';
 import { Economy } from '@/modules/economy/economy';
 import { events } from '@/modules/events';
@@ -24,6 +25,8 @@ import {
   goldColor,
   equipDestination,
   isEquipable,
+  isPackedJewel,
+  packedJewelCount,
 } from '@/controllers/item_rules';
 import {
   ITEM_HOTKEY_CODES,
@@ -170,7 +173,9 @@ function isConsumable(item: Item): boolean {
   return (n >= 0 && n <= 10) || (n >= 35 && n <= 40);
 }
 
+/** `GetStackCount` (InventoryCtrl.cpp:1015-1026): a potion stack's pieces, a packed jewel's loose jewels. */
 function stackCount(item: Item): number {
+  if (isPackedJewel(item.group, item.num)) return packedJewelCount(item.lvl ?? 0);
   if (item.group !== POTION_GROUP) return 0;
   return item.durability ?? 0;
 }
@@ -504,6 +509,9 @@ export const Inventory = observer(() => {
       Bag.autoMoveItem(StorageKind.Inventory, entry.slot, target);
       return;
     }
+
+    // Season1: a loose jewel asks to be bundled, a packed one to be unbundled (chaos_mix `JewelMix`).
+    if (JewelMix.askBundle(entry.slot) || JewelMix.askUnbundle(entry.slot)) return;
 
     // Event tickets ask the server for the opening state instead of being
     // drunk (NewUIMyInventory.cpp: SendMiniGameOpeningStateRequest).

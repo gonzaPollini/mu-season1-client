@@ -7,7 +7,7 @@ in the `Economy` store ([../economy/readme.md](../economy/readme.md)); this fold
 ## Public API
 - none for the app. `installNet()` in `net.ts` registers its handlers (`module.ts`, installed by `src/app/logic.ts`).
 - `jewelMix.ts`: `JewelMix` (which of Lahap's boxes is up and its actions), `JEWELS`, `STACK_SIZES`,
-  `combineZen`, `packedJewels`, `singleCount`, `singleJewel`, `packedJewel`. Read by the `lahap` window and
+  `combineZen`, `bundleSizeFor`, `looseCount`, `hasRoomFor`, `packedJewels`, `singleCount`, `singleJewel`, `packedJewel`. Read by the `lahap` window and
   `npc_shop/net.ts`.
 - `mixRecipes.ts`: `checkMix(recipes, tray)` (the recipe the tray makes, the closest one, its rate and zen),
   `isMixSource`, `sourceStatus`, `recipeNameLines`, `recipeTextLines`. Used by `Economy` and the window.
@@ -43,6 +43,19 @@ in the `Economy` store ([../economy/readme.md](../economy/readme.md)); this fold
 - Opening the tray does not send `SendCrywolfChaosRateBenefitRequest` (C1 BD 09, NewUIMixInventory.cpp:129): OpenMU
   (master) has no handler for it and never sends the Crywolf rate answer (BD 09), so the success-rate bonus stays 0.
 
+## Bundle from the bag (Season1, not in the original)
+- Right click on a loose (+0) single jewel in the inventory, with no storage window open
+  (`JewelMix.askBundle`, called from the inventory's `onGridContextMenu`). Under 10 loose ones of that kind it
+  prints a red chat line (`jewelMix.cannotBundle`); from 10 up it opens the trade-style confirm box
+  (`economy_prompts`, `jewel-bundle`) for the biggest of 10, 20 or 30 (25 gives 20, 40 gives 30).
+- OK sends `LahapJewelMixRequest` (Mix, jewel, size) with Lahap closed and no `CloseNpcRequest` (`JewelMix.bundle`).
+  The server plugin takes it with no NPC and no zen and answers with the usual inventory packets. No toggle.
+- Right click on a packed jewel (`JewelMix.askUnbundle`): with fewer free squares than its loose jewels (10, 20 or 30
+  by level, `hasRoomFor`, the bundle still in place like the server) it prints the red line `jewelMix.noRoom`; else the
+  box `jewel-unbundle` ("Do you want to unbundle the bundle of 20 Jewel of Soul?"). OK sends `LahapJewelMixRequest`
+  (Unmix, jewel, level, bundle slot) with Lahap closed (`JewelMix.unbundle`); the server (`JewelBundleSwitch` on)
+  checks the slot holds that bundle and there is room, free of zen. With Lahap open it is OpenMU's, 1,000,000 zen.
+
 ## Packets
 - `ItemCraftingResult`: a success or a failure empties the tray (a success then holds the result); a refusal leaves it; `Economy.craftingResult`
   plays the sounds and prints the result line. Every answer but short zen (2, 0x0B) finishes the mix (`MIX_FINISHED`): the
@@ -59,6 +72,6 @@ in the `Economy` store ([../economy/readme.md](../economy/readme.md)); this fold
 - a recipe check the original makes and this lacks: `mixRecipes.ts`, citing MixMgr.cpp.
 
 ## Tests
-- `jewelMix.test.ts`: the bag Lahap counts, the combine and dismantle requests and their zen, the refusals.
+- `jewelMix.test.ts`: the bag Lahap counts, the combine and dismantle requests and their zen, the refusals, the bundle and unbundle from the bag.
 - `mixRecipes.test.ts`: the seed sphere application recipes; the real `Mix.bmd` - the fruit, a +10 upgrade with and without luck, the closest
   recipe's source statuses, the chaos weapon zen and what the tray accepts.

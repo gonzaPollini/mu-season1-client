@@ -26,4 +26,8 @@ export default {
   'prompt.pin': 'PIN',
   'prompt.password': 'Contraseña',
   'prompt.wantsToTrade': '{name} quiere comerciar contigo.',
+  'prompt.bundle': 'Empaquetar',
+  'prompt.bundleAsk': '¿Querés empaquetar {count} {name}?',
+  'prompt.unbundle': 'Desempaquetar',
+  'prompt.unbundleAsk': '¿Querés desempaquetar el paquete de {count} {name}?',
 } satisfies Partial<Record<keyof typeof en, string>>;

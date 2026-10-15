@@ -4,7 +4,10 @@ import { InventoryConstants } from '@/core/inventoryConstants';
 import type { Item } from '@/ecs/world';
 import { Hero } from '../hero';
 import { Session } from '../session';
+import { Economy } from '../economy/economy';
 import { Social } from '../social/social';
+import { itemSize } from '../inventory';
+import { findFreeSlot } from '../inventory/inventoryFit';
 import {
   CloseNpcRequestPacket,
   LahapJewelMixRequestMixTypeEnum,
@@ -75,6 +78,32 @@ export function singleCount(items: readonly (Item | null)[], jewel: number, size
     if (singleJewel(item) === jewel && ++count === size) break;
   }
   return count;
+}
+
+/** Season1: the biggest stack of 10, 20 or 30 that `count` loose jewels fill, 0 under 10. */
+export function bundleSizeFor(count: number): number {
+  return [...STACK_SIZES].reverse().find(size => count >= size) ?? 0;
+}
+
+/** Season1: how many loose (level 0) single jewels of the kind the bag holds. */
+export function looseCount(items: readonly (Item | null)[], jewel: number): number {
+  return bagSlots(items).filter(({ item }) => singleJewel(item) === jewel && !item.lvl).length;
+}
+
+/** Season1: whether the bag has `count` free single squares (the server's `FreeSlots`, the bundle still in place). */
+export function hasRoomFor(items: readonly (Item | null)[], count: number): boolean {
+  const occupied: { slot: number; width: number; height: number }[] = [];
+  items.forEach((item, slot) => {
+    if (!item || slot < InventoryConstants.EquippableSlotsCount) return;
+    const { w, h } = itemSize(item);
+    occupied.push({ slot, width: w, height: h });
+  });
+  for (let i = 0; i < count; i++) {
+    const slot = findFreeSlot(occupied, InventoryConstants.InventoryRows, 1, 1);
+    if (slot < 0) return false;
+    occupied.push({ slot, width: 1, height: 1 });
+  }
+  return true;
 }
 
 /** Which of the original's boxes is up: the menu, combine, dismantle, or the OK / Cancel check of either. */
@@ -190,6 +219,68 @@ export const JewelMix = new (class _JewelMix {
       this.jewel = -1;
       this.box = this.box === 'combineCheck' ? 'combine' : 'dismantle';
     });
+  }
+
+  /**
+   * Season1, right click on a jewel in the bag: under 10 loose ones says so in red, else asks to
+   * bundle the biggest stack. False when the item is not a loose jewel (the click goes on).
+   */
+  askBundle(slot: number): boolean {
+    const item = Hero.items[slot];
+    const jewel = item ? singleJewel(item) : -1;
+    if (!item || jewel < 0 || item.lvl) return false;
+    const size = bundleSizeFor(looseCount(Hero.items, jewel));
+    if (!size) Social.errorMessage(t('jewelMix.cannotBundle'));
+    else Economy.openPrompt({ kind: 'jewel-bundle', jewel, size });
+    return true;
+  }
+
+  /**
+   * Season1, right click on a packed jewel in the bag: with no room for its loose jewels says so in red,
+   * else asks to unbundle. False when the item is not a packed jewel (the click goes on).
+   */
+  askUnbundle(slot: number): boolean {
+    const item = Hero.items[slot];
+    const jewel = item ? packedJewel(item) : -1;
+    if (!item || jewel < 0) return false;
+    const level = Math.min(item.lvl ?? 0, STACK_SIZES.length - 1);
+    const size = STACK_SIZES[level];
+    if (!hasRoomFor(Hero.items, size)) Social.errorMessage(t('jewelMix.noRoom'));
+    else Economy.openPrompt({ kind: 'jewel-unbundle', jewel, size, slot });
+    return true;
+  }
+
+  /** Season1: OK on the unbundle box. The same Unmix request, with no Lahap open and no close after. */
+  unbundle(slot: number, jewel: number): void {
+    const item = Hero.items[slot];
+    if (!item || packedJewel(item) !== jewel) {
+      Social.errorMessage(t('jewelMix.cannotDismantle'));
+      return;
+    }
+    const level = Math.min(item.lvl ?? 0, STACK_SIZES.length - 1);
+    if (!hasRoomFor(Hero.items, STACK_SIZES[level])) {
+      Social.errorMessage(t('jewelMix.noRoom'));
+      return;
+    }
+    const packet = LahapJewelMixRequestPacket.createPacket();
+    packet.Operation = LahapJewelMixRequestMixTypeEnum.Unmix;
+    packet.Item = jewel;
+    packet.MixingStackSize = level;
+    packet.UnmixingSourceSlot = slot;
+    if (!Session.isOffline) Session.sendToGS(packet.buffer);
+  }
+
+  /** Season1: OK on the bundle box. The same Mix request, with no Lahap open and no close after. */
+  bundle(jewel: number, size: number): void {
+    if (looseCount(Hero.items, jewel) < size) {
+      Social.errorMessage(t('jewelMix.cannotBundle'));
+      return;
+    }
+    const packet = LahapJewelMixRequestPacket.createPacket();
+    packet.Operation = LahapJewelMixRequestMixTypeEnum.Mix;
+    packet.Item = jewel;
+    packet.MixingStackSize = size / 10 - 1;
+    if (!Session.isOffline) Session.sendToGS(packet.buffer);
   }
 
   /** `COMGEM::Exit`: every Close, and after a request. */

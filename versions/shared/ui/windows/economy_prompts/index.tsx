@@ -10,6 +10,7 @@ import {
 } from 'react';
 import { Merchant } from '@/modules/npc_shop';
 import { Hero } from '@/modules/hero';
+import { JEWELS, JewelMix } from '@/modules/chaos_mix/jewelMix';
 import { Economy, type EconomyPrompt } from '@/modules/economy/economy';
 import { itemDisplayName } from '@/controllers/interface/itemTooltip';
 import { itemValue } from '@/controllers/item_rules';
@@ -161,6 +162,22 @@ function specOf(prompt: EconomyPrompt): Spec {
         field: 'amount',
         max: MAX_BULK_BUY,
         amountLabel: t('prompt.quantity'),
+      };
+    }
+    case 'jewel-bundle': {
+      const [group, num] = JEWELS[prompt.jewel].single;
+      return {
+        title: t('prompt.bundle'),
+        hint: t('prompt.bundleAsk', { count: prompt.size, name: itemDisplayName({ group, num }) }),
+        field: 'none',
+      };
+    }
+    case 'jewel-unbundle': {
+      const [group, num] = JEWELS[prompt.jewel].single;
+      return {
+        title: t('prompt.unbundle'),
+        hint: t('prompt.unbundleAsk', { count: prompt.size, name: itemDisplayName({ group, num }) }),
+        field: 'none',
       };
     }
   }
@@ -365,6 +382,12 @@ export const EconomyPrompts = observer(() => {
         break;
       case 'npc-buy-many':
         QuickItemActions.startBuyRun(prompt.slot, value);
+        break;
+      case 'jewel-bundle':
+        JewelMix.bundle(prompt.jewel, prompt.size);
+        break;
+      case 'jewel-unbundle':
+        JewelMix.unbundle(prompt.slot, prompt.jewel);
         break;
     }
 
