@@ -1,3 +1,4 @@
+import type { RGB } from '@/controllers/fx/core';
 import { MODEL, RGBS } from '@/controllers/fx/recipes';
 
 /** Bow and crossbow arrows by launcher item index (group 4). */
@@ -13,7 +14,7 @@ export const LAUNCHER_ARROWS = {
   14: { model: MODEL.arrowBomb, colour: RGBS.fire }, // Aquagold Crossbow
   16: { model: MODEL.arrowDouble, colour: RGBS.holy }, // Saint Crossbow
   // Season1: the Viper's arrow tinted sky-violet; the original's bodiless MODEL_ARROW_HOLY stays in arrow_flights.ts.
-  17: { model: MODEL.laceArrow, colour: [0.55, 0.65, 1] }, // Celestial Bow
+  17: { model: MODEL.laceArrow, colour: [0.55, 0.65, 1] as RGB }, // Celestial Bow
   18: { model: MODEL.arrowBestCrossbow, colour: RGBS.holy }, // Divine Crossbow of Archangel
   19: { model: MODEL.arrowDrill, colour: RGBS.steel }, // Great Reign Crossbow
   20: { model: MODEL.laceArrow, colour: RGBS.venom }, // Arrow Viper Bow

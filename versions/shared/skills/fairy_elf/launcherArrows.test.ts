@@ -55,7 +55,7 @@ function cast(id: number, launcher: number | null, targeted = false): string[] {
 describe('bow skills throw the arrow of the bow in hand', () => {
   for (const [id, name] of [[24, 'Triple Shot'], [235, 'Multi-Shot']] as const) {
     it(name, () => {
-      expect(cast(id, 22)).toContain(LAUNCHER_ARROWS[22]!.model);
+      expect(cast(id, 22)).toContain(LAUNCHER_ARROWS[22].model);
       expect(cast(id, 22)).not.toContain(MODEL.arrow);
       expect(cast(id, 0)).toContain(MODEL.arrow);
       expect(cast(id, null)).toContain(MODEL.arrow);
@@ -68,9 +68,9 @@ describe('bow skills throw the arrow of the bow in hand', () => {
 describe('the other bow skills throw the arrow of the bow in hand', () => {
   for (const [id, name, targeted] of [[52, 'Penetration', false], [51, 'Ice Arrow', true], [427, 'Poison Arrow', true], [434, 'Poison Arrow (str)', true]] as const) {
     it(name, () => {
-      expect(cast(id, 22, targeted)).toContain(LAUNCHER_ARROWS[22]!.model);
+      expect(cast(id, 22, targeted)).toContain(LAUNCHER_ARROWS[22].model);
       expect(cast(id, 22, targeted)).not.toContain(MODEL.arrow);
-      expect(cast(id, 8, targeted)).toContain(LAUNCHER_ARROWS[8]!.model);
+      expect(cast(id, 8, targeted)).toContain(LAUNCHER_ARROWS[8].model);
       expect(cast(id, null, targeted)).toContain(MODEL.arrow);
     });
   }
@@ -80,7 +80,7 @@ describe('the other bow skills throw the arrow of the bow in hand', () => {
     for (const launcher of [22, 0, null]) {
       const made = cast(46, launcher, true);
       expect(made).toContain(MODEL.arrowImpact);
-      expect(made).not.toContain(LAUNCHER_ARROWS[22]!.model);
+      expect(made).not.toContain(LAUNCHER_ARROWS[22].model);
     }
   });
 });

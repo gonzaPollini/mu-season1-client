@@ -145,7 +145,7 @@ function spawn(scene: Scene, at: Vector3, opts: ProjectileOptions): EffectHandle
   let age = 0;
   const swirls = opts.swirl
     ? Array.from({ length: opts.swirl.count }, (_, k) => {
-        const { count, radius, seconds, wobble, ...look } = opts.swirl!;
+        const { count: _count, radius, seconds, wobble, ...look } = opts.swirl ?? { count: 0, radius: 0, seconds: 0, wobble: 0 };
         const anchor = pos.clone();
         return spawnJoint(scene, anchor, {
           seconds,

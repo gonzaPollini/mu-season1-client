@@ -8,7 +8,7 @@ import type { ArrowFlight } from '@/controllers/skills/visuals';
  * Units: `Scale` as the original, `roll` in rad/s from degrees a tick, rates per second from per-tick calls.
  */
 
-const DEG_PER_TICK = (d: number): number => (d * Math.PI) / 180 / 0.04;
+const degPerTick = (d: number): number => (d * Math.PI) / 180 / 0.04;
 const PER_TICK = 25;
 const cm = (n: number): number => n / 100;
 
@@ -63,7 +63,7 @@ export const ARROW_FLIGHTS: Partial<Record<string, ArrowFlight>> = {
   // MODEL_ARROW_NATURE sub0: spins 30 a frame, two glows and four petals.
   [MODEL.arrowNature]: {
     scale: 0.8,
-    roll: DEG_PER_TICK(30),
+    roll: degPerTick(30),
     puffs: [...LIGHTNING_GLOWS.map(recipe => ({ recipe, rate: PER_TICK })), { recipe: PETALS, rate: 4 * PER_TICK }],
   },
   // MODEL_ARROW_WING: Scale 1.8, BlendMesh 0, glows, bubbles and smoke.
@@ -76,9 +76,9 @@ export const ARROW_FLIGHTS: Partial<Record<string, ArrowFlight>> = {
   // MODEL_ARROW_BOMB: Scale 1, BlendMesh 0, two BITMAP_LIGHT glows (1.0 and 2.0) and four bubbles (Move_MODEL_ARROW_BOMB :4786).
   [MODEL.arrowBomb]: { scale: 1, puffs: [{ recipe: card(TEX.flare, [1, 0.6, 0.4], 0.64), rate: PER_TICK }, { recipe: card(TEX.flare, [1, 0.6, 0.4], 1.28), rate: PER_TICK }, { recipe: BUBBLES, rate: 4 * PER_TICK }] },
   // MODEL_LACEARROW: BlendMesh 1, spins 60, joint 12 (Light 0.6 0.2 0.8, Scale 40), violet motes.
-  [MODEL.laceArrow]: { scale: 0.8, roll: DEG_PER_TICK(60), joint: { ...flareJoint([0.6, 0.2, 0.8], 40), seconds: 80 * 0.04 }, puffs: [{ recipe: LACE_MOTES, rate: 1.5 * PER_TICK }] },
+  [MODEL.laceArrow]: { scale: 0.8, roll: degPerTick(60), joint: { ...flareJoint([0.6, 0.2, 0.8], 40), seconds: 80 * 0.04 }, puffs: [{ recipe: LACE_MOTES, rate: 1.5 * PER_TICK }] },
   // MODEL_ARROW_SPARK: Scale 1, spins 35, joint 14 (white, Scale 50) and its flash.
-  [MODEL.arrowSpark]: { scale: 1, roll: DEG_PER_TICK(35), joint: flareJoint([1, 1, 1], 50), puffs: [{ recipe: SPARK_FLASH, rate: PER_TICK }] },
+  [MODEL.arrowSpark]: { scale: 1, roll: degPerTick(35), joint: flareJoint([1, 1, 1], 50), puffs: [{ recipe: SPARK_FLASH, rate: PER_TICK }] },
   // MODEL_ARROW_RING: BlendMesh 0, Scale 1, joint 15 (Light 0.4 0.9 0.5, Scale 50) and its shine.
   [MODEL.arrowRing]: { scale: 1, joint: flareJoint([0.4, 0.9, 0.5], 50), puffs: [{ recipe: RING_SHINE, rate: 2 * PER_TICK }] },
   // MODEL_ARROW_DARKSTINGER: Scale 0.8, joint 18 (Light 0.4 0.4 0.9, 7 tails, Scale 90) and two BITMAP_LIGHT glows (:4817-4900).
@@ -88,10 +88,10 @@ export const ARROW_FLIGHTS: Partial<Record<string, ArrowFlight>> = {
     puffs: [{ recipe: card(TEX.flare, [0.6, 0.7, 0.9], 1.92), rate: PER_TICK }, { recipe: card(TEX.flare, [0.6, 0.7, 0.9], 1.28), rate: PER_TICK }],
   },
   // MODEL_ARROW_GAMBLE: Scale 0.8, spins 60, sparks and smoke.
-  [MODEL.arrowGamble]: { scale: 0.8, roll: DEG_PER_TICK(60), puffs: [{ recipe: GAMBLE_SPARKS, rate: 2 * PER_TICK }, { recipe: GAMBLE_SMOKE, rate: PER_TICK }] },
+  [MODEL.arrowGamble]: { scale: 0.8, roll: degPerTick(60), puffs: [{ recipe: GAMBLE_SPARKS, rate: 2 * PER_TICK }, { recipe: GAMBLE_SMOKE, rate: PER_TICK }] },
   // MODEL_ARROW_DOUBLE / BEST_CROSSBOW: Scale 1, spin 30 / 30-90, the violet energy ribbon.
-  [MODEL.arrowDouble]: { scale: 1, roll: DEG_PER_TICK(30), joint: ENERGY_JOINT },
-  [MODEL.arrowBestCrossbow]: { scale: 1, roll: DEG_PER_TICK(60), joint: ENERGY_JOINT },
+  [MODEL.arrowDouble]: { scale: 1, roll: degPerTick(30), joint: ENERGY_JOINT },
+  [MODEL.arrowBestCrossbow]: { scale: 1, roll: degPerTick(60), joint: ENERGY_JOINT },
   // MODEL_ARROW_DRILL: Scale 1, spins 30, the energy ribbon and three smoke puffs a frame.
-  [MODEL.arrowDrill]: { scale: 1, roll: DEG_PER_TICK(30), joint: ENERGY_JOINT, puffs: [{ recipe: DRILL_SMOKE, rate: 3 * PER_TICK }] },
+  [MODEL.arrowDrill]: { scale: 1, roll: degPerTick(30), joint: ENERGY_JOINT, puffs: [{ recipe: DRILL_SMOKE, rate: 3 * PER_TICK }] },
 };

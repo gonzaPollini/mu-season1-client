@@ -21,13 +21,12 @@ vi.hoisted(() => {
 
 type Shot = { swirl?: { count: number; colour: number[] }; model?: { model: string; scale?: number}; roll?: number; joint?: { colour: number[]; maxTails: number }; puffs?: unknown[] };
 let engine: NullEngine;
-let lit: ReturnType<typeof vi.spyOn>;
 let scene: Scene;
 const shots: Shot[] = [];
 beforeAll(() => {
   engine = new NullEngine();
   scene = new Scene(engine);
-  lit = vi.spyOn(lighting, 'arrow').mockReturnValue(null as never);
+  vi.spyOn(lighting, 'arrow').mockReturnValue(null as never);
   const spawn = effects.spawn.bind(effects);
   vi.spyOn(effects, 'spawn').mockImplementation(((name: never, s: never, at: never, opts: Shot) => {
     if ((name as string) === 'projectile' && (opts?.model || opts?.swirl)) shots.push(opts);
@@ -57,14 +56,14 @@ function withBow(launcher: number, fire: () => void): Shot[] {
 describe('an arrow flies the way its model does', () => {
   it('the Albatross Bow shot rides a green ribbon of 16 tails at Scale 1', () => {
     const [s] = withBow(22, () => playBowShotVisual(scene, mk(), target));
-    expect(s!.joint).toMatchObject({ colour: [0.4, 0.9, 0.5], maxTails: 16 });
-    expect(s!.model).toMatchObject({ model: LAUNCHER_ARROWS[22]!.model, scale: 1 });
+    expect(s?.joint).toMatchObject({ colour: [0.4, 0.9, 0.5], maxTails: 16 });
+    expect(s?.model).toMatchObject({ model: LAUNCHER_ARROWS[22].model, scale: 1 });
   });
 
   it('the Arrow Viper Bow shot spins 60 degrees a tick and keeps its violet ribbon', () => {
     const [s] = withBow(20, () => playBowShotVisual(scene, mk(), target));
-    expect(s!.roll).toBeCloseTo((60 * Math.PI) / 180 / 0.04);
-    expect(s!.joint!.colour).toEqual([0.6, 0.2, 0.8]);
+    expect(s?.roll).toBeCloseTo((60 * Math.PI) / 180 / 0.04);
+    expect(s?.joint?.colour).toEqual([0.6, 0.2, 0.8]);
   });
 
   it('a Triple Shot flies every arrow the same way', () => {
@@ -75,9 +74,9 @@ describe('an arrow flies the way its model does', () => {
 
   it('a plain bow arrow leaves its fire puffs and no ribbon', () => {
     const [s] = withBow(0, () => playBowShotVisual(scene, mk(), target));
-    expect(s!.model).toMatchObject({ model: MODEL.arrow, scale: 0.8 });
-    expect(s!.puffs).toHaveLength(1);
-    expect(s!.joint).toBeUndefined();
+    expect(s?.model).toMatchObject({ model: MODEL.arrow, scale: 0.8 });
+    expect(s?.puffs).toHaveLength(1);
+    expect(s?.joint).toBeUndefined();
   });
 
   it('the ribbon ends with the arrow', () => {
@@ -88,12 +87,12 @@ describe('an arrow flies the way its model does', () => {
 
   it('Season1: the Celestial Bow throws the Viper arrow tinted sky-violet, with its ribbon', () => {
     const [s] = withBow(17, () => playBowShotVisual(scene, mk(), target));
-    expect(s!.model).toMatchObject({ model: MODEL.laceArrow, colour: [0.55, 0.65, 1] });
-    expect(s!.joint).toBeDefined();
+    expect(s?.model).toMatchObject({ model: MODEL.laceArrow, colour: [0.55, 0.65, 1] });
+    expect(s?.joint).toBeDefined();
   });
 
   it('every flight row names an arrow model the launchers throw', () => {
-    const thrown = new Set(Object.values(LAUNCHER_ARROWS).map(a => a!.model).concat(MODEL.arrow, MODEL.arrowImpact, MODEL.arrowHoly));
+    const thrown = new Set<string>([...Object.values(LAUNCHER_ARROWS).map(a => a.model), MODEL.arrow, MODEL.arrowImpact, MODEL.arrowHoly]);
     for (const model of Object.keys(ARROW_FLIGHTS)) expect(thrown.has(model)).toBe(true);
   });
 });

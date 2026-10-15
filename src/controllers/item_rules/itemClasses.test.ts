@@ -139,7 +139,7 @@ describe.skipIf(!existsSync(ITEM_BMD))('the class columns', () => {
     expect(rows.length).toBeGreaterThan(600);
     const expected = (row: { Group: number; Index: number }) => {
       const classes = bmdClasses(bytes, row.Group, row.Index);
-      if (season1(row)) classes[season1Column(row)!] = 2;
+      if (season1(row)) classes[season1Column(row) ?? 0] = 2;
       return classes.join();
     };
     const wrong = rows.filter(row => def(row.Group, row.Index).classes.join() !== expected(row));
@@ -147,6 +147,6 @@ describe.skipIf(!existsSync(ITEM_BMD))('the class columns', () => {
   });
 
   it('keeps the Season1 sets at the 2nd class', () => {
-    for (const row of items.filter(season1)) expect(def(row.Group, row.Index).classes[season1Column(row)!]).toBe(2);
+    for (const row of items.filter(season1)) expect(def(row.Group, row.Index).classes[season1Column(row) ?? 0]).toBe(2);
   });
 });
