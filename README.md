@@ -263,4 +263,4 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 - (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.tsx`: index.test.tsx, index.tsx, index.tsx
+  - `.ts`: serverConfig.ts
