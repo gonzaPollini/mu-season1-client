@@ -10,6 +10,7 @@ import { itemSize } from '../inventory';
 import { findFreeSlot } from '../inventory/inventoryFit';
 import {
   CloseNpcRequestPacket,
+  LahapJewelMixRequestItemTypeEnum,
   LahapJewelMixRequestMixTypeEnum,
   LahapJewelMixRequestPacket,
 } from '@versions/shared/packets/ClientToServerPackets';
@@ -39,6 +40,10 @@ export const STACK_SIZES = [10, 20, 30] as const;
 /** `kDetachUnitValue` per jewel combined, `kAttachValue` to dismantle (CComGem.cpp:25-26, `CalcGen`). */
 const COMBINE_ZEN_PER_JEWEL = 50_000;
 const DISMANTLE_ZEN = 1_000_000;
+
+/** Season1: the query is a Mix of this jewel number, which the real client never sends (0 to 9). */
+const QUERY_JEWEL = 0xff;
+const QUERY_TIMEOUT_MS = 2000;
 
 /** The zen to combine `size` jewels, on the count buttons and in the check. */
 export const combineZen = (size: number): number => size * COMBINE_ZEN_PER_JEWEL;
@@ -221,6 +226,34 @@ export const JewelMix = new (class _JewelMix {
     });
   }
 
+  /** Season1: the query waiting for the server's answer, and its timer. */
+  private pending: (() => void) | null = null;
+  private pendingTimer: ReturnType<typeof setTimeout> | undefined;
+
+  /** Season1: asks the server whether packing is on; `run` goes on with `on`, nothing happens if no answer in 2 s. */
+  private query(run: () => void): void {
+    if (Session.isOffline) {
+      run();
+      return;
+    }
+    clearTimeout(this.pendingTimer);
+    this.pending = run;
+    this.pendingTimer = setTimeout(() => (this.pending = null), QUERY_TIMEOUT_MS);
+    const packet = LahapJewelMixRequestPacket.createPacket();
+    packet.Operation = LahapJewelMixRequestMixTypeEnum.Mix;
+    packet.Item = QUERY_JEWEL as LahapJewelMixRequestItemTypeEnum;
+    Session.sendToGS(packet.buffer);
+  }
+
+  /** Season1: the server's `#jewelpack:on|off`. Off is red, also for a refused real request; on runs the waiting click. */
+  packingReply(on: boolean): void {
+    const run = this.pending;
+    this.pending = null;
+    clearTimeout(this.pendingTimer);
+    if (!on) Social.errorMessage(t('jewelMix.disabled'));
+    else run?.();
+  }
+
   /**
    * Season1, right click on a jewel in the bag: under 10 loose ones says so in red, else asks to
    * bundle the biggest stack. False when the item is not a loose jewel (the click goes on).
@@ -229,9 +262,11 @@ export const JewelMix = new (class _JewelMix {
     const item = Hero.items[slot];
     const jewel = item ? singleJewel(item) : -1;
     if (!item || jewel < 0 || item.lvl) return false;
-    const size = bundleSizeFor(looseCount(Hero.items, jewel));
-    if (!size) Social.errorMessage(t('jewelMix.cannotBundle'));
-    else Economy.openPrompt({ kind: 'jewel-bundle', jewel, size });
+    this.query(() => {
+      const size = bundleSizeFor(looseCount(Hero.items, jewel));
+      if (!size) Social.errorMessage(t('jewelMix.cannotBundle'));
+      else Economy.openPrompt({ kind: 'jewel-bundle', jewel, size });
+    });
     return true;
   }
 
@@ -243,10 +278,12 @@ export const JewelMix = new (class _JewelMix {
     const item = Hero.items[slot];
     const jewel = item ? packedJewel(item) : -1;
     if (!item || jewel < 0) return false;
-    const level = Math.min(item.lvl ?? 0, STACK_SIZES.length - 1);
-    const size = STACK_SIZES[level];
-    if (!hasRoomFor(Hero.items, size)) Social.errorMessage(t('jewelMix.noRoom'));
-    else Economy.openPrompt({ kind: 'jewel-unbundle', jewel, size, slot });
+    this.query(() => {
+      const level = Math.min(item.lvl ?? 0, STACK_SIZES.length - 1);
+      const size = STACK_SIZES[level];
+      if (!hasRoomFor(Hero.items, size)) Social.errorMessage(t('jewelMix.noRoom'));
+      else Economy.openPrompt({ kind: 'jewel-unbundle', jewel, size, slot });
+    });
     return true;
   }
 

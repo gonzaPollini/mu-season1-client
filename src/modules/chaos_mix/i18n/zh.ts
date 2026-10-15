@@ -7,4 +7,5 @@ export default {
   'jewelMix.cannotDismantle': '无法拆分。',
   'jewelMix.cannotBundle': '无法打包',
   'jewelMix.noRoom': '背包空间不足',
+  'jewelMix.disabled': '宝石打包功能暂时关闭',
 } satisfies Partial<Record<keyof typeof en, string>>;

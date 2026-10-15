@@ -7,4 +7,5 @@ export default {
   'jewelMix.cannotDismantle': 'Non può essere smontato.',
   'jewelMix.cannotBundle': 'Non puoi impacchettare',
   'jewelMix.noRoom': "Non c'è spazio nell'inventario",
+  'jewelMix.disabled': 'Il raggruppamento dei gioielli è temporaneamente disattivato',
 } satisfies Partial<Record<keyof typeof en, string>>;

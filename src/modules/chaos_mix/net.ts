@@ -2,6 +2,7 @@ import { Economy } from '../economy/economy';
 import { EventBus } from '@/core/eventBus';
 import { ItemCraftingResultPacket } from '@versions/shared/packets/ServerToClientPackets';
 import { ItemSerializer } from '@/controllers/item_rules';
+import { JewelMix } from './jewelMix';
 
 /** Registers this module's packet listeners (see ../module.ts). */
 export function installNet(): void {
@@ -19,5 +20,6 @@ export function installNet(): void {
     Economy.craftingResult(p.Result, item);
   });
 
+  EventBus.on('jewelPacking', on => JewelMix.packingReply(on));
   EventBus.on('CraftingDialogClosed075', () => Economy.closeMix(false));
 }

@@ -7,4 +7,5 @@ export default {
   'jewelMix.cannotDismantle': '해체할 수 없습니다.',
   'jewelMix.cannotBundle': '묶을 수 없습니다',
   'jewelMix.noRoom': '인벤토리에 공간이 없습니다',
+  'jewelMix.disabled': '보석 묶기가 일시적으로 비활성화되었습니다',
 } satisfies Partial<Record<keyof typeof en, string>>;

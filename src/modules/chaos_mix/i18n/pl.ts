@@ -7,4 +7,5 @@ export default {
   'jewelMix.cannotDismantle': 'Nie można rozdzielić.',
   'jewelMix.cannotBundle': 'Nie możesz spakować',
   'jewelMix.noRoom': 'Brak miejsca w ekwipunku',
+  'jewelMix.disabled': 'Pakowanie klejnotów jest tymczasowo wyłączone',
 } satisfies Partial<Record<keyof typeof en, string>>;

@@ -7,4 +7,5 @@ export default {
   'jewelMix.cannotDismantle': 'Nu poate fi dezmembrat.',
   'jewelMix.cannotBundle': 'Nu poți împacheta',
   'jewelMix.noRoom': 'Nu este loc în inventar',
+  'jewelMix.disabled': 'Împachetarea bijuteriilor este dezactivată temporar',
 } satisfies Partial<Record<keyof typeof en, string>>;

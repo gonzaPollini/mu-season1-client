@@ -5,6 +5,7 @@ const en = {
   'jewelMix.cannotDismantle': "Can't be dismantled.",
   'jewelMix.cannotBundle': "You can't bundle",
   'jewelMix.noRoom': 'There is no room in the inventory',
+  'jewelMix.disabled': 'Jewel packing is temporarily disabled',
 };
 
 export default en;

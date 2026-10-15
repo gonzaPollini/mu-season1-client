@@ -153,7 +153,13 @@ export function installNet(): void {
       case 0:
         Notices.create(translateServerText(text));
         break;
-      case 1:
+      case 1: {
+        // Season1: the jewel packing switch answers in a marked line that is never shown.
+        const pack = /^#jewelpack:(on|off)$/.exec(text);
+        if (pack) {
+          EventBus.emit('jewelPacking', pack[1] === 'on');
+          break;
+        }
         // OpenMU's only self-defense signal is this blue line
         // (SelfDefensePlugIn.cs); keep the state alongside showing it. It reads
         // the server's English, so it has to run before the line is translated.
@@ -162,6 +168,7 @@ export function installNet(): void {
         noteServerLine(text);
         Social.systemMessage(translateServerText(text));
         break;
+      }
       case 2:
         Notices.createGuildNotice(text);
         Social.systemMessage(text);

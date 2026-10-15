@@ -32,6 +32,8 @@ export interface EventMap {
   statPointAnswered: { stat: number; added: number };
   /** ObjectMessage (0x01): a speech bubble line from an object in scope. */
   objectMessage: { netId: number; message: string };
+  /** Season1: the server's `#jewelpack:on|off` line (chat/net.ts), true when jewel packing is on. */
+  jewelPacking: boolean;
   /** ChatMessage (0x00): a player's chat line, addressed by name (`AssignChat`). */
   chatMessage: { sender: string; message: string; whisper: boolean };
   /** PlayFanfareSound (0x0F): an event sound at a map position (0 ready / 1 start / 2 end - modules/world/net.ts plays it). */

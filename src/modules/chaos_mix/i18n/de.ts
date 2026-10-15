@@ -7,4 +7,5 @@ export default {
   'jewelMix.cannotDismantle': 'Kann nicht zerlegt werden.',
   'jewelMix.cannotBundle': 'Du kannst nicht bündeln',
   'jewelMix.noRoom': 'Im Inventar ist kein Platz',
+  'jewelMix.disabled': 'Das Bündeln von Juwelen ist vorübergehend deaktiviert',
 } satisfies Partial<Record<keyof typeof en, string>>;

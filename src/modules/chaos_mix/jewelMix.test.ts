@@ -34,7 +34,16 @@ function bag(fill: Record<number, Item>) {
 
 const blesses = (n: number) => Object.fromEntries(Array.from({ length: n }, (_, i) => [12 + i, BLESS]));
 
+/** Right click: the query goes out, the server answers on; then the old checks and the box run. */
+const asked = (ask: () => boolean): boolean => {
+  const r = ask();
+  JewelMix.packingReply(true);
+  return r;
+};
+
 beforeEach(() => {
+  JewelMix.packingReply(false);
+  errors.mockClear();
   runInAction(() => (Session.isOffline = false));
   sent.length = 0;
   errors.mockClear();
@@ -148,14 +157,14 @@ describe('bundling from the bag', () => {
 
   it('says it cannot bundle under 10 and asks nothing', () => {
     bag(souls(9));
-    expect(JewelMix.askBundle(12)).toBe(true);
+    expect(asked(() => JewelMix.askBundle(12))).toBe(true);
     expect(errors).toHaveBeenCalledWith(t('jewelMix.cannotBundle'));
     expect(Economy.prompt).toBeNull();
   });
 
   it('asks to bundle 20 with 25 jewels', () => {
     bag(souls(25));
-    expect(JewelMix.askBundle(12)).toBe(true);
+    expect(asked(() => JewelMix.askBundle(12))).toBe(true);
     expect(Economy.prompt).toEqual({ kind: 'jewel-bundle', jewel: 1, size: 20 });
     expect(errors).not.toHaveBeenCalled();
   });
@@ -197,16 +206,16 @@ describe('unbundling from the bag', () => {
 
   it('says there is no room in red and asks nothing', () => {
     bag({ 12: PACKED_SOUL_20, ...fill(13, 51) });
-    expect(JewelMix.askUnbundle(12)).toBe(true);
+    expect(asked(() => JewelMix.askUnbundle(12))).toBe(true);
     expect(errors).toHaveBeenCalledWith(t('jewelMix.noRoom'));
     expect(Economy.prompt).toBeNull();
   });
 
   it('asks to unbundle the size of the level', () => {
     bag({ 12: PACKED_SOUL_20, 13: { group: 12, num: 31 }, 14: { group: 12, num: 31, lvl: 2 } });
-    expect([12, 13, 14].map(slot => JewelMix.askUnbundle(slot))).toEqual([true, true, true]);
+    expect([12, 13, 14].map(slot => asked(() => JewelMix.askUnbundle(slot)))).toEqual([true, true, true]);
     expect(Economy.prompt).toEqual({ kind: 'jewel-unbundle', jewel: 1, size: 30, slot: 14 });
-    JewelMix.askUnbundle(13);
+    asked(() => JewelMix.askUnbundle(13));
     expect(Economy.prompt).toEqual({ kind: 'jewel-unbundle', jewel: 1, size: 10, slot: 13 });
     expect(errors).not.toHaveBeenCalled();
   });
@@ -231,5 +240,54 @@ describe('unbundling from the bag', () => {
     JewelMix.unbundle(12, 1);
     expect(errors).toHaveBeenCalledWith(t('jewelMix.noRoom'));
     expect(sent).toEqual([]);
+  });
+});
+
+describe('the packing switch of the server', () => {
+  const SOUL: Item = { group: 14, num: 14 };
+  const QUERY = [0xc1, 7, 0xbc, 0, 0xff, 0, 0];
+  const souls = (n: number) => Object.fromEntries(Array.from({ length: n }, (_, i) => [12 + i, SOUL]));
+
+  beforeEach(() => runInAction(() => (Economy.prompt = null)));
+
+  it('asks the server first and opens nothing until it answers', () => {
+    bag(souls(25));
+    expect(JewelMix.askBundle(12)).toBe(true);
+    expect(sent).toEqual([QUERY]);
+    expect(Economy.prompt).toBeNull();
+    JewelMix.packingReply(true);
+    expect(Economy.prompt).toEqual({ kind: 'jewel-bundle', jewel: 1, size: 20 });
+  });
+
+  it('shows the disabled line in red on off, with no box', () => {
+    bag({ 12: PACKED_SOUL_20 });
+    JewelMix.askUnbundle(12);
+    JewelMix.packingReply(false);
+    expect(errors).toHaveBeenCalledWith(t('jewelMix.disabled'));
+    expect(Economy.prompt).toBeNull();
+  });
+
+  it('does nothing when the answer never comes', () => {
+    vi.useFakeTimers();
+    bag(souls(25));
+    JewelMix.askBundle(12);
+    vi.advanceTimersByTime(2500);
+    JewelMix.packingReply(true);
+    vi.useRealTimers();
+    expect(Economy.prompt).toBeNull();
+    expect(errors).not.toHaveBeenCalled();
+  });
+
+  it('shows the red line when the server refuses a real request', () => {
+    JewelMix.packingReply(false);
+    expect(errors).toHaveBeenCalledWith(t('jewelMix.disabled'));
+  });
+
+  it('skips the query offline', () => {
+    runInAction(() => (Session.isOffline = true));
+    bag(souls(25));
+    JewelMix.askBundle(12);
+    expect(sent).toEqual([]);
+    expect(Economy.prompt).toEqual({ kind: 'jewel-bundle', jewel: 1, size: 20 });
   });
 });

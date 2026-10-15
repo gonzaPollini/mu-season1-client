@@ -7,4 +7,5 @@ export default {
   'jewelMix.cannotDismantle': 'Impossible à démonter.',
   'jewelMix.cannotBundle': 'Vous ne pouvez pas empaqueter',
   'jewelMix.noRoom': "Il n'y a pas de place dans l'inventaire",
+  'jewelMix.disabled': "L'empaquetage des joyaux est temporairement désactivé",
 } satisfies Partial<Record<keyof typeof en, string>>;

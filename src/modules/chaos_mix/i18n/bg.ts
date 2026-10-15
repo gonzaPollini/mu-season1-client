@@ -7,4 +7,5 @@ export default {
   'jewelMix.cannotDismantle': 'Не може да бъде разглобено.',
   'jewelMix.cannotBundle': 'Не можете да пакетирате',
   'jewelMix.noRoom': 'Няма място в инвентара',
+  'jewelMix.disabled': 'Пакетирането на скъпоценности е временно изключено',
 } satisfies Partial<Record<keyof typeof en, string>>;

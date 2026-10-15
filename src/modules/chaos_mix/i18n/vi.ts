@@ -7,4 +7,5 @@ export default {
   'jewelMix.cannotDismantle': 'Không thể tách.',
   'jewelMix.cannotBundle': 'Bạn không thể đóng gói',
   'jewelMix.noRoom': 'Không còn chỗ trong túi đồ',
+  'jewelMix.disabled': 'Tính năng đóng gói ngọc tạm thời bị tắt',
 } satisfies Partial<Record<keyof typeof en, string>>;

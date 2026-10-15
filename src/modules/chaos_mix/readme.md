@@ -49,7 +49,12 @@ in the `Economy` store ([../economy/readme.md](../economy/readme.md)); this fold
   prints a red chat line (`jewelMix.cannotBundle`); from 10 up it opens the trade-style confirm box
   (`economy_prompts`, `jewel-bundle`) for the biggest of 10, 20 or 30 (25 gives 20, 40 gives 30).
 - OK sends `LahapJewelMixRequest` (Mix, jewel, size) with Lahap closed and no `CloseNpcRequest` (`JewelMix.bundle`).
-  The server plugin takes it with no NPC and no zen and answers with the usual inventory packets. No toggle.
+  The server plugin takes it with no NPC and no zen and answers with the usual inventory packets.
+- One server switch (`JewelBundleSwitch`) turns all packing off. Before the box (or the red lines) the right click sends a
+  query: `LahapJewelMixRequest` Mix with jewel number 0xFF (the real client sends 0 to 9). The server answers a blue
+  `ServerMessage` line `#jewelpack:on` or `#jewelpack:off`, which `chat/net.ts` never prints: it emits `jewelPacking`
+  and `JewelMix.packingReply` runs the waiting click (on) or prints the red `jewelMix.disabled` (off). No answer in 2 s,
+  nothing happens. A real Mix/Unmix refused for the switch gets the same `off` line. Offline skips the query.
 - Right click on a packed jewel (`JewelMix.askUnbundle`): with fewer free squares than its loose jewels (10, 20 or 30
   by level, `hasRoomFor`, the bundle still in place like the server) it prints the red line `jewelMix.noRoom`; else the
   box `jewel-unbundle` ("Do you want to unbundle the bundle of 20 Jewel of Soul?"). OK sends `LahapJewelMixRequest`
