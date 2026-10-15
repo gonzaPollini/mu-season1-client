@@ -197,16 +197,14 @@ export function hoveredMask<T extends object>(
   return mask;
 }
 
-/** One placed item: its icon (and stall price) at its squares. */
+/** One placed item: its icon and stack count at its squares; the stall price is only in the tooltip. */
 const GridItem = memo(function GridItem({
   entry,
-  price,
   marked,
   dimmed,
   spin,
 }: {
   entry: Placed;
-  price: number | undefined;
   marked: boolean;
   dimmed: boolean;
   /** Under the cursor with nothing held: it turns (RenderItem3D's `Select`). */
@@ -224,11 +222,6 @@ const GridItem = memo(function GridItem({
     >
       <ItemIcon item={entry.item} spin={spin} />
       {stackCount(entry.item) > 1 && <span className="mu-grid-stack">{stackCount(entry.item)}</span>}
-      {price !== undefined && (
-        <span className={`mu-grid-price${price > 0 ? '' : ' unset'}`}>
-          {price > 0 ? price.toLocaleString('en-US') : '?'}
-        </span>
-      )}
     </div>
   );
 });
@@ -288,7 +281,7 @@ export type ItemGridProps = {
   /** Ctrl + left click on an occupied square (`modules/inventory/quickItemActions.ts`). */
   onQuickAction?: (square: number, item: Item) => void;
   tooltipContext?: TooltipContext;
-  /** Personal-shop asking price shown in the tooltip and under the icon. */
+  /** Personal-shop asking price, shown in the tooltip as the original does (ZzzInventory.cpp:1924-1961). */
   priceOf?: (square: number) => number | undefined;
   /** Squares to ring: what changed in a trade after we had accepted. */
   marked?: (square: number) => boolean;
@@ -563,7 +556,6 @@ export const ItemGrid = observer(
             <GridItem
               key={entry.square}
               entry={entry}
-              price={priceOf?.(entry.square)}
               marked={marked?.(entry.square) ?? false}
               dimmed={dimmed?.(entry.item) ?? false}
               spin={!picked && hoveredEntry === entry}
