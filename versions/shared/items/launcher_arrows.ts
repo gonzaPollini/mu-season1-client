@@ -12,6 +12,8 @@ export const LAUNCHER_ARROWS = {
   13: { model: MODEL.arrowWing, colour: RGBS.energy }, // Bluewing Crossbow
   14: { model: MODEL.arrowBomb, colour: RGBS.fire }, // Aquagold Crossbow
   16: { model: MODEL.arrowDouble, colour: RGBS.holy }, // Saint Crossbow
+  // Season1: the Viper's arrow tinted sky-violet; the original's bodiless MODEL_ARROW_HOLY stays in arrow_flights.ts.
+  17: { model: MODEL.laceArrow, colour: [0.55, 0.65, 1] }, // Celestial Bow
   18: { model: MODEL.arrowBestCrossbow, colour: RGBS.holy }, // Divine Crossbow of Archangel
   19: { model: MODEL.arrowDrill, colour: RGBS.steel }, // Great Reign Crossbow
   20: { model: MODEL.laceArrow, colour: RGBS.venom }, // Arrow Viper Bow
