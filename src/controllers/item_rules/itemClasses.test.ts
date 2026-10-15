@@ -127,10 +127,26 @@ describe.skipIf(!existsSync(ITEM_BMD))('the class columns', () => {
   // A record with no name is a row Item.bmd does not have.
   const named = (group: number, index: number) => (bytes[(group * 512 + index) * 84] ^ 0xfc) !== 0;
 
+  // Season1: these armor sets ask for the 2nd class, like the original's Divine or Grand Soul.
+  // Class column -> set numbers (DW/SM: Eclipse, Hades; DK/BK: Ashcrow, Titan, Brave; Elf/ME: Iris, Seraphim, Faith).
+  const SEASON1_SECOND_CLASS: Record<number, number[]> = { 0: [35, 52], 1: [34, 45, 46], 2: [36, 49, 50] };
+  const season1Column = (row: { Group: number; Index: number }) =>
+    row.Group >= 7 && row.Group <= 11 ? Object.keys(SEASON1_SECOND_CLASS).map(Number).find(c => SEASON1_SECOND_CLASS[c].includes(row.Index)) : undefined;
+  const season1 = (row: { Group: number; Index: number }) => season1Column(row) !== undefined;
+
   it('match Item.bmd on every row it has', () => {
     const rows = items.filter(row => 'SUM' in row && named(row.Group, row.Index));
     expect(rows.length).toBeGreaterThan(600);
-    const wrong = rows.filter(row => def(row.Group, row.Index).classes.join() !== bmdClasses(bytes, row.Group, row.Index).join());
+    const expected = (row: { Group: number; Index: number }) => {
+      const classes = bmdClasses(bytes, row.Group, row.Index);
+      if (season1(row)) classes[season1Column(row)!] = 2;
+      return classes.join();
+    };
+    const wrong = rows.filter(row => def(row.Group, row.Index).classes.join() !== expected(row));
     expect(wrong.map(row => `${row.Group}/${row.Index}`)).toEqual([]);
+  });
+
+  it('keeps the Season1 sets at the 2nd class', () => {
+    for (const row of items.filter(season1)) expect(def(row.Group, row.Index).classes[season1Column(row)!]).toBe(2);
   });
 });
