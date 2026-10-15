@@ -260,7 +260,11 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 ### 2026-10-15
 
 **Commits incluidos:**
-- (sin commits pendientes)
+- 44c24fe28 Fly each bow's own arrow in every bow skill
+- 23d5480a6 Tell bows from crossbows like the original
+- 9351f5b48 Update the items hash for the Season1 set classes
 
 **Archivos modificados:**
-  - `.ts`: serverConfig.ts
+  - `.ts`: model.ts, projectile.ts, recipes.ts, skills.ts, index.ts, visuals.ts, arrowFlights.test.ts, arrow_flights.ts, launcher_arrows.ts, facing.test.ts, index.ts, launcherArrows.test.ts, index.ts, index.ts, index.ts, strengthener.ts, index.ts, index.ts, index.ts
+  - `.md`: readme.md, readme.md, readme.md
+  - `.snap`: skillVisuals.golden.test.ts.snap
