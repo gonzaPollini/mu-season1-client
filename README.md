@@ -260,11 +260,11 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 ### 2026-10-15
 
 **Commits incluidos:**
-- 44c24fe28 Fly each bow's own arrow in every bow skill
-- 23d5480a6 Tell bows from crossbows like the original
-- 9351f5b48 Update the items hash for the Season1 set classes
+- c4b13ef8c Bundle and unbundle jewels with a right click
+- a3862dadf Show packed jewels like the original
+- 055c22f29 Fix the type errors the arrow flights left
 
 **Archivos modificados:**
-  - `.ts`: model.ts, projectile.ts, recipes.ts, skills.ts, index.ts, visuals.ts, arrowFlights.test.ts, arrow_flights.ts, launcher_arrows.ts, facing.test.ts, index.ts, launcherArrows.test.ts, index.ts, index.ts, index.ts, strengthener.ts, index.ts, index.ts, index.ts
-  - `.md`: readme.md, readme.md, readme.md
-  - `.snap`: skillVisuals.golden.test.ts.snap
+  - `.ts`: text.golden.test.ts, bg.ts, de.ts, en.ts, es.ts, fr.ts, it.ts, ja.ts, ko.ts, pl.ts, pt.ts, ro.ts, ru.ts, th.ts, vi.ts, zh.ts, jewelMix.test.ts, jewelMix.ts, economy.ts, bg.ts, de.ts, en.ts, es.ts, fr.ts, it.ts, ja.ts, ko.ts, pl.ts, pt.ts, ro.ts, ru.ts, th.ts, vi.ts, zh.ts
+  - `.md`: readme.md
+  - `.tsx`: index.tsx, index.tsx
