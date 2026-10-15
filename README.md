@@ -257,11 +257,10 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 
 ## 📝 Últimos cambios
 
-### 2026-10-14
+### 2026-10-15
 
 **Commits incluidos:**
 - (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.ts`: index.ts
-  - `.md`: readme.md
+  - `.tsx`: index.test.tsx, index.tsx, index.tsx
