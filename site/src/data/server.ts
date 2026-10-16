@@ -2,7 +2,7 @@
 export const SERVER = {
   name: 'ARGONMU ONLINE',
   season: 'Season 6',
-  exp: 250,
+  exp: 320,
   resetLevel: 400,
   /** Puntos libres = pointsPerReset × cantidad de resets (acumulativo). */
   pointsPerReset: 400,

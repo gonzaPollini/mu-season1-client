@@ -5,7 +5,7 @@
  */
 export const es = {
   'meta.title': 'ARGONMU ONLINE - MU Season 6 en tu navegador',
-  'meta.description': 'MU Online Season 6 con EXP 250x, resets sin límite y sin VIP. Jugá directo en el navegador, sin instalar nada.',
+  'meta.description': 'MU Online Season 6 con EXP 320x, resets sin límite y sin VIP. Jugá directo en el navegador, sin instalar nada.',
 
   'nav.home': 'Inicio', 'nav.rankings': 'Rankings', 'nav.info': 'Información', 'nav.register': 'Registro',
   'nav.playSub': 'Sin instalar nada', 'nav.login': 'Ingresar', 'nav.account': 'Mi cuenta', 'nav.play': 'Jugar ahora', 'nav.menu': 'Menú', 'nav.language': 'Idioma',
@@ -24,14 +24,14 @@ export const es = {
   'plat.browser': 'Navegador', 'plat.windows': 'Windows', 'plat.android': 'Android', 'plat.mac': 'Mac', 'plat.soon': 'Próximamente',
 
   'stats.online': 'En línea: jugadores', 'stats.offline': 'Fuera de línea', 'stats.exp': 'EXP', 'stats.maxLevel': 'Nivel máximo',
-  'stats.resetPoints': 'Puntos por reset', 'stats.pointsValue': '{n} × resets', 'stats.mode': 'Modo de juego', 'stats.pvpPvm': 'PvP y PvM', 'stats.noVip': 'Sin VIP', 'stats.noVipLabel': 'Free to play',
+  'stats.resetPoints': 'Puntos por reset', 'stats.pointsValue': '{n} × resets', 'stats.mode': 'Balanceado', 'stats.pvpPvm': 'PvP y PvM', 'stats.noVip': 'Sin VIP', 'stats.noVipLabel': 'Free to play',
 
   'events.title': 'Próximos eventos', 'events.tz': 'hora de Argentina (UTC-3)', 'events.remaining': 'Tiempo restante',
   'top.title': 'Top 5 resets', 'top.all': 'Ver todo', 'top.short': 'res.',
   'news.title': 'Últimas noticias',
   'news.tag.announcement': 'Anuncio', 'news.tag.event': 'Evento', 'news.tag.update': 'Novedad',
   'news.n1.title': 'Se abre ARGONMU ONLINE',
-  'news.n1.body': 'Season 6, EXP 250x, resets sin límite y sin VIP. Se juega directo en el navegador: creá tu cuenta y entrá en un minuto.',
+  'news.n1.body': 'Season 6, EXP 320x, resets sin límite y sin VIP. Se juega directo en el navegador: creá tu cuenta y entrá en un minuto.',
   'news.n2.title': 'Castle Siege cada sábado a las 20:00',
   'news.n2.body': 'Armá tu guild y peleá por el castillo. El ganador cobra impuestos y se queda con el título del server.',
   'news.n3.title': 'MU Helper permitido',

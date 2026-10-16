@@ -2,7 +2,7 @@ import type { Dict } from './index';
 
 export const en: Dict = {
   'meta.title': 'ARGONMU ONLINE - MU Season 6 in your browser',
-  'meta.description': 'MU Online Season 6 with 250x EXP, unlimited resets and no VIP. Play right in your browser, nothing to install.',
+  'meta.description': 'MU Online Season 6 with 320x EXP, unlimited resets and no VIP. Play right in your browser, nothing to install.',
 
   'nav.home': 'Home', 'nav.rankings': 'Rankings', 'nav.info': 'Information', 'nav.register': 'Sign up',
   'nav.login': 'Log in', 'nav.account': 'My account', 'nav.playSub': 'Nothing to install', 'nav.play': 'Play now', 'nav.menu': 'Menu', 'nav.language': 'Language',
@@ -21,14 +21,14 @@ export const en: Dict = {
   'plat.browser': 'Browser', 'plat.windows': 'Windows', 'plat.android': 'Android', 'plat.mac': 'Mac', 'plat.soon': 'Coming soon',
 
   'stats.online': 'Online: players', 'stats.offline': 'Offline', 'stats.exp': 'EXP', 'stats.maxLevel': 'Max level',
-  'stats.resetPoints': 'Points per reset', 'stats.pointsValue': '{n} × resets', 'stats.mode': 'Game mode', 'stats.pvpPvm': 'PvP and PvM', 'stats.noVip': 'No VIP', 'stats.noVipLabel': 'Free to play',
+  'stats.resetPoints': 'Points per reset', 'stats.pointsValue': '{n} × resets', 'stats.mode': 'Balanced', 'stats.pvpPvm': 'PvP and PvM', 'stats.noVip': 'No VIP', 'stats.noVipLabel': 'Free to play',
 
   'events.title': 'Upcoming events', 'events.tz': 'Argentina time (UTC-3)', 'events.remaining': 'Time remaining',
   'top.title': 'Top 5 resets', 'top.all': 'See all', 'top.short': 'res.',
   'news.title': 'Latest news',
   'news.tag.announcement': 'Announcement', 'news.tag.event': 'Event', 'news.tag.update': 'Update',
   'news.n1.title': 'ARGONMU ONLINE is opening',
-  'news.n1.body': 'Season 6, 250x EXP, unlimited resets and no VIP. Play right in the browser: create your account and jump in within a minute.',
+  'news.n1.body': 'Season 6, 320x EXP, unlimited resets and no VIP. Play right in the browser: create your account and jump in within a minute.',
   'news.n2.title': 'Castle Siege every Saturday at 20:00',
   'news.n2.body': 'Build your guild and fight for the castle. The winner collects taxes and keeps the server title.',
   'news.n3.title': 'MU Helper allowed',

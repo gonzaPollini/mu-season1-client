@@ -409,3 +409,5 @@ input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--gold); }
 /* «ONLINE» pegado a ARGONMU: Cinzel deja aire abajo, se compensa con line-height y margen negativo. */
 .hero .logo-lg .logo-main { line-height: 0.95; }
 .hero .logo-lg .logo-sub { margin-top: -6px; }
+/* Más aire entre el subtítulo y los botones de plataforma. */
+.hero h1 { margin-bottom: 56px; }
