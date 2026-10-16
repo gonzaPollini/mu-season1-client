@@ -260,10 +260,7 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 ### 2026-10-16
 
 **Commits incluidos:**
-- 2da2fb152 Add MU Coins top-up to the site
+- (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.md`: API.md
-  - `.tsx`: App.tsx, Layout.tsx, ui.tsx, Account.tsx, Coins.tsx, Register.tsx, Terms.tsx
-  - `.ts`: index.ts, mock.ts, types.ts, coins.ts, en.ts, es.ts, pt.ts
-  - `.css`: style.css
+  - `.md`: README.md
