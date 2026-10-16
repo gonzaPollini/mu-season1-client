@@ -40,6 +40,7 @@ function TopFive({ type }: { type: 'resets' | 'hours' }) {
   return (
     <div className="card glass">
       <h3 className="card-title">{t(type === 'hours' ? 'top.hoursTitle' : 'top.title')} <a href="#/rankings" className="more">{t('top.all')}</a></h3>
+      <p className="card-desc muted">{t(type === 'hours' ? 'desc.hours' : 'desc.resets')}</p>
       {loading && !data && <Loading />}
       {error && <ErrorBox onRetry={reload} />}
       <ol className="top5">

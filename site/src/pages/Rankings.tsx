@@ -37,6 +37,7 @@ export function Rankings() {
             <button key={id} role="tab" aria-selected={tab === id} className={tab === id ? 'on' : ''} onClick={() => setTab(id)}>{t(`tab.${id}` as Key)}</button>
           ))}
         </div>
+        <p className="rank-desc muted">{t(`desc.${tab}` as Key)}</p>
         <input className="search" type="search" placeholder={tab === 'guilds' ? t('search.guild') : t('search.char')} value={q} onChange={(e) => setQ(e.target.value)} />
         {loading && !data && <Loading />}
         {error && <ErrorBox onRetry={reload} />}

@@ -24,7 +24,7 @@ export const pt: Dict = {
   'stats.resetPoints': 'Pontos por reset', 'stats.pointsValue': '{n} × resets', 'stats.mode': 'Balanceado', 'stats.pvpPvm': 'PvP e PvM', 'stats.noVip': 'Sem VIP', 'stats.noVipLabel': 'Free to play',
 
   'events.title': 'Próximos eventos', 'events.tz': 'horário da Argentina (UTC-3)', 'events.remaining': 'Tempo restante',
-  'top.title': 'Top 5 resets', 'top.all': 'Ver tudo', 'top.short': 'res.',
+  'top.title': 'Top 5 resets', 'top.all': 'Ver tudo', 'top.short': 'rr',
   'news.title': 'Últimas notícias',
   'news.tag.announcement': 'Aviso', 'news.tag.event': 'Evento', 'news.tag.update': 'Novidade',
   'news.n1.title': 'ARGONMU ONLINE está abrindo',
@@ -64,7 +64,7 @@ export const pt: Dict = {
   'rank.eyebrow': 'Classificação', 'rank.title': 'Rankings',
   'rank.subtitle': 'Os melhores do servidor. Atualiza a cada poucos minutos.',
   'rank.subtitleUpdated': 'Os melhores do servidor. Atualiza a cada poucos minutos (última: {time}).',
-  'tab.resets': 'Resets', 'tab.level': 'Nível', 'tab.killers': 'Killers', 'tab.hours': 'Os mais viciados', 'top.hoursTitle': 'Os mais viciados', 'top.hoursShort': 'h', 'tab.guilds': 'Guilds',
+  'tab.resets': 'Resets', 'tab.level': 'Nível', 'tab.killers': 'Killers', 'tab.hours': 'Os mais viciados', 'desc.resets': 'Os personagens com mais resets.', 'desc.level': 'Os personagens de maior nível.', 'desc.killers': 'Os personagens com mais kills PvP.', 'desc.hours': 'Os personagens com mais horas jogadas.', 'desc.guilds': 'As guilds com mais pontos.', 'top.hoursTitle': 'Os mais viciados', 'top.hoursShort': 'h', 'tab.guilds': 'Guilds',
   'search.char': 'Buscar personagem…', 'search.guild': 'Buscar guild…',
   'col.char': 'Personagem', 'col.guild': 'Guild', 'col.class': 'Classe', 'col.level': 'Nível', 'col.resets': 'Resets', 'col.kills': 'Kills', 'col.hours': 'Horas jogadas',
   'col.master': 'Master', 'col.members': 'Membros', 'col.points': 'Pontos',
