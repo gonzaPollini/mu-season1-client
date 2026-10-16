@@ -64,7 +64,7 @@ export const pt: Dict = {
   'rank.eyebrow': 'Classificação', 'rank.title': 'Rankings',
   'rank.subtitle': 'Os melhores do servidor. Atualiza a cada poucos minutos.',
   'rank.subtitleUpdated': 'Os melhores do servidor. Atualiza a cada poucos minutos (última: {time}).',
-  'tab.resets': 'Resets', 'tab.level': 'Nível', 'tab.killers': 'Killers', 'tab.hours': 'Os mais viciados', 'tab.guilds': 'Guilds',
+  'tab.resets': 'Resets', 'tab.level': 'Nível', 'tab.killers': 'Killers', 'tab.hours': 'Os mais viciados', 'top.hoursTitle': 'Os mais viciados', 'top.hoursShort': 'h', 'tab.guilds': 'Guilds',
   'search.char': 'Buscar personagem…', 'search.guild': 'Buscar guild…',
   'col.char': 'Personagem', 'col.guild': 'Guild', 'col.class': 'Classe', 'col.level': 'Nível', 'col.resets': 'Resets', 'col.kills': 'Kills', 'col.hours': 'Horas jogadas',
   'col.master': 'Master', 'col.members': 'Membros', 'col.points': 'Pontos',

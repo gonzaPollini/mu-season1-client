@@ -64,7 +64,7 @@ export const en: Dict = {
   'rank.eyebrow': 'Leaderboard', 'rank.title': 'Rankings',
   'rank.subtitle': 'The best players on the server. Updated every few minutes.',
   'rank.subtitleUpdated': 'The best players on the server. Updated every few minutes (last: {time}).',
-  'tab.resets': 'Resets', 'tab.level': 'Level', 'tab.killers': 'Killers', 'tab.hours': 'Most hours played', 'tab.guilds': 'Guilds',
+  'tab.resets': 'Resets', 'tab.level': 'Level', 'tab.killers': 'Killers', 'tab.hours': 'Most hours played', 'top.hoursTitle': 'Most hours played', 'top.hoursShort': 'h', 'tab.guilds': 'Guilds',
   'search.char': 'Search character…', 'search.guild': 'Search guild…',
   'col.char': 'Character', 'col.guild': 'Guild', 'col.class': 'Class', 'col.level': 'Level', 'col.resets': 'Resets', 'col.kills': 'Kills', 'col.hours': 'Hours played',
   'col.master': 'Master', 'col.members': 'Members', 'col.points': 'Points',

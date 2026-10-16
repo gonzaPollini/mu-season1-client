@@ -32,13 +32,14 @@ export function EventsWidget({ limit = 5 }: { limit?: number }) {
   );
 }
 
-export function TopResets() {
+/** Top 5 de un ranking de personajes para la home: resets o horas jugadas. */
+function TopFive({ type }: { type: 'resets' | 'hours' }) {
   const { t } = useT();
-  const { data, error, loading, reload } = useAsync(() => getRankings('resets'));
+  const { data, error, loading, reload } = useAsync(() => getRankings(type), [type]);
   const rows = data && data.type !== 'guilds' ? data.rows.slice(0, 5) : [];
   return (
     <div className="card glass">
-      <h3 className="card-title">{t('top.title')} <a href="#/rankings" className="more">{t('top.all')}</a></h3>
+      <h3 className="card-title">{t(type === 'hours' ? 'top.hoursTitle' : 'top.title')} <a href="#/rankings" className="more">{t('top.all')}</a></h3>
       {loading && !data && <Loading />}
       {error && <ErrorBox onRetry={reload} />}
       <ol className="top5">
@@ -46,13 +47,16 @@ export function TopResets() {
           <li key={r.name}>
             <span className={`medal m${r.rank}`}>{r.rank}</span>
             <div><strong>{r.name}</strong><span>{r.class} · <i className={`st ${r.online ? 'on' : 'off'}`}>{t(r.online ? 'rank.online' : 'rank.offline')}</i></span></div>
-            <b>{r.resets}<small> {t('top.short')}</small></b>
+            <b>{type === 'hours' ? r.hours : r.resets}<small> {t(type === 'hours' ? 'top.hoursShort' : 'top.short')}</small></b>
           </li>
         ))}
       </ol>
     </div>
   );
 }
+
+export const TopResets = () => <TopFive type="resets" />;
+export const TopHours = () => <TopFive type="hours" />;
 
 const I = {
   users: <path d="M16 11a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm-8 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3Zm0 2c-2.300 0-7 1.200-7 3.500V19h14v-2.500C15 14.200 10.300 13 8 13Zm8 0c-.3 0-.6 0-1 .1 1.200.8 2 2 2 3.400V19h6v-2.500c0-2.300-4.700-3.500-7-3.500Z" />,

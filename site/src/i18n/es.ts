@@ -67,7 +67,7 @@ export const es = {
   'rank.eyebrow': 'Clasificación', 'rank.title': 'Rankings',
   'rank.subtitle': 'Los mejores del server. Se actualiza cada pocos minutos.',
   'rank.subtitleUpdated': 'Los mejores del server. Se actualiza cada pocos minutos (última: {time}).',
-  'tab.resets': 'Resets', 'tab.level': 'Nivel', 'tab.killers': 'Killers', 'tab.hours': 'Los más viciados', 'tab.guilds': 'Guilds',
+  'tab.resets': 'Resets', 'tab.level': 'Nivel', 'tab.killers': 'Killers', 'tab.hours': 'Los más vicios', 'top.hoursTitle': 'Los más vicios', 'top.hoursShort': 'h', 'tab.guilds': 'Guilds',
   'search.char': 'Buscar personaje…', 'search.guild': 'Buscar guild…',
   'col.char': 'Personaje', 'col.guild': 'Guild', 'col.class': 'Clase', 'col.level': 'Nivel', 'col.resets': 'Resets', 'col.kills': 'Kills', 'col.hours': 'Horas jugadas',
   'col.master': 'Master', 'col.members': 'Miembros', 'col.points': 'Puntos',
