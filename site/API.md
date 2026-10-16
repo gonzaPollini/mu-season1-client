@@ -53,3 +53,18 @@ Respuesta: `{ "ok": true, "token": "…", "username": "gonza" }` o `{ "ok": fals
 ## POST /api/me/password   (auth)
 Body: `{ "oldPassword": "…", "newPassword": "…" }` -> `{ "ok": true }` o `{ "ok": false, "error": "<código>" }`.
 Sólo con la cuenta desconectada (presence + `is-online`); responder `{"ok":false,"error":"playerOnline"}` si está online.
+
+## GET /api/coins/packs
+Paquetes de MU Coins a la venta (público). Precio en pesos argentinos (entero). Los de `data/coins.ts` son sólo de ejemplo.
+```json
+[ { "id": "p2500", "coins": 2500, "bonus": 150, "priceArs": 10000 } ]
+```
+
+## GET /api/me/coins   (auth)
+`{ "balance": 1250 }` — saldo actual de MU Coins de la cuenta (se usan sólo dentro del juego, en un NPC; no dan ventajas de poder).
+
+## POST /api/me/coins/orders   (auth)
+Body: `{ "packId": "p2500" }`
+El backend crea la preferencia de Mercado Pago y devuelve su `init_point`; el front redirige ahí. El acreditado lo hace el **webhook** de Mercado Pago (verificar firma y monto, idempotente por `payment id`), nunca el front.
+Respuesta: `{ "ok": true, "checkoutUrl": "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=…" }` o `{ "ok": false, "error": "<código>" }`.
+Códigos nuevos: `paymentsDisabled` (el mock siempre lo devuelve: no redirige a ningún lado).

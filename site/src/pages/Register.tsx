@@ -9,7 +9,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 /** Código de error de la API -> clave traducida (con respaldo genérico). */
 export function apiError(code: string): Key {
   const k = `err.${code}` as Key;
-  return (['err.userExists', 'err.badCredentials', 'err.badOldPassword', 'err.playerOnline', 'err.rateLimited'] as Key[]).includes(k) ? k : 'err.generic';
+  return (['err.userExists', 'err.badCredentials', 'err.badOldPassword', 'err.playerOnline', 'err.rateLimited', 'err.paymentsDisabled'] as Key[]).includes(k) ? k : 'err.generic';
 }
 
 export function Register() {

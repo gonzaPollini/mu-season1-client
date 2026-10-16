@@ -45,6 +45,10 @@ export type RegisterInput = { username: string; password: string; email: string 
 export type AuthResult = { ok: true; token: string; username: string } | { ok: false; error: string };
 export type SimpleResult = { ok: true } | { ok: false; error: string };
 
+export type { CoinPack } from '../data/coins';
+/** Resultado de crear una orden: `checkoutUrl` es el `init_point` de Mercado Pago. */
+export type CoinOrderResult = { ok: true; checkoutUrl: string } | { ok: false; error: string };
+
 export type MyCharacter = { name: string; class: string; level: number; resets: number; guild: string | null; online: boolean };
 
 /** Falla de red o respuesta no válida: la UI muestra «no pudimos conectar». */

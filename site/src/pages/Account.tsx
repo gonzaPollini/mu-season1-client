@@ -1,10 +1,16 @@
 import { useState, type FormEvent } from 'react';
-import { changePassword, getMyCharacters, login, session, USE_MOCK } from '../api';
+import { changePassword, getCoinBalance, getMyCharacters, login, session, USE_MOCK } from '../api';
 import { useAsync } from '../lib/hooks';
 import { useT } from '../i18n';
-import { ErrorBox, Loading, SectionTitle } from '../components/ui';
+import { CoinIcon, ErrorBox, Loading, SectionTitle } from '../components/ui';
 import { apiError } from './Register';
 import { MAX_ACCOUNT_PASSWORD_LENGTH, MIN_ACCOUNT_PASSWORD_LENGTH } from '@/modules/servers/registerRules';
+
+/** `#/login?next=recargar` vuelve a esa página después de ingresar (sólo rutas conocidas). */
+function nextRoute(): string {
+  const next = new URLSearchParams(window.location.hash.split('?')[1] ?? '').get('next');
+  return next === 'recargar' ? '#/recargar' : '#/panel';
+}
 
 export function Login() {
   const { t } = useT();
@@ -20,7 +26,7 @@ export function Login() {
     setBusy(true);
     try {
       const r = await login(u, p);
-      if (r.ok) { session.set(r.token); window.location.hash = '#/panel'; } else setErr(t(apiError(r.error)));
+      if (r.ok) { session.set(r.token); window.location.hash = nextRoute(); } else setErr(t(apiError(r.error)));
     } catch {
       setErr(t('err.network'));
     } finally { setBusy(false); }
@@ -44,6 +50,8 @@ export function Panel() {
   const { t } = useT();
   const logged = !!session.get();
   const { data, error, loading, reload } = useAsync(getMyCharacters);
+  const coins = useAsync(getCoinBalance);
+  const { fmtNumber } = useT();
   const [old, setOld] = useState('');
   const [nw, setNw] = useState('');
   const [nw2, setNw2] = useState('');
@@ -80,6 +88,11 @@ export function Panel() {
       <SectionTitle eyebrow={t('acct.eyebrow')} title={t('panel.title')}>
         {USE_MOCK ? t('panel.mock') : undefined}
       </SectionTitle>
+      <div className="card glass coin-card">
+        <CoinIcon />
+        <div><span>{t('panel.coinsTitle')}</span><b className="gold-num">{coins.data ? fmtNumber(coins.data.balance) : '…'}</b></div>
+        <a href="#/recargar" className="btn btn-gold btn-sm">{t('panel.recharge')}</a>
+      </div>
       <div className="grid g2-wide">
         <div className="card glass">
           <h3 className="card-title">{t('panel.chars')}</h3>

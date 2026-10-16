@@ -411,3 +411,27 @@ input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--gold); }
 .hero .logo-lg .logo-sub { margin-top: -6px; }
 /* Más aire entre el subtítulo y los botones de plataforma. */
 .hero h1 { margin-bottom: 56px; }
+
+/* ---- MU Coins ---- */
+.coin-icon { width: 22px; height: 22px; flex: none; }
+.nav a.nav-coins { color: var(--gold-hi); display: inline-flex; align-items: center; gap: 7px; background: none; border: 0; }
+.nav a.nav-coins:hover, .nav a.nav-coins.active { color: var(--gold-hi); background: none; filter: brightness(1.15); }
+.gold-num { font-family: var(--display); font-weight: 700; color: var(--gold-hi); }
+.coin-card { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.coin-card .coin-icon { width: 40px; height: 40px; }
+.coin-card > div { flex: 1; }
+.coin-card span { display: block; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.coin-card b { font-size: 2rem; line-height: 1.1; }
+.packs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+@media (max-width: 1000px) { .packs { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px) { .packs { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 400px) { .packs { grid-template-columns: 1fr; } }
+.pack { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding: 22px 16px; }
+.pack .coin-icon { width: 44px; height: 44px; margin-bottom: 6px; }
+.pack .gold-num { font-size: 1.9rem; line-height: 1; }
+.pack-unit { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.pack-price { font-size: 1.15rem; margin: 10px 0 12px; }
+.pack.has-bonus { border-color: var(--line-gold); }
+.pack .tag { position: absolute; top: 10px; right: 10px; }
+.pack .form-error { margin-top: 10px; font-size: 0.8rem; }
+.coins-note { margin-top: 22px; }

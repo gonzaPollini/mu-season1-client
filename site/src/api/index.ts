@@ -1,8 +1,8 @@
 import {
-  mockChangePassword, mockEvents, mockLogin, mockMyCharacters, mockRankings, mockRegister, mockStatus,
+  mockChangePassword, mockCoinBalance, mockCoinOrder, mockCoinPacks, mockEvents, mockLogin, mockMyCharacters, mockRankings, mockRegister, mockStatus,
 } from './mock';
 import {
-  ApiError, type AuthResult, type EventSlot, type MyCharacter, type RankingResult, type RankingType,
+  ApiError, type AuthResult, type CoinOrderResult, type CoinPack, type EventSlot, type MyCharacter, type RankingResult, type RankingType,
   type RegisterInput, type SimpleResult, type Status,
 } from './types';
 
@@ -49,3 +49,8 @@ export const login = (username: string, password: string): Promise<AuthResult> =
 export const getMyCharacters = (): Promise<MyCharacter[]> => (USE_MOCK ? mockMyCharacters() : http('/me/characters'));
 export const changePassword = (oldPassword: string, newPassword: string): Promise<SimpleResult> =>
   USE_MOCK ? mockChangePassword() : http('/me/password', { method: 'POST', json: { oldPassword, newPassword } });
+
+export const getCoinBalance = (): Promise<{ balance: number }> => (USE_MOCK ? mockCoinBalance() : http('/me/coins'));
+export const getCoinPacks = (): Promise<CoinPack[]> => (USE_MOCK ? mockCoinPacks() : http('/coins/packs'));
+export const createCoinOrder = (packId: string): Promise<CoinOrderResult> =>
+  USE_MOCK ? mockCoinOrder() : http('/me/coins/orders', { method: 'POST', json: { packId } });

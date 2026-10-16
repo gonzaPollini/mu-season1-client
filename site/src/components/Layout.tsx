@@ -64,6 +64,7 @@ export function Layout({ route, children }: { route: string; children: ReactNode
             {NAV.map((n) => (
               <a key={n.to} href={`#/${n.to}`} className={route === n.to ? 'active' : ''} onClick={close}>{t(n.label)}</a>
             ))}
+            <a href="#/recargar" className={`nav-coins ${route === 'recargar' ? 'active' : ''}`} onClick={close}>{t('nav.coins')}</a>
             <a href={logged ? '#/panel' : '#/login'} className={route === 'login' || route === 'panel' ? 'active' : ''} onClick={close}>{logged ? t('nav.account') : t('nav.login')}</a>
             <LangSwitch onPick={close} />
             <a href="/play" className="btn btn-gold btn-sm nav-cta pulse"><span>{t('nav.play')}</span><small>{t('nav.playSub')}</small></a>

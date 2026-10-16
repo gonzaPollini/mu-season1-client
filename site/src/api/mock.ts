@@ -1,7 +1,8 @@
+import { COIN_PACKS, type CoinPack } from '../data/coins';
 import { EVENTS } from '../data/events';
 import { nextOccurrences } from '../lib/time';
 import type {
-  AuthResult, CharRow, EventSlot, GuildRow, MyCharacter, RankingResult, RankingType,
+  AuthResult, CharRow, CoinOrderResult, EventSlot, GuildRow, MyCharacter, RankingResult, RankingType,
   RegisterInput, SimpleResult, Status,
 } from './types';
 
@@ -88,6 +89,22 @@ export async function mockLogin(username: string, password: string): Promise<Aut
 export async function mockChangePassword(): Promise<SimpleResult> {
   await wait(600);
   return { ok: true };
+}
+
+export async function mockCoinBalance(): Promise<{ balance: number }> {
+  await wait(250);
+  return { balance: 1250 };
+}
+
+export async function mockCoinPacks(): Promise<CoinPack[]> {
+  await wait(250);
+  return COIN_PACKS;
+}
+
+/** El mock nunca redirige: los pagos no están habilitados. */
+export async function mockCoinOrder(): Promise<CoinOrderResult> {
+  await wait(500);
+  return { ok: false, error: 'paymentsDisabled' };
 }
 
 export async function mockMyCharacters(): Promise<MyCharacter[]> {

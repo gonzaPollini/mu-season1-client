@@ -1,6 +1,7 @@
 import { Layout } from './components/Layout';
 import { useRoute } from './lib/hooks';
 import { Login, Panel } from './pages/Account';
+import { Coins } from './pages/Coins';
 import { Home } from './pages/Home';
 import { Info } from './pages/Info';
 import { Rankings } from './pages/Rankings';
@@ -14,6 +15,7 @@ const PAGES: Record<string, () => JSX.Element> = {
   login: Login,
   panel: Panel,
   rankings: Rankings,
+  recargar: Coins,
   info: Info,
   terminos: Terms,
 };

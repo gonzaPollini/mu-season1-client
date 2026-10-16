@@ -103,3 +103,14 @@ export function PlatformButtons() {
     </div>
   );
 }
+
+/** Moneda dorada (MU Coins), SVG inline. */
+export function CoinIcon() {
+  return (
+    <svg className="coin-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="10.500" fill="#e8a93a" stroke="#ffe3a0" strokeWidth="1.200" />
+      <circle cx="12" cy="12" r="7.500" fill="none" stroke="#7a4a0c" strokeWidth="1.200" />
+      <path d="M8.500 16V8l3.500 4.500L15.500 8v8" fill="none" stroke="#5a3606" strokeWidth="1.800" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}

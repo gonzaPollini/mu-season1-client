@@ -1,7 +1,7 @@
 import { useT, type Key } from '../i18n';
 import { SectionTitle } from '../components/ui';
 
-const N = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
+const N = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] as const;
 
 export function Terms() {
   const { t } = useT();
