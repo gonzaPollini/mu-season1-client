@@ -260,8 +260,13 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 ### 2026-10-16
 
 **Commits incluidos:**
-- (sin commits pendientes)
+- 43ae82b0d Add the server website (site/)
 
 **Archivos modificados:**
-  - `.ts`: listenerOrder.golden.test.ts, events.ts, text.golden.test.ts, bg.ts, de.ts, en.ts, es.ts, fr.ts, it.ts, ja.ts, ko.ts, pl.ts, pt.ts, ro.ts, ru.ts, th.ts, vi.ts, zh.ts, jewelMix.test.ts, jewelMix.ts, net.ts, net.ts
-  - `.md`: readme.md
+  - `.md`: README.md, API.md, readme.md
+  - `.json`: package.json
+  - `.html`: index.html
+  - `.jpg`: hero-castle.jpg, hero-dk.jpg
+  - `.tsx`: App.tsx, Countdown.tsx, Layout.tsx, Widgets.tsx, ui.tsx, index.tsx, main.tsx, Account.tsx, Home.tsx, Info.tsx, Rankings.tsx, Register.tsx, Terms.tsx
+  - `.ts`: index.ts, mock.ts, types.ts, events.ts, info.ts, news.ts, server.ts, en.ts, es.ts, pt.ts, hooks.ts, time.ts, vite.config.ts
+  - `.css`: style.css
