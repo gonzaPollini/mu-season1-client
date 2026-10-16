@@ -263,4 +263,7 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 - (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.md`: README.md
+  - `.md`: API.md
+  - `.ts`: mock.ts, types.ts, en.ts, es.ts, pt.ts
+  - `.tsx`: Layout.tsx, Widgets.tsx, Rankings.tsx
+  - `.css`: style.css
