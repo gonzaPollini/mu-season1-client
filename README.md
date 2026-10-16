@@ -260,13 +260,9 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 ### 2026-10-16
 
 **Commits incluidos:**
-- 43ae82b0d Add the server website (site/)
+- 59630e8b7 Set the site to 320x EXP and space out the home
 
 **Archivos modificados:**
-  - `.md`: README.md, API.md, readme.md
-  - `.json`: package.json
   - `.html`: index.html
-  - `.jpg`: hero-castle.jpg, hero-dk.jpg
-  - `.tsx`: App.tsx, Countdown.tsx, Layout.tsx, Widgets.tsx, ui.tsx, index.tsx, main.tsx, Account.tsx, Home.tsx, Info.tsx, Rankings.tsx, Register.tsx, Terms.tsx
-  - `.ts`: index.ts, mock.ts, types.ts, events.ts, info.ts, news.ts, server.ts, en.ts, es.ts, pt.ts, hooks.ts, time.ts, vite.config.ts
+  - `.ts`: server.ts, en.ts, es.ts, pt.ts
   - `.css`: style.css
