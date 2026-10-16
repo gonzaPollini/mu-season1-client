@@ -257,13 +257,11 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 
 ## 📝 Últimos cambios
 
-### 2026-10-15
+### 2026-10-16
 
 **Commits incluidos:**
 - (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.ts`: index.ts, packedJewels.test.ts, packedJewels.ts
+  - `.ts`: listenerOrder.golden.test.ts, events.ts, text.golden.test.ts, bg.ts, de.ts, en.ts, es.ts, fr.ts, it.ts, ja.ts, ko.ts, pl.ts, pt.ts, ro.ts, ru.ts, th.ts, vi.ts, zh.ts, jewelMix.test.ts, jewelMix.ts, net.ts, net.ts
   - `.md`: readme.md
-  - `.tsx`: index.tsx, index.tsx, index.tsx, index.tsx
-  - `.less`: style.less
