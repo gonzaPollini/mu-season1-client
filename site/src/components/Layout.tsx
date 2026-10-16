@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { SERVER } from '../data/server';
 import { session } from '../api';
 import { LANGS, useT, type Key } from '../i18n';
 import { Logo } from './ui';
@@ -75,7 +76,7 @@ export function Layout({ route, children }: { route: string; children: ReactNode
       <footer className="footer">
         <div className="wrap footer-in">
           <Logo />
-          <p>{t('footer.tagline', { exp: 250 })}</p>
+          <p>{t('footer.tagline', { exp: SERVER.exp })}</p>
           <nav>
             <a href="#/info">{t('nav.info')}</a><a href="#/terminos">{t('terms.title')}</a><a href="#/rankings">{t('nav.rankings')}</a>
           </nav>

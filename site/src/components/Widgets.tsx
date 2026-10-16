@@ -45,7 +45,7 @@ export function TopResets() {
         {rows.map((r) => (
           <li key={r.name}>
             <span className={`medal m${r.rank}`}>{r.rank}</span>
-            <div><strong>{r.name}</strong><span>{r.class}</span></div>
+            <div><strong>{r.name}</strong><span>{r.class} · <i className={`st ${r.online ? 'on' : 'off'}`}>{t(r.online ? 'rank.online' : 'rank.offline')}</i></span></div>
             <b>{r.resets}<small> {t('top.short')}</small></b>
           </li>
         ))}

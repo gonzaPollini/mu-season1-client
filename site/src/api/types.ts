@@ -12,7 +12,7 @@ export type Status = {
   servers: ServerInfo[];
 };
 
-export type RankingType = 'resets' | 'level' | 'killers' | 'guilds';
+export type RankingType = 'resets' | 'level' | 'killers' | 'hours' | 'guilds';
 
 export type CharRow = {
   rank: number;
@@ -22,6 +22,8 @@ export type CharRow = {
   level: number;
   /** Kills PvP (sólo en el ranking `killers`). */
   kills?: number;
+  /** Horas jugadas (sólo en el ranking `hours`). */
+  hours?: number;
   guild: string | null;
   online: boolean;
 };
@@ -29,7 +31,7 @@ export type CharRow = {
 export type GuildRow = { rank: number; name: string; score: number; members: number; master: string };
 
 export type RankingResult =
-  | { type: 'resets' | 'level' | 'killers'; rows: CharRow[]; updatedAt: string }
+  | { type: 'resets' | 'level' | 'killers' | 'hours'; rows: CharRow[]; updatedAt: string }
   | { type: 'guilds'; rows: GuildRow[]; updatedAt: string };
 
 export type EventSlot = {

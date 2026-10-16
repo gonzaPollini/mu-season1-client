@@ -4,7 +4,7 @@ import { useAsync } from '../lib/hooks';
 import { useT, type Key } from '../i18n';
 import { ErrorBox, Loading, SectionTitle } from '../components/ui';
 
-const TABS: RankingType[] = ['resets', 'level', 'killers', 'guilds'];
+const TABS: RankingType[] = ['resets', 'level', 'killers', 'hours', 'guilds'];
 const PAGE = 15;
 
 export function Rankings() {
@@ -52,13 +52,13 @@ export function Rankings() {
                 </>
               ) : (
                 <>
-                  <thead><tr><th>#</th><th>{t('col.char')}</th><th className="hide-sm">{t('col.class')}</th><th className="hide-sm">{t('col.guild')}</th><th className="r">{t('col.level')}</th><th className="r">{tab === 'killers' ? t('col.kills') : t('col.resets')}</th></tr></thead>
+                  <thead><tr><th>#</th><th>{t('col.char')}</th><th className="hide-sm">{t('col.class')}</th><th className="hide-sm">{t('col.guild')}</th><th className="r">{t('col.level')}</th><th className="r">{tab === 'killers' ? t('col.kills') : tab === 'hours' ? t('col.hours') : t('col.resets')}</th></tr></thead>
                   <tbody>{(slice as CharRow[]).map((c) => (
                     <tr key={c.name}>
                       <td><Rank n={c.rank} /></td>
                       <td><strong>{c.name}</strong>{c.online && <span className="pill ok">{t('rank.online')}</span>}</td>
                       <td className="hide-sm">{c.class}</td><td className="hide-sm">{c.guild ?? '-'}</td>
-                      <td className="r">{c.level}</td><td className="r"><b>{tab === 'killers' ? c.kills : c.resets}</b></td>
+                      <td className="r">{c.level}</td><td className="r"><b>{tab === 'killers' ? c.kills : tab === 'hours' ? `${fmtNumber(c.hours ?? 0)} h` : c.resets}</b></td>
                     </tr>
                   ))}</tbody>
                 </>

@@ -18,13 +18,14 @@ Reglas generales
 `servers` es una lista (hoy un solo server; el front soporta varios).
 Fuente: `/api/status` de OpenMU o presence del proxy.
 
-## GET /api/rankings/:tipo   (`resets` | `level` | `killers` | `guilds`)
+## GET /api/rankings/:tipo   (`resets` | `level` | `killers` | `hours` | `guilds`)
 Hasta 100 filas, ya ordenadas; el front busca y pagina en el navegador.
 ```json
 { "type": "resets", "updatedAt": "2026-10-16T14:56:00Z",
   "rows": [ { "rank": 1, "name": "Aldaris", "class": "Grand Master", "resets": 120, "level": 400, "guild": "Argon", "online": true } ] }
 ```
 - `killers`: cada fila lleva además `"kills": 523` (requiere tabla propia de kills, ver `web-mu.md` §2.5).
+- `hours` («Los más viciados»): cada fila lleva además `"hours": 412`, horas jugadas acumuladas por personaje. OpenMU no guarda tiempo online: lo suma el tracker del proxy (sesiones por personaje) o un plugin.
 - `guilds`: `"rows": [ { "rank": 1, "name": "Legión", "score": 90000, "members": 24, "master": "Kaelthas" } ]`
 
 ## GET /api/events

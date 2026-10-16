@@ -1,4 +1,5 @@
 import { COIN_PACKS, type CoinPack } from '../data/coins';
+import { SERVER } from '../data/server';
 import { EVENTS } from '../data/events';
 import { nextOccurrences } from '../lib/time';
 import type {
@@ -37,18 +38,19 @@ function chars(): CharRow[] {
       kills: Math.floor(r() * r() * 900),
       guild: GUILDS[Math.floor(r() * GUILDS.length)] ?? null,
       online: r() < 0.3,
+      hours: 40 + ((i * 37) % 97) * 9,
     };
   });
 }
 
 const sorted = (key: (c: CharRow) => number): CharRow[] =>
-  chars().sort((a, b) => key(b) - key(a) || b.level - a.level).slice(0, 100).map((c, i) => ({ ...c, rank: i + 1 }));
+  chars().sort((a, b) => key(b) - key(a) || b.level - a.level).slice(0, 100).map((c, i) => ({ ...c, rank: i + 1, online: i === 0 ? true : i < 3 ? false : c.online }));
 
 export async function mockStatus(): Promise<Status> {
   await wait(250);
   const servers = [{ id: 's1', name: 'ARGONMU', players: 412, max: 1000, pvp: true }];
   return {
-    online: true, version: '0.9.10', time: new Date().toISOString(), exp: 250,
+    online: true, version: '0.9.10', time: new Date().toISOString(), exp: SERVER.exp,
     totalPlayers: servers.reduce((a, s) => a + s.players, 0), servers,
   };
 }
@@ -65,6 +67,7 @@ export async function mockRankings(type: RankingType): Promise<RankingResult> {
   }
   const rows = type === 'resets' ? sorted((c) => c.resets * 1000 + c.level)
     : type === 'level' ? sorted((c) => c.level)
+    : type === 'hours' ? sorted((c) => c.hours ?? 0)
     : sorted((c) => c.kills ?? 0);
   return { type, rows, updatedAt };
 }
