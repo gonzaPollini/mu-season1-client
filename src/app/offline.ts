@@ -285,4 +285,7 @@ export const playOffline = action('playOffline', (): void => {
   Hero.syncPlayerAppearance();
   applyOfflineVitals();
   EventBus.emit('requestWarp', { map });
+
+  // `?bench`: the repeatable frame-time run (bench.ts), loaded only when asked for.
+  if (new URLSearchParams(location.search).has('bench')) void import('./bench').then(m => m.startBench());
 });
