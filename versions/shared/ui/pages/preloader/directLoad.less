@@ -1,0 +1,210 @@
+// Ours: the `?direct` loading screen. Colors come from the server's brand (`--dl-*`, set inline).
+.dl-screen {
+  --dl-gold: #e8a93a;
+  --dl-gold-hi: #ffe3a0;
+  --dl-accent: #4fd8e6;
+  position: absolute;
+  inset: 0;
+  z-index: 101;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e8e6df;
+  background:
+    radial-gradient(60% 50% at 82% 100%, rgba(232, 169, 58, 0.16), transparent 70%),
+    radial-gradient(50% 45% at 100% 0%, rgba(79, 216, 230, 0.12), transparent 70%),
+    radial-gradient(120% 80% at 50% -10%, #141829 0%, #07080c 60%);
+  font-family: 'Manrope', system-ui, sans-serif;
+  text-shadow: none;
+
+  .dl-art {
+    position: absolute;
+    inset: 0;
+    background: var(--dl-art) right -14vw top / auto 100% no-repeat;
+    opacity: 0.45;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to left, #000 18%, transparent 52%), linear-gradient(to bottom, #000 55%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to left, #000 18%, transparent 52%), linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-composite: intersect;
+    &.is-mirror {
+      transform: scaleX(-1);
+    }
+  }
+
+  .dl-main {
+    position: relative;
+    width: min(420px, 100%);
+    padding: 0 20px;
+    margin-left: 18vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .dl-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    animation: dl-rise 0.9s both;
+    img.dl-mark {
+      width: 52px;
+      height: 52px;
+      filter: drop-shadow(0 0 12px rgba(232, 169, 58, 0.5));
+    }
+    img.dl-wide {
+      max-width: min(300px, 70vw);
+    }
+    .dl-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+    .dl-name {
+      font: 900 clamp(1.4rem, 5vw, 2.2rem) 'Cinzel', 'Trajan Pro', Georgia, serif;
+      letter-spacing: 0.08em;
+      background: linear-gradient(180deg, var(--dl-gold-hi), var(--dl-gold) 60%, #a8670f);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .dl-sub {
+      font: 700 clamp(0.6rem, 2vw, 0.8rem) 'Manrope', sans-serif;
+      letter-spacing: 0.4em;
+      color: var(--dl-accent);
+      margin-top: 4px;
+      padding-left: 2px;
+    }
+  }
+
+  .dl-progress {
+    width: 100%;
+    animation: dl-rise 0.9s 0.15s both;
+  }
+  .dl-percent {
+    text-align: center;
+    font: 700 clamp(1.6rem, 7vw, 2.4rem) / 1 'Cinzel', Georgia, serif;
+    color: var(--dl-gold-hi);
+    text-shadow: 0 0 22px rgba(232, 169, 58, 0.45);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 12px;
+  }
+  .dl-bar {
+    position: relative;
+    height: 8px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(232, 169, 58, 0.35);
+    overflow: hidden;
+    box-shadow: 0 0 18px rgba(232, 169, 58, 0.15);
+  }
+  .dl-fill {
+    position: absolute;
+    inset: 0;
+    transform-origin: left;
+    background: linear-gradient(90deg, #a8670f, var(--dl-gold) 55%, var(--dl-gold-hi));
+    box-shadow: 0 0 14px var(--dl-gold);
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%);
+      background-size: 200% 100%;
+      animation: dl-shine 1.8s linear infinite;
+    }
+  }
+  .dl-amounts {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: rgba(232, 230, 223, 0.6);
+  }
+  .dl-skip {
+    margin-top: 12px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--dl-accent);
+    color: var(--dl-accent);
+    cursor: pointer;
+    font: 700 0.85rem 'Manrope', sans-serif;
+  }
+
+  .dl-tip {
+    width: 100%;
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: rgba(13, 15, 23, 0.72);
+    border: 1px solid rgba(232, 169, 58, 0.3);
+    backdrop-filter: blur(6px);
+    animation: dl-rise 0.9s 0.3s both;
+    transition: opacity 0.4s;
+    &.is-out {
+      opacity: 0;
+    }
+    img {
+      width: 36px;
+      height: 36px;
+      flex: none;
+      filter: drop-shadow(0 0 10px rgba(181, 108, 255, 0.5));
+    }
+    .dl-dot {
+      width: 12px;
+      height: 12px;
+      flex: none;
+      margin: 0 22px;
+      transform: rotate(45deg);
+      background: var(--dl-gold);
+      box-shadow: 0 0 12px var(--dl-gold);
+    }
+    b {
+      display: block;
+      font: 700 0.9rem 'Cinzel', Georgia, serif;
+      color: var(--dl-gold-hi);
+      margin-bottom: 4px;
+    }
+    span {
+      font-size: 0.78rem;
+      color: rgba(232, 230, 223, 0.85);
+      line-height: 1.35;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .dl-art {
+      background-position: center top;
+      background-size: cover;
+      opacity: 0.4;
+    }
+    .dl-main {
+      margin-left: 0;
+      gap: 18px;
+    }
+    .dl-logo img.dl-mark {
+      width: 56px;
+      height: 56px;
+    }
+  }
+}
+
+@keyframes dl-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@keyframes dl-shine {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}

@@ -136,6 +136,21 @@ connect server's own list (`Servers.serverList`) is filled by `session/net.ts`.
   connection all pass through `playOnline`, so they come back to the login. Exit Game still shows
   the preloader.
 
+- `?direct` in the URL (`directRequested`, `DirectLogin.auto`) is a different switch: it pins no world and keeps
+  the server list and the login as they are. It only swaps the preloader page (worlds, setup, Start, map tour)
+  for `DirectLoadPage` (`ui/pages/preloader/directLoad.tsx`): a loading screen that downloads every asset group
+  (`controllers/assets/preloadAll.ts`) to 100 %, then calls `Session.playOnline()` (the server select). The
+  world is the `?cs=` / `?ws=` / `?server=` one or the saved/default. `?direct=0` is off. Audio unlocks on the
+  first click or key (`initializeSounds`); Ctrl+F8 credits are untouched.
+
+### brand.ts
+- A server's own look for the `?direct` loading screen. Nothing of a world is in code: the server provides
+  `brand/brand.json` (`version: 1`; `name`, `sub`, `logo`, `background`, `mirror`, `fontUrl` (Google Fonts
+  only), `colors` {gold, goldHi, accent}, `tips` [{icon, title{lang}, text{lang}}]) and its images in
+  `public/brand/`, read relative to the page; file names only, no paths. `pickText` falls back to en, then any.
+  No file / malformed: neutral screen (client art, no tips). `brand.test.ts`. This repo ships ARGONMU's; another
+  server replaces or deletes that folder.
+
 ### serverProbe.ts
 - It dials the proxy exactly like `createSocket`, sends nothing, and drops the socket.
 - The proxy upgrades the websocket before it dials TCP, so an open socket only proves the proxy is

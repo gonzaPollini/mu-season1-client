@@ -44,9 +44,18 @@ export async function readDirectLogin(read = besideThePage): Promise<ServerProfi
   return parseServerList((await read('serverlist.md')) ?? '')[0] ?? null;
 }
 
+/** `?direct` (also `?direct=1`): this launch opens straight on the login. `?direct=0|off|false` is no. */
+export function directRequested(search: string = typeof location === 'undefined' ? '' : location.search): boolean {
+  const value = new URLSearchParams(search).get('direct');
+  return value !== null && !['0', 'off', 'false', 'no'].includes(value.trim().toLowerCase());
+}
+
 /** `checked` once the boot's check answered (the preloader waits for it); `on` for the whole launch. */
 export const DirectLogin = new (class {
   checked = false;
+
+  /** `?direct`: the preloader's own screens are replaced by a full-download loading screen (`DirectLoadPage`); the server list stays. */
+  readonly auto = directRequested();
 
   constructor() {
     makeAutoObservable(this);

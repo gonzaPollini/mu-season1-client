@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "name": "ARGONMU",
+  "sub": "ONLINE",
+  "logo": "logo.svg",
+  "background": "hero-castle.jpg",
+  "mirror": true,
+  "fontUrl": "https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&display=swap",
+  "colors": { "gold": "#e8a93a", "goldHi": "#ffe3a0", "accent": "#4fd8e6" },
+  "tips": [
+    { "icon": "reward-box.svg",
+      "title": { "es": "Ganá recompensas jugando", "en": "Earn rewards by playing", "pt": "Ganhe recompensas jogando" },
+      "text": { "es": "Cada 1 hora conectado recibís una Box o Zen.", "en": "Every hour online you get a Box or Zen.", "pt": "A cada 1 hora online você recebe uma Box ou Zen." } },
+    { "title": { "es": "EXP 320x", "en": "EXP 320x", "pt": "EXP 320x" },
+      "text": { "es": "Resets sin límite: subí tan alto como quieras.", "en": "Unlimited resets: climb as high as you want.", "pt": "Resets ilimitados: suba o quanto quiser." } },
+    { "title": { "es": "Sin VIP", "en": "No VIP", "pt": "Sem VIP" },
+      "text": { "es": "Todos tienen las mismas ventajas.", "en": "Everyone has the same advantages.", "pt": "Todos têm as mesmas vantagens." } },
+    { "title": { "es": "MU Helper permitido", "en": "MU Helper allowed", "pt": "MU Helper permitido" },
+      "text": { "es": "Dejá que el Helper cace por vos.", "en": "Let the Helper hunt for you.", "pt": "Deixe o Helper caçar por você." } },
+    { "title": { "es": "Reset en nivel 400", "en": "Reset at level 400", "pt": "Reset no nível 400" },
+      "text": { "es": "400 puntos por reset, acumulativo.", "en": "400 points per reset, cumulative.", "pt": "400 pontos por reset, acumulativo." } },
+    { "title": { "es": "MU Coins desde la web", "en": "MU Coins from the website", "pt": "MU Coins pelo site" },
+      "text": { "es": "Recargá tus MU Coins en la web del server.", "en": "Top up your MU Coins on the server's website.", "pt": "Recarregue suas MU Coins no site do server." } },
+    { "title": { "es": "Comercio seguro", "en": "Safe trading", "pt": "Comércio seguro" },
+      "text": { "es": "Comercio por dinero real sólo en el Discord oficial.", "en": "Real-money trading only in the official Discord.", "pt": "Comércio por dinheiro real só no Discord oficial." } }
+  ]
+}

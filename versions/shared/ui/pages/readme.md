@@ -21,7 +21,7 @@ The full-screen pages: the pre-game screens and the world page that holds every 
   Toggles `AppState.hudHidden` (`controllers/interface/uiState.ts`) on the hide-interface key.
 
 ## How it works
-- `src/app/App.tsx` mounts `PreloaderPage`, `ServersPage` and `WorldPage` directly.
+- `src/app/App.tsx` mounts `PreloaderPage`, `ServersPage` and `WorldPage` directly.  `?direct` swaps `PreloaderPage` for `preloader/directLoad.tsx` (`DirectLoadPage`).
 - `App.tsx` loads `LoginPage` and `CharactersPage` from the version's `pregame` UI (`loadVersionUi`):
   `versions/season6/ui` re-exports these, `versions/v097d/ui` has its own, which draws
   `character_list` as rows.

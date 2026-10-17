@@ -8,7 +8,7 @@ the interface controller's (`AppState`, `controllers/interface/uiState.ts`).
 
 ## What is here
 - `main.tsx`, `boot.tsx`: start the version, the engine, the controllers and the ECS world.
-- `App.tsx`: the root component; picks the page from `AppState.uiState`.
+- `App.tsx`: the root component; picks the page from `AppState.uiState`.  With `?direct` the preloader page is `DirectLoadPage` (servers/readme.md).
 - `logic.ts`: installs the modules, sends `Ping`, refreshes NPC names, hands the map ping its link.
 - `lifecycle.ts`: `resetForMapChange()`, what resets on a map change.
 - `backgroundTick.ts` (+ `backgroundTick.worker.ts`): the logic step while the browser gives no frames.

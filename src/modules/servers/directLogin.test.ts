@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { checkDirectLogin, DirectLogin, directChannel, readDirectLogin } from './directLogin';
+import { checkDirectLogin, DirectLogin, directChannel, directRequested, readDirectLogin } from './directLogin';
 import { ServerConfig } from './serverConfig';
 
 const LIST = '# Server list\n\n[S6EP3:My MU:Season 6 Episode 3, played in the browser:en](example.com)\n';
@@ -66,5 +66,20 @@ describe('checkDirectLogin', () => {
     expect(ServerConfig.all.map(w => w.id)).toEqual(['list:example.com']);
     expect(ServerConfig.active.id).toBe('list:example.com');
     expect(ServerConfig.activeId).toBe('list:example.com');
+  });
+});
+
+describe('directRequested', () => {
+  it('is on for ?direct and ?direct=1, off for anything else', () => {
+    expect(directRequested('?direct')).toBe(true);
+    expect(directRequested('?cs=a:1&direct=1')).toBe(true);
+    expect(directRequested('')).toBe(false);
+    for (const off of ['0', 'off', 'false', 'no']) expect(directRequested(`?direct=${off}`)).toBe(false);
+  });
+});
+
+describe('DirectLogin.auto', () => {
+  it('is off without ?direct, and pins no world', () => {
+    expect(DirectLogin.auto).toBe(false);
   });
 });
