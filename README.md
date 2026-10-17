@@ -263,6 +263,7 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 - (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.tsx`: Widgets.tsx, Rankings.tsx
-  - `.ts`: en.ts, es.ts, pt.ts
+  - `.svg`: reward-box.svg
+  - `.tsx`: App.tsx, Layout.tsx, Widgets.tsx, Home.tsx, Rewards.tsx, Terms.tsx
+  - `.ts`: index.ts, mock.ts, types.ts, info.ts, server.ts, en.ts, es.ts, pt.ts
   - `.css`: style.css
