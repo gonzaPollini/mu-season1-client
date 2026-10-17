@@ -59,3 +59,6 @@ export class ApiError extends Error {
     super(message);
   }
 }
+
+/** Mensaje del chat global del juego (/post). Sólo lectura: la web nunca escribe en el chat. */
+export type ChatMessage = { id: number; at: string; character: string; text: string };

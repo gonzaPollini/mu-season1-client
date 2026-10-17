@@ -7,6 +7,7 @@ import { Info } from './pages/Info';
 import { Rankings } from './pages/Rankings';
 import { Register } from './pages/Register';
 import { Terms } from './pages/Terms';
+import { Rewards } from './pages/Rewards';
 
 /** Router por hash, sin librerías: `#/rankings`, `#/info`, etc. */
 const PAGES: Record<string, () => JSX.Element> = {
@@ -18,6 +19,7 @@ const PAGES: Record<string, () => JSX.Element> = {
   recargar: Coins,
   info: Info,
   terminos: Terms,
+  recompensas: Rewards,
 };
 
 export function App() {

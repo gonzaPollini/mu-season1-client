@@ -9,6 +9,7 @@ const NAV: { to: string; label: Key }[] = [
   { to: 'rankings', label: 'nav.rankings' },
   { to: 'info', label: 'nav.info' },
   { to: 'registro', label: 'nav.register' },
+  { to: 'terminos', label: 'nav.terms' },
 ];
 
 /** Botón compacto con el código (ES/EN/PT) y desplegable con el nombre del idioma. */
@@ -73,6 +74,10 @@ export function Layout({ route, children }: { route: string; children: ReactNode
         </div>
       </header>
       <main key={route} className="page">{children}</main>
+      <a href="#/recompensas" className={`rewards-fab ${route === 'recompensas' ? 'on' : ''}`} aria-label={t('rewards.fab')}>
+        <img src="/img/reward-box.svg" alt="" width="34" height="34" />
+        <span>{t('rewards.fab')}</span>
+      </a>
       <footer className="footer">
         <div className="wrap footer-in">
           <Logo />

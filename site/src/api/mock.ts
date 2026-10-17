@@ -5,6 +5,7 @@ import { nextOccurrences } from '../lib/time';
 import type {
   AuthResult, CharRow, CoinOrderResult, EventSlot, GuildRow, MyCharacter, RankingResult, RankingType,
   RegisterInput, SimpleResult, Status,
+  ChatMessage,
 } from './types';
 
 /** Datos de mentira, deterministas, para trabajar el diseño sin backend. */
@@ -117,4 +118,24 @@ export async function mockMyCharacters(): Promise<MyCharacter[]> {
     { name: 'Nyxara', class: 'High Elf', level: 120, resets: 7, guild: null, online: false },
     { name: 'Thorn', class: 'Blade Master', level: 15, resets: 0, guild: null, online: false },
   ];
+}
+
+const CHAT_SAMPLES = [
+  ['Orion67', 'vendo Wings of Storm +11, ofertas por privado'],
+  ['Sylas90', 'busco party para Kalima 7'],
+  ['Morgrim79', 'alguien para Blood Castle 8?'],
+  ['Valkyr48', 'compro Jewel of Life x10'],
+  ['Thorn6', 'gg el castle siege de hoy'],
+  ['Lyria22', 'party Icarus, falta un elfo'],
+  ['Ember29', 'donde se dropea la Bless? jaja'],
+] as const;
+let chatSeq = 0;
+/** Simula el chat: devuelve los últimos mensajes y suma uno nuevo cada vez. */
+export async function mockChat(): Promise<ChatMessage[]> {
+  await wait(150);
+  const n = ++chatSeq + 6;
+  return Array.from({ length: 8 }, (_, i) => {
+    const k = n - 7 + i, [character, text] = CHAT_SAMPLES[((k % CHAT_SAMPLES.length) + CHAT_SAMPLES.length) % CHAT_SAMPLES.length]!;
+    return { id: k, at: new Date(Date.now() - (7 - i) * 40_000).toISOString(), character, text };
+  });
 }

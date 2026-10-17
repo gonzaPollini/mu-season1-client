@@ -2,7 +2,7 @@ import type { Key } from '../i18n';
 
 /** Contenido de Información: sólo claves y datos; los textos viven en `i18n/*.ts`. */
 
-export const RULES: Key[] = ['rule.1', 'rule.2', 'rule.3', 'rule.4', 'rule.5', 'rule.6', 'rule.7'];
+export const RULES: Key[] = ['rule.1', 'rule.2', 'rule.3', 'rule.4', 'rule.5', 'rule.6', 'rule.7', 'rule.8'];
 
 export const RESET_STEPS: { title: Key; text: Key }[] = [
   { title: 'reset.s1.title', text: 'reset.s1.text' },

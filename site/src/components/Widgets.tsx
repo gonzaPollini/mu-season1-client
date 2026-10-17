@@ -1,4 +1,5 @@
-import { getEvents, getRankings, getStatus } from '../api';
+import { useEffect } from 'react';
+import { getChat, getEvents, getRankings, getStatus } from '../api';
 import { useAsync } from '../lib/hooks';
 import { arDate, arLabel } from '../lib/time';
 import { SERVER } from '../data/server';
@@ -108,6 +109,21 @@ export function NewsWidget() {
           <li key={n.id}><time dateTime={n.date}>{arDate(n.date, locale)}</time><strong>{t(n.title)}</strong></li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+/** Chat global del juego en vivo (sólo lectura). Se refresca cada 5 s. */
+export function LiveChat() {
+  const { t, locale } = useT();
+  const { data, reload } = useAsync(getChat);
+  useEffect(() => { const id = setInterval(reload, 5000); return () => clearInterval(id); }, [reload]);
+  const hora = (iso: string) => new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', timeZone: 'America/Argentina/Buenos_Aires' }).format(new Date(iso));
+  return (
+    <div className="card glass livechat">
+      <h3 className="card-title"><i className="dot" />{t('chat.title')}</h3>
+      <p className="card-desc muted">{t('chat.desc')}</p>
+      <ul>{(data ?? []).map((m) => (<li key={m.id}><time>{hora(m.at)}</time><strong>{m.character}:</strong> <span>{m.text}</span></li>))}</ul>
     </div>
   );
 }

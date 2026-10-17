@@ -1,6 +1,6 @@
 import { Logo, PlatformButtons, Reveal } from '../components/ui';
 import { useT } from '../i18n';
-import { NewsWidget, StatsBar, TopHours, TopResets } from '../components/Widgets';
+import { LiveChat, NewsWidget, StatsBar, TopHours, TopResets } from '../components/Widgets';
 
 /** Home compacta: casi todo entra en el primer pantallazo de escritorio. */
 export function Home() {
@@ -20,6 +20,7 @@ export function Home() {
         <Reveal delay={80}><TopHours /></Reveal>
         <Reveal delay={160}><NewsWidget /></Reveal>
       </section>
+      <Reveal delay={200}><LiveChat /></Reveal>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import {
-  mockChangePassword, mockCoinBalance, mockCoinOrder, mockCoinPacks, mockEvents, mockLogin, mockMyCharacters, mockRankings, mockRegister, mockStatus,
+  mockChangePassword, mockChat, mockCoinBalance, mockCoinOrder, mockCoinPacks, mockEvents, mockLogin, mockMyCharacters, mockRankings, mockRegister, mockStatus,
 } from './mock';
 import {
   ApiError, type AuthResult, type CoinOrderResult, type CoinPack, type EventSlot, type MyCharacter, type RankingResult, type RankingType,
@@ -7,6 +7,7 @@ import {
 } from './types';
 
 export * from './types';
+import type { ChatMessage } from './types';
 
 /**
  * Interruptor mock / real. Mock por defecto; para pegarle al backend:
@@ -43,6 +44,7 @@ async function http<T>(path: string, init?: RequestInit & { json?: unknown }): P
 
 export const getStatus = (): Promise<Status> => (USE_MOCK ? mockStatus() : http('/status'));
 export const getRankings = (tipo: RankingType): Promise<RankingResult> => (USE_MOCK ? mockRankings(tipo) : http(`/rankings/${tipo}`));
+export const getChat = (): Promise<ChatMessage[]> => (USE_MOCK ? mockChat() : http('/chat/recent'));
 export const getEvents = (): Promise<EventSlot[]> => (USE_MOCK ? mockEvents() : http('/events'));
 export const register = (input: RegisterInput): Promise<SimpleResult> => (USE_MOCK ? mockRegister(input) : http('/register', { method: 'POST', json: input }));
 export const login = (username: string, password: string): Promise<AuthResult> => (USE_MOCK ? mockLogin(username, password) : http('/login', { method: 'POST', json: { username, password } }));

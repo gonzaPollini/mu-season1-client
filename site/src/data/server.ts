@@ -12,4 +12,6 @@ export const SERVER = {
   platform: 'Navegador',
   timezone: 'America/Argentina/Buenos_Aires',
   timezoneLabel: 'hora de Argentina (UTC-3)',
+  /** Canal de Discord para comercio por dinero real entre jugadores (términos, punto 7). Vacío = todavía no existe. */
+  discordTradeUrl: '',
 } as const;

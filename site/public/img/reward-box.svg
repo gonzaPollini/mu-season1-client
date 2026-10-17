@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Cajita de recompensas de ARGONMU: caja violeta con cinta y moño dorados. Vectorial: nítida a cualquier tamaño (web y cliente). -->
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="58%" r="50%">
+      <stop offset="0" stop-color="#b56cff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#b56cff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="caja" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9b4dff"/>
+      <stop offset=".55" stop-color="#5d1fb8"/>
+      <stop offset="1" stop-color="#2e0d63"/>
+    </linearGradient>
+    <linearGradient id="tapa" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c38bff"/>
+      <stop offset="1" stop-color="#6d28d0"/>
+    </linearGradient>
+    <linearGradient id="oro" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff1c2"/>
+      <stop offset=".4" stop-color="#f2c255"/>
+      <stop offset=".75" stop-color="#d08a1e"/>
+      <stop offset="1" stop-color="#8a5208"/>
+    </linearGradient>
+    <linearGradient id="brillo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <circle cx="64" cy="72" r="60" fill="url(#glow)"/>
+  <!-- cuerpo -->
+  <rect x="22" y="58" width="84" height="56" rx="6" fill="url(#caja)" stroke="#1d0742" stroke-width="2"/>
+  <!-- tapa -->
+  <rect x="16" y="44" width="96" height="20" rx="5" fill="url(#tapa)" stroke="#1d0742" stroke-width="2"/>
+  <rect x="19" y="46" width="90" height="7" rx="3.5" fill="url(#brillo)"/>
+  <!-- cinta vertical y horizontal -->
+  <rect x="56" y="44" width="16" height="70" fill="url(#oro)" stroke="#6b3d05" stroke-width="1.5"/>
+  <rect x="22" y="78" width="84" height="10" fill="url(#oro)" stroke="#6b3d05" stroke-width="1.5" opacity=".95"/>
+  <!-- moño -->
+  <path d="M64 44C52 24 30 22 32 34c1.500 8 16 11 32 10Z" fill="url(#oro)" stroke="#6b3d05" stroke-width="1.5"/>
+  <path d="M64 44c12-20 34-22 32-10-1.500 8-16 11-32 10Z" fill="url(#oro)" stroke="#6b3d05" stroke-width="1.5"/>
+  <path d="M60 44l-8 16 6-2 4 6 2-20ZM68 44l8 16-6-2-4 6-2-20Z" fill="#d08a1e" stroke="#6b3d05" stroke-width="1.2"/>
+  <circle cx="64" cy="43" r="7" fill="url(#oro)" stroke="#6b3d05" stroke-width="1.5"/>
+  <!-- destellos -->
+  <path d="M100 26l2 6 6 2-6 2-2 6-2-6-6-2 6-2Z" fill="#fff6d8"/>
+  <path d="M24 92l1.300 4 4 1.300-4 1.300L24 103l-1.300-4.400-4-1.300 4-1.300Z" fill="#e7d0ff" opacity=".9"/>
+</svg>
