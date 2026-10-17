@@ -257,11 +257,12 @@ The server side is [OpenMU](https://github.com/MUnique/OpenMU).
 
 ## 📝 Últimos cambios
 
-### 2026-10-16
+### 2026-10-17
 
 **Commits incluidos:**
 - (sin commits pendientes)
 
 **Archivos modificados:**
-  - `.tsx`: Widgets.tsx, Home.tsx
+  - `.tsx`: Widgets.tsx, Rankings.tsx
   - `.ts`: en.ts, es.ts, pt.ts
+  - `.css`: style.css
