@@ -505,3 +505,5 @@ input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--gold); }
   /* Lugar para el botón flotante de recompensas al final. */
   .page { padding-bottom: 70px; }
 }
+/* Barra de stats 2 px más baja (escritorio). */
+@media (min-width: 561px) { .home .stat { padding: 12px 20px; } }

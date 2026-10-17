@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { changePassword, getCoinBalance, getMyCharacters, login, session, USE_MOCK } from '../api';
+import { SERVER } from '../data/server';
 import { useAsync } from '../lib/hooks';
 import { useT } from '../i18n';
 import { CoinIcon, ErrorBox, Loading, SectionTitle } from '../components/ui';
@@ -107,7 +108,7 @@ export function Panel() {
               </li>
             ))}
           </ul>
-          <div className="hero-cta"><a href="/play" className="btn btn-gold btn-sm">{t('nav.play')}</a>
+          <div className="hero-cta"><a href={SERVER.playUrl} className="btn btn-gold btn-sm">{t('nav.play')}</a>
             <button className="btn btn-ghost btn-sm" onClick={() => { session.set(null); window.location.hash = '#/'; }}>{t('panel.logout')}</button></div>
         </div>
         <form className="card glass form" onSubmit={submit}>

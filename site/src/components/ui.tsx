@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useCountUp, useInView } from '../lib/hooks';
+import { SERVER } from '../data/server';
 import { useT } from '../i18n';
 
 /** Logo tipográfico: emblema SVG + «ARGONMU» en dorado + «ONLINE» espaciado en cian. */
@@ -81,7 +82,7 @@ const ICONS = {
 export function PlatformButtons() {
   const { t } = useT();
   const items: { id: keyof typeof ICONS; label: string; href?: string }[] = [
-    { id: 'web', label: t('plat.browser'), href: '/play' },
+    { id: 'web', label: t('plat.browser'), href: SERVER.playUrl },
     { id: 'windows', label: t('plat.windows') },
     { id: 'android', label: t('plat.android') },
     { id: 'mac', label: t('plat.mac') },

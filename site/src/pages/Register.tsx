@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { register } from '../api';
+import { SERVER } from '../data/server';
 import { validateSignup } from '@/modules/servers/registerRules';
 import { useT, type Key } from '../i18n';
 import { SectionTitle } from '../components/ui';
@@ -48,7 +49,7 @@ export function Register() {
           <div className="check">✓</div>
           <h2>{t('reg.doneTitle')}</h2>
           <p>{t('reg.doneText', { user: f.username })}</p>
-          <div className="hero-cta"><a href="/play" className="btn btn-gold">{t('nav.play')}</a><a href="#/login" className="btn btn-ghost">{t('reg.doneLogin')}</a></div>
+          <div className="hero-cta"><a href={SERVER.playUrl} className="btn btn-gold">{t('nav.play')}</a><a href="#/login" className="btn btn-ghost">{t('reg.doneLogin')}</a></div>
         </div>
       </section>
     );
